@@ -88,8 +88,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       duration: const Duration(seconds: 10),
     );
     
-    // Check if this is a hand scan meditation (ID 0 or 1)
-    _isHandScanMeditation = widget.meditationInfo.id == 0 || widget.meditationInfo.id == 1;
+    // HandScanAnimation disabled - all meditations use body CSV paths
+    _isHandScanMeditation = false;
     
     _loadMeditation();
     

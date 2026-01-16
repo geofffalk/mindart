@@ -233,11 +233,12 @@ class _HSLColorPickerState extends State<HSLColorPicker> {
         LayoutBuilder(
           builder: (context, constraints) {
             _cachedWidth = constraints.maxWidth;
+            final width = constraints.maxWidth;
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTapDown: (details) => _updateHueFromPosition(details.localPosition.dx),
-              onHorizontalDragStart: (details) => _updateHueFromPosition(details.localPosition.dx),
-              onHorizontalDragUpdate: (details) => _updateHueFromPosition(details.localPosition.dx),
+              onTapDown: (details) => _updateHueFromPosition(details.localPosition.dx, width),
+              onHorizontalDragStart: (details) => _updateHueFromPosition(details.localPosition.dx, width),
+              onHorizontalDragUpdate: (details) => _updateHueFromPosition(details.localPosition.dx, width),
               child: Container(
                 height: 24,
                 decoration: BoxDecoration(
@@ -286,9 +287,8 @@ class _HSLColorPickerState extends State<HSLColorPicker> {
     );
   }
   
-  void _updateHueFromPosition(double dx) {
-    if (_cachedWidth == null) return;
-    final hue = (dx / _cachedWidth! * 360).clamp(0.0, 360.0);
+  void _updateHueFromPosition(double dx, double width) {
+    final hue = (dx / width * 360).clamp(0.0, 360.0);
     _onHueChanged(hue);
   }
   

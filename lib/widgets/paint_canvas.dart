@@ -79,10 +79,10 @@ class PaintCanvasPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant PaintCanvasPainter oldDelegate) {
-    // Compare list lengths since we modify in place
-    return oldDelegate.paths.length != paths.length || 
+    // Compare list identity (not just length) to detect undo operations
+    return !identical(oldDelegate.paths, paths) || 
            oldDelegate.currentPath != currentPath ||
-           oldDelegate.fills.length != fills.length ||
+           !identical(oldDelegate.fills, fills) ||
            oldDelegate.fillMask != fillMask;
   }
 }
@@ -103,8 +103,8 @@ class PaintCanvas extends StatefulWidget {
 }
 
 class PaintCanvasState extends State<PaintCanvas> {
-  final List<DrawnPath> _paths = [];
-  final List<FillOperation> _fills = [];
+  List<DrawnPath> _paths = [];
+  List<FillOperation> _fills = [];
   final List<String> _operationHistory = []; // 'path' or 'fill' to track order
   DrawnPath? _currentPath;
   BrushSettings _brushSettings = BrushSettings.forStyle(BrushStyle.pen);

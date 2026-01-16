@@ -270,23 +270,30 @@ class _HandOutlinePainter extends CustomPainter {
     );
     path.lineTo(offsetX + 88 * sx, offsetY + 60 * sy);
     
-    // Gap before thumb
-    path.lineTo(offsetX + 92 * sx, offsetY + 75 * sy);
+    // Gap before thumb - moves further down the palm
+    path.lineTo(offsetX + 92 * sx, offsetY + 85 * sy);
     
-    // Thumb
+    // Thumb - much larger and extending outward
     path.quadraticBezierTo(
-      offsetX + 100 * sx, offsetY + 80 * sy,
-      offsetX + 100 * sx, offsetY + 95 * sy,
+      offsetX + 105 * sx, offsetY + 88 * sy,
+      offsetX + 115 * sx, offsetY + 100 * sy,
     );
     path.quadraticBezierTo(
-      offsetX + 100 * sx, offsetY + 108 * sy,
-      offsetX + 92 * sx, offsetY + 115 * sy,
+      offsetX + 122 * sx, offsetY + 108 * sy,
+      offsetX + 120 * sx, offsetY + 118 * sy,
     );
-    path.lineTo(offsetX + 85 * sx, offsetY + 105 * sy);
+    path.quadraticBezierTo(
+      offsetX + 118 * sx, offsetY + 130 * sy,
+      offsetX + 105 * sx, offsetY + 128 * sy,
+    );
+    path.quadraticBezierTo(
+      offsetX + 95 * sx, offsetY + 125 * sy,
+      offsetX + 88 * sx, offsetY + 115 * sy,
+    );
     
     // Right side of palm down to wrist
     path.quadraticBezierTo(
-      offsetX + 90 * sx, offsetY + 130 * sy,
+      offsetX + 90 * sx, offsetY + 135 * sy,
       offsetX + 80 * sx, offsetY + 150 * sy,
     );
     

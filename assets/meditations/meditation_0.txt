@@ -8,7 +8,7 @@
 "pathOnlyInventory" : [],
 "fillBitmapInventory" : [],
 "fillBitmapColors":["white","white"],
-"strokeBitmapInventory" : ["body_outer","body_inner"],
+"strokeBitmapInventory" : ["body_outer"],
 "strokeBitmapColors":["white","white"],
 "segments": [
 
@@ -61,14 +61,14 @@
                                    "drawingIndex":0,
                                    "drawingName":"",
                                   "graphic":   {
-                                   "startStrokeBitmapIds": ["body_inner","body_outer"],
+                                   "startStrokeBitmapIds": ["body_outer"],
                                    "startFillBitmapIds": [],
                                    "sequenceTiming": 0,
                                    "animationPathIds": [],
                                    "animationStyle":0,
                                    "animationSpeed":50,
                                    "endFillBitmapIds": [],
-                                   "endStrokeBitmapIds":["body_inner","body_outer"]
+                                   "endStrokeBitmapIds":["body_outer"]
                                                    },
                                   "audioLocation": "relax2_1",
                                   "duration": 10
@@ -82,14 +82,14 @@
                                     "drawingIndex":0,
                                     "drawingName":"",
                                    "graphic":   {
-                                    "startStrokeBitmapIds": ["body_inner","body_outer"],
+                                    "startStrokeBitmapIds": ["body_outer"],
                                     "startFillBitmapIds": [],
                                     "sequenceTiming": 0,
                                     "animationPathIds": [],
                                     "animationStyle":0,
                                     "animationSpeed":200,
                                     "endFillBitmapIds": [],
-                                    "endStrokeBitmapIds":["body_inner"]
+                                    "endStrokeBitmapIds":["body_outer"]
                                                     },
                                    "audioLocation": "relax2_2",
                                    "duration": 10
@@ -102,14 +102,14 @@
                     "drawingIndex":0,
                     "drawingName":"",
                    "graphic":   {
-                    "startStrokeBitmapIds": ["body_inner"],
+                    "startStrokeBitmapIds": ["body_outer"],
                     "startFillBitmapIds": [],
                     "sequenceTiming": 0,
                     "animationPathIds": ["body_outer"],
                     "animationStyle":0,
                     "animationSpeed":66,
                     "endFillBitmapIds": [],
-                    "endStrokeBitmapIds":["body_inner","body_outer"]
+                    "endStrokeBitmapIds":["body_outer"]
                                     },
                    "audioLocation": "relax3",
                    "duration": 126

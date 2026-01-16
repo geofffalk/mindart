@@ -178,6 +178,7 @@ class MeditationService {
   Future<List<Offset>> loadAbsolutePath(String pathName, String model) async {
     try {
       final assetPath = 'assets/body_paths/${model}_$pathName.csv';
+      debugPrint('🔍 Loading path from: $assetPath');
       final csvString = await rootBundle.loadString(assetPath);
       final lines = csvString.trim().split('\n');
       
