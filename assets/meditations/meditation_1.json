@@ -1,124 +1,144 @@
 {
-"title" : "Relaxation - long version",
-"id" : 0,
-"description" : "This is a relaxation meditation",
-"author" : "Geoff Falk",
-"coordinateBounds" : [580,756],
-"touchRegionElement" : "body_outer",
-"pathOnlyInventory" : [],
-"fillBitmapInventory" : [],
-"fillBitmapColors":["white","white"],
-"strokeBitmapInventory" : ["body_outer"],
-"strokeBitmapColors":["white","white"],
-"segments": [
-
-       {
-                   "title": "Step 1",
-                   "description": "Get comfortable, whether you're sitting or standing, with your back straight.",
-                   "id":0,
-                   "segmentName":"reading",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic":   {
-                    "startStrokeBitmapIds": [],
-                    "startFillBitmapIds": [],
-                    "sequenceTiming": 43,
-                    "animationPathIds": ["meditating"],
-                    "animationStyle":0,
-                    "animationSpeed":100,
-                    "endFillBitmapIds": [],
-                    "endStrokeBitmapIds":["meditating"]
-                                    },
-                   "audioLocation": "relax1_1",
-                   "duration": 12
-               },
-
-  {
-                                   "title": "Step 1",
-                                   "description": "Gently breathe in and out three times.",
-                                   "id":0,
-                                   "segmentName":"breathing",
-                                    "drawingIndex":0,
-                                    "drawingName":"",
-                                   "graphic":   {
-                                    "startStrokeBitmapIds": [],
-                                    "startFillBitmapIds": [],
-                                    "sequenceTiming": 43,
-                                    "animationPathIds": [],
-                                    "animationStyle":0,
-                                    "animationSpeed":100,
-                                    "endFillBitmapIds": [],
-                                    "endStrokeBitmapIds":[]
-                                                    },
-                                   "audioLocation": "relax1_2",
-                                   "duration": 32
-                               },
-
-                                     {
-                                                 "title": "Step 2",
-                                                 "description": "Bring your attention to your body.",
-                                                 "id":0,
-                                                 "segmentName":"appearing",
-                                                  "drawingIndex":0,
-                                                  "drawingName":"",
-                                                 "graphic":   {
-                                                  "startStrokeBitmapIds": ["body_full"],
-                                                  "startFillBitmapIds": [],
-                                                  "sequenceTiming": 0,
-                                                  "animationPathIds": [],
-                                                  "animationStyle":0,
-                                                  "animationSpeed":50,
-                                                  "endFillBitmapIds": [],
-                                                  "endStrokeBitmapIds":["body_full"]
-                                                                  },
-                                                 "audioLocation": "relax2_1",
-                                                 "duration": 10
-                                             },
-
-
-
-       {
-                   "title": "Step 2",
-                   "description": "Notice the sensations as you journey around your body, following me as I draw its outline.",
-                   "id":0,
-                   "segmentName":"fading",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic":   {
-                    "startStrokeBitmapIds": ["body_full"],
-                    "startFillBitmapIds": [],
-                    "sequenceTiming": 0,
-                    "animationPathIds": [],
-                    "animationStyle":0,
-                    "animationSpeed":200,
-                    "endFillBitmapIds": [],
-                    "endStrokeBitmapIds":["body_full"]
-                                    },
-                   "audioLocation": "relax2_2",
-                   "duration": 10
-               },
-
-              {
-                   "title": "Step 1",
-                   "description": "Follow the outline I'm drawing, noticing the sensation in the same place.",
-                   "id":0,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic":   {
-                    "startStrokeBitmapIds": ["body_full"],
-                    "startFillBitmapIds": [],
-                    "sequenceTiming": 0,
-                    "animationPathIds": ["body_full"],
-                    "animationStyle":0,
-                    "animationSpeed":26,
-                    "endFillBitmapIds": [],
-                    "endStrokeBitmapIds":["body_full"]
-                                    },
-                   "audioLocation": "relax3_long",
-                   "duration": 303
-               }
-
-]
-
+    "title": "Relaxation - long version",
+    "id": 0,
+    "description": "This is a relaxation meditation",
+    "author": "Geoff Falk",
+    "coordinateBounds": [
+        580,
+        756
+    ],
+    "touchRegionElement": "body_outer",
+    "pathOnlyInventory": [],
+    "fillBitmapInventory": [],
+    "fillBitmapColors": [
+        "white",
+        "white"
+    ],
+    "strokeBitmapInventory": [
+        "body_outer"
+    ],
+    "strokeBitmapColors": [
+        "white",
+        "white"
+    ],
+    "segments": [
+        {
+            "title": "Step 1",
+            "description": "Get comfortable, whether you're sitting or standing, with your back straight.",
+            "id": 0,
+            "segmentName": "reading",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 43,
+                "animationPathIds": [
+                    "meditating"
+                ],
+                "animationStyle": 0,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": [
+                    "meditating"
+                ]
+            },
+            "audioLocation": "relax1_1",
+            "duration": 12
+        },
+        {
+            "title": "Step 1",
+            "description": "Gently breathe in and out three times.",
+            "id": 0,
+            "segmentName": "breathing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 43,
+                "animationPathIds": [],
+                "animationStyle": 0,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": []
+            },
+            "audioLocation": "relax1_2",
+            "duration": 32
+        },
+        {
+            "title": "Step 2",
+            "description": "Bring your attention to your body.",
+            "id": 0,
+            "segmentName": "appearing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 0,
+                "animationSpeed": 50,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "relax2_1",
+            "duration": 10
+        },
+        {
+            "title": "Step 2",
+            "description": "Notice the sensations as you journey around your body, following me as I draw its outline.",
+            "id": 0,
+            "segmentName": "fading",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 0,
+                "animationSpeed": 200,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "relax2_2",
+            "duration": 10
+        },
+        {
+            "title": "Step 1",
+            "description": "Follow the outline I'm drawing, noticing the sensation in the same place.",
+            "id": 0,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 0,
+                "animationPathIds": [
+                    "body_full"
+                ],
+                "animationStyle": 0,
+                "animationSpeed": 26,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "relax3_long",
+            "duration": 303
+        }
+    ]
 }

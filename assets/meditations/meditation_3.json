@@ -1,1037 +1,1440 @@
 {
-"title" : "Body Awareness",
-"id" : 2,
-"description" : "This is the long bodyscan meditation",
-"author" : "Dekyi Lee Oldershaw",
-"coordinateBounds" : [580,756],
-"touchRegionElement" : "body_outer",
-"pathOnlyInventory" : [],
-"fillBitmapInventory" : ["body_full","feet","base","sacral","solarplexus","heart","throat","head","crown"],
-"fillBitmapColors":["white","white","brown","red","orange","yellow","green","aqua","blue","purple"],
-"strokeBitmapInventory" : ["body_full"],
-"strokeBitmapColors":["white","white"],
-"segments": [
-
-               {
-                   "title": "",
-                   "description": "Gently breathe in and out three times.",
-                   "id":0,
-                   "segmentName":"reading",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic":   {
-                    "startStrokeBitmapIds": [],
-                    "startFillBitmapIds": [],
-                    "sequenceTiming": 57,
-                    "animationPathIds": ["body_full"],
-                    "animationStyle":1,
-                    "animationSpeed":100,
-                    "endFillBitmapIds": [],
-                    "endStrokeBitmapIds":["body_full"]
-                                    },
-                   "audioLocation": "bodyscan2_1",
-                   "duration": 20
-                 },
-               {
-                     "title": "",
-                     "description": "Bring your attention to your body.",
-                     "id":1,
-                     "segmentName":"appearing",
-                      "drawingIndex":0,
-                      "drawingName":"",
-                     "graphic":   {
-                      "startStrokeBitmapIds": ["body_full"],
-                      "startFillBitmapIds": [],
-                      "sequenceTiming": 0,
-                      "animationPathIds": [],
-                      "animationStyle":1,
-                      "animationSpeed":80,
-                      "endFillBitmapIds": [],
-                      "endStrokeBitmapIds":["body_full"]
-                                      },
-                     "audioLocation": "bodyscan2_2",
-                     "duration": 10
-                 },
-               {
-                   "title": "",
-                   "description": "Focus on the area I am outlining now.",
-                   "id":2,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":[],
-                      "sequenceTiming": 0,
-                       "animationPathIds": ["feet"],
-                       "animationStyle":1,
-                       "animationSpeed":100,
-                       "endFillBitmapIds": ["feet"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_quick_focus",
-                   "duration": 18
-                 },
-               {
-                   "title": "",
-                   "description": "How comfortable does it feel, from 1 to 10?",
-                   "id":2,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":["feet"],
-                      "sequenceTiming": 0,
-                       "animationPathIds": [],
-                       "animationStyle":1,
-                       "animationSpeed":100,
-                       "endFillBitmapIds": ["feet"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_quick_comfortlevel",
-                   "duration": 13
-                 },
-                {
-                    "title": "",
-                    "description": "Sense the feeling in this area, as an image, color or words.",
-                    "id":3,
-                    "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                    "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":["feet"],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":1,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": ["feet"],
-                          "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_quick_imageorcolor",
-                    "duration": 25
-                                },
-                 {
-                     "title": "",
-                     "description": "Now document whatever information you've received.",
-                     "id":3,
-                     "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["feet"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": ["feet"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_document",
-                     "duration": 17
-                                 },
-                    {
-                        "title": "",
-                        "description": "Press the paintbrush button to begin.",
-                        "id":3,
-                        "segmentName":"recording",
-                        "drawingIndex":1,
-                        "drawingName":"Feet",
-                        "graphic": {
-                             "startStrokeBitmapIds": ["body_full"],
-                              "startFillBitmapIds":["feet"],
-                              "sequenceTiming": 0,
-                              "animationPathIds": [],
-                              "animationStyle":1,
-                              "animationSpeed":100,
-                              "endFillBitmapIds": ["feet"],
-                              "endStrokeBitmapIds": ["body_full"]
-                                              },
-                        "audioLocation": "bodyscan_paintinstruction",
-                        "duration": 60
-                                    },
-               {
-                     "title": "",
-                     "description": "Breathe out the feeling in this area.",
-                     "id":4,
-                     "segmentName":"fading",
-                     "drawingIndex":1,
-                     "drawingName":"",
-                     "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["feet"],
-                      "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":2,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": [],
-                            "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_breatheout",
-                     "duration": 15
-                                 },
-               {
-                   "title": "",
-                   "description": "Focus on the area I'm outlining now.",
-                   "id":6,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":[],
-                      "sequenceTiming": 0,
-                       "animationPathIds": ["base"],
-                       "animationStyle":1,
-                       "animationSpeed":200,
-                       "endFillBitmapIds": ["base"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_quick_focus",
-                   "duration": 22
-                 },
-                 {
-                     "title": "",
-                     "description": "How comfortable does it feel, from 1 to 10?",
-                     "id":2,
-                     "segmentName":"focusing",
-                      "drawingIndex":0,
-                      "drawingName":"",
-                     "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                         "startFillBitmapIds":["base"],
-                        "sequenceTiming": 0,
-                         "animationPathIds": [],
-                         "animationStyle":1,
-                         "animationSpeed":100,
-                         "endFillBitmapIds": ["base"],
-                         "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_comfortlevel",
-                     "duration": 15
-                   },
-                 {
-                     "title": "",
-                     "description": "Sense the feeling in this area, as an image, color or words.",
-                     "id":3,
-                     "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"Base",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["base"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": ["base"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_imageorcolor",
-                     "duration": 25
-                                 },
-                 {
-                     "title": "",
-                     "description": "Now document whatever information you've received.",
-                     "id":3,
-                     "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["base"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": ["base"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_document",
-                     "duration": 17
-                                 },
-                    {
-                        "title": "",
-                        "description": "Press the paintbrush button to begin.",
-                        "id":3,
-                        "segmentName":"recording",
-                        "drawingIndex":2,
-                        "drawingName":"Base",
-                        "graphic": {
-                             "startStrokeBitmapIds": ["body_full"],
-                              "startFillBitmapIds":["base"],
-                              "sequenceTiming": 0,
-                              "animationPathIds": [],
-                              "animationStyle":1,
-                              "animationSpeed":100,
-                              "endFillBitmapIds": ["base"],
-                              "endStrokeBitmapIds": ["body_full"]
-                                              },
-                        "audioLocation": "bodyscan_paintinstruction",
-                        "duration": 60
-                                    },
-               {
-                     "title": "",
-                     "description": "Breathe out the feeling in this area.",
-                     "id":4,
-                     "segmentName":"fading",
-                     "drawingIndex":2,
-                     "drawingName":"",
-                     "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["base"],
-                      "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":2,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": [],
-                            "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_breatheout",
-                     "duration": 15
-                                 },
-               {
-                   "title": "",
-                   "description": "Focus on the area I'm outlining now.",
-                   "id":6,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":[],
-                      "sequenceTiming": 0,
-                       "animationPathIds": ["sacral"],
-                       "animationStyle":1,
-                       "animationSpeed":70,
-                       "endFillBitmapIds": ["sacral"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_quick_focus",
-                   "duration": 20
-                 },
-                 {
-                     "title": "",
-                     "description": "How comfortable does it feel, from 1 to 10?",
-                     "id":2,
-                     "segmentName":"focusing",
-                      "drawingIndex":0,
-                      "drawingName":"",
-                     "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                         "startFillBitmapIds":["sacral"],
-                        "sequenceTiming": 0,
-                         "animationPathIds": [],
-                         "animationStyle":1,
-                         "animationSpeed":100,
-                         "endFillBitmapIds": ["sacral"],
-                         "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_comfortlevel",
-                     "duration": 15
-                   },
-                 {
-                     "title": "",
-                     "description": "Sense the feeling in this area, as an image, color or words.",
-                     "id":3,
-                     "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"Base",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["sacral"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": ["sacral"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_imageorcolor",
-                     "duration": 25
-                                 },
-                 {
-                     "title": "",
-                     "description": "Now document whatever information you've received.",
-                     "id":3,
-                     "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["sacral"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": ["sacral"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_document",
-                     "duration": 17
-                                 },
-                    {
-                        "title": "",
-                        "description": "Press the paintbrush button to begin.",
-                        "id":3,
-                        "segmentName":"recording",
-                        "drawingIndex":3,
-                        "drawingName":"Sacral",
-                        "graphic": {
-                             "startStrokeBitmapIds": ["body_full"],
-                              "startFillBitmapIds":["sacral"],
-                              "sequenceTiming": 0,
-                              "animationPathIds": [],
-                              "animationStyle":1,
-                              "animationSpeed":100,
-                              "endFillBitmapIds": ["sacral"],
-                              "endStrokeBitmapIds": ["body_full"]
-                                              },
-                        "audioLocation": "bodyscan_paintinstruction",
-                        "duration": 60
-                                    },
-               {
-                     "title": "",
-                     "description": "Breathe out the feeling in this area.",
-                     "id":4,
-                     "segmentName":"fading",
-                     "drawingIndex":3,
-                     "drawingName":"",
-                     "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["sacral"],
-                      "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":2,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": [],
-                            "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_breatheout",
-                     "duration": 15
-                                 },
-               {
-                   "title": "",
-                   "description": "Focus on the area I'm outlining now.",
-                   "id":6,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":[],
-                      "sequenceTiming": 0,
-                       "animationPathIds": ["solarplexus"],
-                       "animationStyle":1,
-                       "animationSpeed":50,
-                       "endFillBitmapIds": ["solarplexus"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_quick_focus",
-                   "duration": 20
-                 },
-                 {
-                     "title": "",
-                     "description": "How comfortable does it feel, from 1 to 10?",
-                     "id":2,
-                     "segmentName":"focusing",
-                      "drawingIndex":0,
-                      "drawingName":"",
-                     "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                         "startFillBitmapIds":["solarplexus"],
-                        "sequenceTiming": 0,
-                         "animationPathIds": [],
-                         "animationStyle":1,
-                         "animationSpeed":100,
-                         "endFillBitmapIds": ["solarplexus"],
-                         "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_comfortlevel",
-                     "duration": 15
-                   },
-                 {
-                     "title": "",
-                     "description": "Sense the feeling in this area, as an image, color or words.",
-                     "id":3,
-                     "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"Base",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["solarplexus"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": ["solarplexus"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_imageorcolor",
-                     "duration": 25
-                                 },
-                 {
-                     "title": "",
-                     "description": "Now document whatever information you've received.",
-                     "id":3,
-                     "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["solarplexus"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": ["solarplexus"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_document",
-                     "duration": 17
-                                 },
-                    {
-                        "title": "",
-                        "description": "Press the paintbrush button to begin.",
-                        "id":3,
-                        "segmentName":"recording",
-                        "drawingIndex":4,
-                        "drawingName":"Solar Plexus",
-                        "graphic": {
-                             "startStrokeBitmapIds": ["body_full"],
-                              "startFillBitmapIds":["solarplexus"],
-                              "sequenceTiming": 0,
-                              "animationPathIds": [],
-                              "animationStyle":1,
-                              "animationSpeed":100,
-                              "endFillBitmapIds": ["solarplexus"],
-                              "endStrokeBitmapIds": ["body_full"]
-                                              },
-                        "audioLocation": "bodyscan_paintinstruction",
-                        "duration": 60
-                                    },
-               {
-                     "title": "",
-                     "description": "Breathe out the feeling in this area.",
-                     "id":4,
-                     "segmentName":"fading",
-                     "drawingIndex":4,
-                     "drawingName":"",
-                     "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["solarplexus"],
-                      "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":2,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": [],
-                            "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_breatheout",
-                     "duration": 15
-                                 },
-                {
-                    "title": "",
-                    "description": "Focus on the area I'm outlining now.",
-                    "id":6,
-                    "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                    "graphic": {
-                        "startStrokeBitmapIds": ["body_full"],
-                        "startFillBitmapIds":[],
-                       "sequenceTiming": 0,
-                        "animationPathIds": ["heart"],
-                        "animationStyle":1,
-                        "animationSpeed":200,
-                        "endFillBitmapIds": ["heart"],
-                        "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_quick_focus",
-                    "duration": 30
-                  },
-                  {
-                      "title": "",
-                      "description": "How comfortable does it feel, from 1 to 10?",
-                      "id":2,
-                      "segmentName":"focusing",
-                       "drawingIndex":0,
-                       "drawingName":"",
-                      "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":["heart"],
-                         "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":1,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": ["heart"],
-                          "endStrokeBitmapIds": ["body_full"]
-                                            },
-                      "audioLocation": "bodyscan_quick_comfortlevel",
-                      "duration": 15
-                    },
-                  {
-                      "title": "",
-                      "description": "Sense the feeling in this area, as an image, color or words.",
-                      "id":3,
-                      "segmentName":"focusing",
-                      "drawingIndex":0,
-                      "drawingName":"",
-                      "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                            "startFillBitmapIds":["heart"],
-                            "sequenceTiming": 0,
-                            "animationPathIds": [],
-                            "animationStyle":1,
-                            "animationSpeed":100,
-                            "endFillBitmapIds": ["heart"],
-                            "endStrokeBitmapIds": ["body_full"]
-                                            },
-                      "audioLocation": "bodyscan_quick_imageorcolor",
-                      "duration": 25
-                                  },
-                 {
-                     "title": "",
-                     "description": "Now document whatever information you've received.",
-                     "id":3,
-                     "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["heart"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": ["heart"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_document",
-                     "duration": 17
-                                 },
-                    {
-                        "title": "",
-                        "description": "Press the paintbrush button to begin.",
-                        "id":3,
-                        "segmentName":"recording",
-                        "drawingIndex":5,
-                        "drawingName":"Heart",
-                        "graphic": {
-                             "startStrokeBitmapIds": ["body_full"],
-                              "startFillBitmapIds":["heart"],
-                              "sequenceTiming": 0,
-                              "animationPathIds": [],
-                              "animationStyle":1,
-                              "animationSpeed":100,
-                              "endFillBitmapIds": ["heart"],
-                              "endStrokeBitmapIds": ["body_full"]
-                                              },
-                        "audioLocation": "bodyscan_paintinstruction",
-                        "duration": 60
-                                    },
-                {
-                      "title": "",
-                      "description": "Breathe out the feeling in this area.",
-                      "id":4,
-                      "segmentName":"fading",
-                      "drawingIndex":5,
-                      "drawingName":"",
-                      "graphic": {
-                            "startStrokeBitmapIds": ["body_full"],
-                            "startFillBitmapIds":["heart"],
-                       "sequenceTiming": 0,
-                            "animationPathIds": [],
-                            "animationStyle":2,
-                            "animationSpeed":100,
-                            "endFillBitmapIds": [],
-                             "endStrokeBitmapIds": ["body_full"]
-                                            },
-                      "audioLocation": "bodyscan_quick_breatheout",
-                      "duration": 15
-                                  },
-                {
-                    "title": "",
-                    "description": "Focus on the area I'm outlining now.",
-                    "id":6,
-                    "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                    "graphic": {
-                        "startStrokeBitmapIds": ["body_full"],
-                        "startFillBitmapIds":[],
-                       "sequenceTiming": 0,
-                        "animationPathIds": ["throat"],
-                        "animationStyle":1,
-                        "animationSpeed":100,
-                        "endFillBitmapIds": ["throat"],
-                        "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_quick_focus",
-                    "duration": 22
-                  },
-                  {
-                      "title": "",
-                      "description": "How comfortable does it feel, from 1 to 10?",
-                      "id":2,
-                      "segmentName":"focusing",
-                       "drawingIndex":0,
-                       "drawingName":"",
-                      "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":["throat"],
-                         "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":1,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": ["throat"],
-                          "endStrokeBitmapIds": ["body_full"]
-                                            },
-                      "audioLocation": "bodyscan_quick_comfortlevel",
-                      "duration": 15
-                    },
-                  {
-                      "title": "",
-                      "description": "Sense the feeling in this area, as an image, color or words.",
-                      "id":3,
-                      "segmentName":"focusing",
-                      "drawingIndex":0,
-                      "drawingName":"",
-                      "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                            "startFillBitmapIds":["throat"],
-                            "sequenceTiming": 0,
-                            "animationPathIds": [],
-                            "animationStyle":1,
-                            "animationSpeed":100,
-                            "endFillBitmapIds": ["throat"],
-                            "endStrokeBitmapIds": ["body_full"]
-                                            },
-                      "audioLocation": "bodyscan_quick_imageorcolor",
-                      "duration": 25
-                                  },
-                 {
-                     "title": "",
-                     "description": "Now document whatever information you've received.",
-                     "id":3,
-                     "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["throat"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": ["throat"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_document",
-                     "duration": 17
-                                 },
-                    {
-                        "title": "",
-                        "description": "Press the paintbrush button to begin.",
-                        "id":3,
-                        "segmentName":"recording",
-                        "drawingIndex":6,
-                        "drawingName":"Throat",
-                        "graphic": {
-                             "startStrokeBitmapIds": ["body_full"],
-                              "startFillBitmapIds":["throat"],
-                              "sequenceTiming": 0,
-                              "animationPathIds": [],
-                              "animationStyle":1,
-                              "animationSpeed":100,
-                              "endFillBitmapIds": ["throat"],
-                              "endStrokeBitmapIds": ["body_full"]
-                                              },
-                        "audioLocation": "bodyscan_paintinstruction",
-                        "duration": 60
-                                    },
-                {
-                      "title": "",
-                      "description": "Breathe out the feeling in this area.",
-                      "id":4,
-                      "segmentName":"fading",
-                      "drawingIndex":6,
-                      "drawingName":"",
-                      "graphic": {
-                            "startStrokeBitmapIds": ["body_full"],
-                            "startFillBitmapIds":["throat"],
-                       "sequenceTiming": 0,
-                            "animationPathIds": [],
-                            "animationStyle":2,
-                            "animationSpeed":100,
-                            "endFillBitmapIds": [],
-                             "endStrokeBitmapIds": ["body_full"]
-                                            },
-                      "audioLocation": "bodyscan_quick_breatheout",
-                      "duration": 15
-                                  },
-                {
-                    "title": "",
-                    "description": "Focus on the area I'm outlining now.",
-                    "id":6,
-                    "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                    "graphic": {
-                        "startStrokeBitmapIds": ["body_full"],
-                        "startFillBitmapIds":[],
-                       "sequenceTiming": 0,
-                        "animationPathIds": ["head"],
-                        "animationStyle":1,
-                        "animationSpeed":100,
-                        "endFillBitmapIds": ["head"],
-                        "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_quick_focus",
-                    "duration": 20
-                  },
-                  {
-                      "title": "",
-                      "description": "How comfortable does it feel, from 1 to 10?",
-                      "id":2,
-                      "segmentName":"focusing",
-                       "drawingIndex":0,
-                       "drawingName":"",
-                      "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":["head"],
-                         "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":1,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": ["head"],
-                          "endStrokeBitmapIds": ["body_full"]
-                                            },
-                      "audioLocation": "bodyscan_quick_comfortlevel",
-                      "duration": 15
-                    },
-                  {
-                      "title": "",
-                      "description": "Sense the feeling in this area, as an image, color or words.",
-                      "id":3,
-                      "segmentName":"focusing",
-                      "drawingIndex":0,
-                      "drawingName":"",
-                      "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                            "startFillBitmapIds":["head"],
-                            "sequenceTiming": 0,
-                            "animationPathIds": [],
-                            "animationStyle":1,
-                            "animationSpeed":100,
-                            "endFillBitmapIds": ["head"],
-                            "endStrokeBitmapIds": ["body_full"]
-                                            },
-                      "audioLocation": "bodyscan_quick_imageorcolor",
-                      "duration": 25
-                                  },
-                 {
-                     "title": "",
-                     "description": "Now document whatever information you've received.",
-                     "id":3,
-                     "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["head"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": ["head"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_document",
-                     "duration": 17
-                                 },
-                    {
-                        "title": "",
-                        "description": "Press the paintbrush button to begin.",
-                        "id":3,
-                        "segmentName":"recording",
-                        "drawingIndex":7,
-                        "drawingName":"Head",
-                        "graphic": {
-                             "startStrokeBitmapIds": ["body_full"],
-                              "startFillBitmapIds":["head"],
-                              "sequenceTiming": 0,
-                              "animationPathIds": [],
-                              "animationStyle":1,
-                              "animationSpeed":100,
-                              "endFillBitmapIds": ["head"],
-                              "endStrokeBitmapIds": ["body_full"]
-                                              },
-                        "audioLocation": "bodyscan_paintinstruction",
-                        "duration": 60
-                                    },
-                {
-                      "title": "",
-                      "description": "Breathe out the feeling in this area.",
-                      "id":4,
-                      "segmentName":"fading",
-                      "drawingIndex":7,
-                      "drawingName":"",
-                      "graphic": {
-                            "startStrokeBitmapIds": ["body_full"],
-                            "startFillBitmapIds":["head"],
-                       "sequenceTiming": 0,
-                            "animationPathIds": [],
-                            "animationStyle":2,
-                            "animationSpeed":100,
-                            "endFillBitmapIds": [],
-                             "endStrokeBitmapIds": ["body_full"]
-                                            },
-                      "audioLocation": "bodyscan_quick_breatheout",
-                      "duration": 20
-                                  },
-                {
-                    "title": "",
-                    "description": "Focus on the area I'm outlining now.",
-                    "id":6,
-                    "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                    "graphic": {
-                        "startStrokeBitmapIds": ["body_full"],
-                        "startFillBitmapIds":[],
-                       "sequenceTiming": 0,
-                        "animationPathIds": ["crown"],
-                        "animationStyle":1,
-                        "animationSpeed":60,
-                        "endFillBitmapIds": ["crown"],
-                        "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_quick_focus",
-                    "duration": 17
-                  },
-                  {
-                      "title": "",
-                      "description": "How comfortable does it feel, from 1 to 10?",
-                      "id":2,
-                      "segmentName":"focusing",
-                       "drawingIndex":0,
-                       "drawingName":"",
-                      "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":["crown"],
-                         "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":1,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": ["crown"],
-                          "endStrokeBitmapIds": ["body_full"]
-                                            },
-                      "audioLocation": "bodyscan_quick_comfortlevel",
-                      "duration": 15
-                    },
-                  {
-                      "title": "",
-                      "description": "Sense the feeling in this area, as an image, color or words.",
-                      "id":3,
-                      "segmentName":"focusing",
-                      "drawingIndex":0,
-                      "drawingName":"",
-                      "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                            "startFillBitmapIds":["crown"],
-                            "sequenceTiming": 0,
-                            "animationPathIds": [],
-                            "animationStyle":1,
-                            "animationSpeed":100,
-                            "endFillBitmapIds": ["crown"],
-                            "endStrokeBitmapIds": ["body_full"]
-                                            },
-                      "audioLocation": "bodyscan_quick_imageorcolor",
-                      "duration": 25
-                                  },
-                 {
-                     "title": "",
-                     "description": "Now document whatever information you've received.",
-                     "id":3,
-                     "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["crown"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": ["crown"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_quick_document",
-                     "duration": 17
-                                 },
-                    {
-                        "title": "",
-                        "description": "Press the paintbrush button to begin.",
-                        "id":3,
-                        "segmentName":"recording",
-                        "drawingIndex":8,
-                        "drawingName":"Crown",
-                        "graphic": {
-                             "startStrokeBitmapIds": ["body_full"],
-                              "startFillBitmapIds":["crown"],
-                              "sequenceTiming": 0,
-                              "animationPathIds": [],
-                              "animationStyle":1,
-                              "animationSpeed":100,
-                              "endFillBitmapIds": ["crown"],
-                              "endStrokeBitmapIds": ["body_full"]
-                                              },
-                        "audioLocation": "bodyscan_paintinstruction",
-                        "duration": 60
-                                    },
-                {
-                      "title": "",
-                      "description": "Breathe out the feeling in this area.",
-                      "id":4,
-                      "segmentName":"fading",
-                      "drawingIndex":8,
-                      "drawingName":"",
-                      "graphic": {
-                            "startStrokeBitmapIds": ["body_full"],
-                            "startFillBitmapIds":["crown"],
-                       "sequenceTiming": 0,
-                            "animationPathIds": [],
-                            "animationStyle":2,
-                            "animationSpeed":100,
-                            "endFillBitmapIds": [],
-                             "endStrokeBitmapIds": ["body_full"]
-                                            },
-                      "audioLocation": "bodyscan_quick_breatheout",
-                      "duration": 10
-                                  },
-                {
-                    "title": "",
-                    "description": "Review which areas feel blocked or conflicted by swiping left and right. Which area needs your attention right now? Use this area as the basis for a Transformation meditation.",
-                        "id":17,
-                    "segmentName":"reviewing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                    "graphic":  {
-                     "startStrokeBitmapIds": [],
-                             "startFillBitmapIds":[],
-                    "sequenceTiming": 0,
-                             "animationPathIds": [],
-                             "animationStyle":2,
-                             "animationSpeed":0,
-                             "endFillBitmapIds": [],
-                              "endStrokeBitmapIds": []
-                                           },
-                    "audioLocation": "bodyscan_review",
-                    "duration": 30
-                                }
-]
-
+    "title": "Body Awareness",
+    "id": 2,
+    "description": "This is the long bodyscan meditation",
+    "author": "Dekyi Lee Oldershaw",
+    "coordinateBounds": [
+        580,
+        756
+    ],
+    "touchRegionElement": "body_outer",
+    "pathOnlyInventory": [],
+    "fillBitmapInventory": [
+        "body_full",
+        "feet",
+        "base",
+        "sacral",
+        "solarplexus",
+        "heart",
+        "throat",
+        "head",
+        "crown"
+    ],
+    "fillBitmapColors": [
+        "white",
+        "white",
+        "brown",
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "aqua",
+        "blue",
+        "purple"
+    ],
+    "strokeBitmapInventory": [
+        "body_full"
+    ],
+    "strokeBitmapColors": [
+        "white",
+        "white"
+    ],
+    "segments": [
+        {
+            "title": "",
+            "description": "Gently breathe in and out three times.",
+            "id": 0,
+            "segmentName": "reading",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 57,
+                "animationPathIds": [
+                    "body_full"
+                ],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan2_1",
+            "duration": 20
+        },
+        {
+            "title": "",
+            "description": "Bring your attention to your body.",
+            "id": 1,
+            "segmentName": "appearing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 80,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan2_2",
+            "duration": 10
+        },
+        {
+            "title": "",
+            "description": "Focus on the area I am outlining now.",
+            "id": 2,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 0,
+                "animationPathIds": [
+                    "feet"
+                ],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "feet"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_focus",
+            "duration": 18
+        },
+        {
+            "title": "",
+            "description": "How comfortable does it feel, from 1 to 10?",
+            "id": 2,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "feet"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "feet"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_comfortlevel",
+            "duration": 13
+        },
+        {
+            "title": "",
+            "description": "Sense the feeling in this area, as an image, color or words.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "feet"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "feet"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_imageorcolor",
+            "duration": 25
+        },
+        {
+            "title": "",
+            "description": "Now document whatever information you've received.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "feet"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "feet"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_document",
+            "duration": 17
+        },
+        {
+            "title": "",
+            "description": "Press the paintbrush button to begin.",
+            "id": 3,
+            "segmentName": "recording",
+            "drawingIndex": 1,
+            "drawingName": "Feet",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "feet"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "feet"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_paintinstruction",
+            "duration": 60
+        },
+        {
+            "title": "",
+            "description": "Breathe out the feeling in this area.",
+            "id": 4,
+            "segmentName": "fading",
+            "drawingIndex": 1,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "feet"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 2,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_breatheout",
+            "duration": 15
+        },
+        {
+            "title": "",
+            "description": "Focus on the area I'm outlining now.",
+            "id": 6,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 0,
+                "animationPathIds": [
+                    "base"
+                ],
+                "animationStyle": 1,
+                "animationSpeed": 200,
+                "endFillBitmapIds": [
+                    "base"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_focus",
+            "duration": 22
+        },
+        {
+            "title": "",
+            "description": "How comfortable does it feel, from 1 to 10?",
+            "id": 2,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "base"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "base"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_comfortlevel",
+            "duration": 15
+        },
+        {
+            "title": "",
+            "description": "Sense the feeling in this area, as an image, color or words.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "Base",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "base"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "base"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_imageorcolor",
+            "duration": 25
+        },
+        {
+            "title": "",
+            "description": "Now document whatever information you've received.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "base"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "base"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_document",
+            "duration": 17
+        },
+        {
+            "title": "",
+            "description": "Press the paintbrush button to begin.",
+            "id": 3,
+            "segmentName": "recording",
+            "drawingIndex": 2,
+            "drawingName": "Base",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "base"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "base"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_paintinstruction",
+            "duration": 60
+        },
+        {
+            "title": "",
+            "description": "Breathe out the feeling in this area.",
+            "id": 4,
+            "segmentName": "fading",
+            "drawingIndex": 2,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "base"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 2,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_breatheout",
+            "duration": 15
+        },
+        {
+            "title": "",
+            "description": "Focus on the area I'm outlining now.",
+            "id": 6,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 0,
+                "animationPathIds": [
+                    "sacral"
+                ],
+                "animationStyle": 1,
+                "animationSpeed": 70,
+                "endFillBitmapIds": [
+                    "sacral"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_focus",
+            "duration": 20
+        },
+        {
+            "title": "",
+            "description": "How comfortable does it feel, from 1 to 10?",
+            "id": 2,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "sacral"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "sacral"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_comfortlevel",
+            "duration": 15
+        },
+        {
+            "title": "",
+            "description": "Sense the feeling in this area, as an image, color or words.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "Base",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "sacral"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "sacral"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_imageorcolor",
+            "duration": 25
+        },
+        {
+            "title": "",
+            "description": "Now document whatever information you've received.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "sacral"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "sacral"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_document",
+            "duration": 17
+        },
+        {
+            "title": "",
+            "description": "Press the paintbrush button to begin.",
+            "id": 3,
+            "segmentName": "recording",
+            "drawingIndex": 3,
+            "drawingName": "Sacral",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "sacral"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "sacral"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_paintinstruction",
+            "duration": 60
+        },
+        {
+            "title": "",
+            "description": "Breathe out the feeling in this area.",
+            "id": 4,
+            "segmentName": "fading",
+            "drawingIndex": 3,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "sacral"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 2,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_breatheout",
+            "duration": 15
+        },
+        {
+            "title": "",
+            "description": "Focus on the area I'm outlining now.",
+            "id": 6,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 0,
+                "animationPathIds": [
+                    "solarplexus"
+                ],
+                "animationStyle": 1,
+                "animationSpeed": 50,
+                "endFillBitmapIds": [
+                    "solarplexus"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_focus",
+            "duration": 20
+        },
+        {
+            "title": "",
+            "description": "How comfortable does it feel, from 1 to 10?",
+            "id": 2,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "solarplexus"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "solarplexus"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_comfortlevel",
+            "duration": 15
+        },
+        {
+            "title": "",
+            "description": "Sense the feeling in this area, as an image, color or words.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "Base",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "solarplexus"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "solarplexus"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_imageorcolor",
+            "duration": 25
+        },
+        {
+            "title": "",
+            "description": "Now document whatever information you've received.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "solarplexus"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "solarplexus"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_document",
+            "duration": 17
+        },
+        {
+            "title": "",
+            "description": "Press the paintbrush button to begin.",
+            "id": 3,
+            "segmentName": "recording",
+            "drawingIndex": 4,
+            "drawingName": "Solar Plexus",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "solarplexus"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "solarplexus"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_paintinstruction",
+            "duration": 60
+        },
+        {
+            "title": "",
+            "description": "Breathe out the feeling in this area.",
+            "id": 4,
+            "segmentName": "fading",
+            "drawingIndex": 4,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "solarplexus"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 2,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_breatheout",
+            "duration": 15
+        },
+        {
+            "title": "",
+            "description": "Focus on the area I'm outlining now.",
+            "id": 6,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 0,
+                "animationPathIds": [
+                    "heart"
+                ],
+                "animationStyle": 1,
+                "animationSpeed": 200,
+                "endFillBitmapIds": [
+                    "heart"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_focus",
+            "duration": 30
+        },
+        {
+            "title": "",
+            "description": "How comfortable does it feel, from 1 to 10?",
+            "id": 2,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "heart"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "heart"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_comfortlevel",
+            "duration": 15
+        },
+        {
+            "title": "",
+            "description": "Sense the feeling in this area, as an image, color or words.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "heart"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "heart"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_imageorcolor",
+            "duration": 25
+        },
+        {
+            "title": "",
+            "description": "Now document whatever information you've received.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "heart"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "heart"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_document",
+            "duration": 17
+        },
+        {
+            "title": "",
+            "description": "Press the paintbrush button to begin.",
+            "id": 3,
+            "segmentName": "recording",
+            "drawingIndex": 5,
+            "drawingName": "Heart",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "heart"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "heart"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_paintinstruction",
+            "duration": 60
+        },
+        {
+            "title": "",
+            "description": "Breathe out the feeling in this area.",
+            "id": 4,
+            "segmentName": "fading",
+            "drawingIndex": 5,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "heart"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 2,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_breatheout",
+            "duration": 15
+        },
+        {
+            "title": "",
+            "description": "Focus on the area I'm outlining now.",
+            "id": 6,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 0,
+                "animationPathIds": [
+                    "throat"
+                ],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "throat"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_focus",
+            "duration": 22
+        },
+        {
+            "title": "",
+            "description": "How comfortable does it feel, from 1 to 10?",
+            "id": 2,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "throat"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "throat"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_comfortlevel",
+            "duration": 15
+        },
+        {
+            "title": "",
+            "description": "Sense the feeling in this area, as an image, color or words.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "throat"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "throat"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_imageorcolor",
+            "duration": 25
+        },
+        {
+            "title": "",
+            "description": "Now document whatever information you've received.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "throat"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "throat"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_document",
+            "duration": 17
+        },
+        {
+            "title": "",
+            "description": "Press the paintbrush button to begin.",
+            "id": 3,
+            "segmentName": "recording",
+            "drawingIndex": 6,
+            "drawingName": "Throat",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "throat"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "throat"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_paintinstruction",
+            "duration": 60
+        },
+        {
+            "title": "",
+            "description": "Breathe out the feeling in this area.",
+            "id": 4,
+            "segmentName": "fading",
+            "drawingIndex": 6,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "throat"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 2,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_breatheout",
+            "duration": 15
+        },
+        {
+            "title": "",
+            "description": "Focus on the area I'm outlining now.",
+            "id": 6,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 0,
+                "animationPathIds": [
+                    "head"
+                ],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "head"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_focus",
+            "duration": 20
+        },
+        {
+            "title": "",
+            "description": "How comfortable does it feel, from 1 to 10?",
+            "id": 2,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "head"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "head"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_comfortlevel",
+            "duration": 15
+        },
+        {
+            "title": "",
+            "description": "Sense the feeling in this area, as an image, color or words.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "head"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "head"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_imageorcolor",
+            "duration": 25
+        },
+        {
+            "title": "",
+            "description": "Now document whatever information you've received.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "head"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "head"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_document",
+            "duration": 17
+        },
+        {
+            "title": "",
+            "description": "Press the paintbrush button to begin.",
+            "id": 3,
+            "segmentName": "recording",
+            "drawingIndex": 7,
+            "drawingName": "Head",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "head"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "head"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_paintinstruction",
+            "duration": 60
+        },
+        {
+            "title": "",
+            "description": "Breathe out the feeling in this area.",
+            "id": 4,
+            "segmentName": "fading",
+            "drawingIndex": 7,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "head"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 2,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_breatheout",
+            "duration": 20
+        },
+        {
+            "title": "",
+            "description": "Focus on the area I'm outlining now.",
+            "id": 6,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 0,
+                "animationPathIds": [
+                    "crown"
+                ],
+                "animationStyle": 1,
+                "animationSpeed": 60,
+                "endFillBitmapIds": [
+                    "crown"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_focus",
+            "duration": 17
+        },
+        {
+            "title": "",
+            "description": "How comfortable does it feel, from 1 to 10?",
+            "id": 2,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "crown"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "crown"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_comfortlevel",
+            "duration": 15
+        },
+        {
+            "title": "",
+            "description": "Sense the feeling in this area, as an image, color or words.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "crown"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "crown"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_imageorcolor",
+            "duration": 25
+        },
+        {
+            "title": "",
+            "description": "Now document whatever information you've received.",
+            "id": 3,
+            "segmentName": "focusing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "crown"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "crown"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_document",
+            "duration": 17
+        },
+        {
+            "title": "",
+            "description": "Press the paintbrush button to begin.",
+            "id": 3,
+            "segmentName": "recording",
+            "drawingIndex": 8,
+            "drawingName": "Crown",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "crown"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 1,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [
+                    "crown"
+                ],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_paintinstruction",
+            "duration": 60
+        },
+        {
+            "title": "",
+            "description": "Breathe out the feeling in this area.",
+            "id": 4,
+            "segmentName": "fading",
+            "drawingIndex": 8,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [
+                    "body_full"
+                ],
+                "startFillBitmapIds": [
+                    "crown"
+                ],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 2,
+                "animationSpeed": 100,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": [
+                    "body_full"
+                ]
+            },
+            "audioLocation": "bodyscan_quick_breatheout",
+            "duration": 10
+        },
+        {
+            "title": "",
+            "description": "Review which areas feel blocked or conflicted by swiping left and right. Which area needs your attention right now? Use this area as the basis for a Transformation meditation.",
+            "id": 17,
+            "segmentName": "reviewing",
+            "drawingIndex": 0,
+            "drawingName": "",
+            "graphic": {
+                "startStrokeBitmapIds": [],
+                "startFillBitmapIds": [],
+                "sequenceTiming": 0,
+                "animationPathIds": [],
+                "animationStyle": 2,
+                "animationSpeed": 0,
+                "endFillBitmapIds": [],
+                "endStrokeBitmapIds": []
+            },
+            "audioLocation": "bodyscan_review",
+            "duration": 30
+        }
+    ]
 }

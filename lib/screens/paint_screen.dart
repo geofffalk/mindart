@@ -4,7 +4,9 @@ import '../models/brush_settings.dart';
 import '../services/database_service.dart';
 import '../widgets/paint_canvas.dart';
 import '../widgets/hsl_color_picker.dart';
+import '../widgets/audio_record_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:typed_data';
 
 /// Paint screen for drawing during meditation
 class PaintScreen extends StatefulWidget {
@@ -39,6 +41,7 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
   
   late AnimationController _toolbarAnimController;
   late Animation<double> _toolbarAnimation;
+  Uint8List? _audioData;
 
   @override
   void initState() {
@@ -106,6 +109,24 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
       });
       _canvasKey.currentState?.brushSettings = _brushSettings;
       _saveColor(color); // Persist color
+    }
+  }
+
+  void _onRecordAudio() async {
+    final result = await showDialog<Uint8List?>(
+      context: context,
+      builder: (context) => AudioRecordDialog(initialData: _audioData),
+    );
+    
+    if (result != null) {
+      setState(() {
+        _audioData = result;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Audio note recorded')),
+        );
+      }
     }
   }
 
@@ -178,6 +199,7 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
           drawingIndex: widget.drawingIndex,
           drawingName: widget.drawingName,
           drawing: imageData,
+          audio: _audioData,
         );
 
         if (mounted) {
@@ -350,6 +372,14 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
             color: _brushSettings.color,
             onTap: _onColorTap,
           ),
+          
+          // Audio Note button
+          _ToolButton(
+            icon: _audioData != null ? Icons.mic : Icons.mic_none,
+            isSelected: _audioData != null,
+            isSelectedColor: AppTheme.calmBlue,
+            onTap: _onRecordAudio,
+          ),
         ],
       ),
     );
@@ -397,12 +427,14 @@ class _ToolButton extends StatelessWidget {
   final IconData icon;
   final Color? color;
   final bool isSelected;
+  final Color? isSelectedColor;
   final VoidCallback onTap;
 
   const _ToolButton({
     required this.icon,
     this.color,
     this.isSelected = false,
+    this.isSelectedColor,
     required this.onTap,
   });
 
@@ -419,7 +451,7 @@ class _ToolButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: isColorButton 
               ? color 
-              : (isSelected ? AppTheme.calmBlue : Colors.white.withValues(alpha: 0.1)),
+              : (isSelected ? (isSelectedColor ?? AppTheme.calmBlue) : Colors.white.withValues(alpha: 0.1)),
           shape: BoxShape.circle,
           border: Border.all(
             color: isSelected ? Colors.white : Colors.white30,

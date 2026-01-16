@@ -6,7 +6,7 @@ import '../models/saved_session.dart';
 /// Database service for saving and loading meditation sessions
 class DatabaseService {
   static const String _databaseName = 'mindart_sessions.db';
-  static const int _databaseVersion = 1;
+  static const int _databaseVersion = 2;
   static const String _tableName = 'sessions';
 
   Database? _database;
@@ -57,13 +57,28 @@ class DatabaseService {
         drawing9 BLOB,
         drawing9_label TEXT,
         drawing10 BLOB,
-        drawing10_label TEXT
+        drawing10_label TEXT,
+        audio1 BLOB,
+        audio2 BLOB,
+        audio3 BLOB,
+        audio4 BLOB,
+        audio5 BLOB,
+        audio6 BLOB,
+        audio7 BLOB,
+        audio8 BLOB,
+        audio9 BLOB,
+        audio10 BLOB
       )
     ''');
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    // Handle migrations here if needed
+    if (oldVersion < 2) {
+      // Add audio columns for version 2
+      for (int i = 1; i <= 10; i++) {
+        await db.execute('ALTER TABLE $_tableName ADD COLUMN audio$i BLOB');
+      }
+    }
   }
 
   /// Save or update a session
@@ -111,6 +126,7 @@ class DatabaseService {
     required int drawingIndex,
     required String? drawingName,
     required Uint8List drawing,
+    Uint8List? audio,
   }) async {
     final db = await database;
     
@@ -118,6 +134,10 @@ class DatabaseService {
       'drawing$drawingIndex': drawing,
       'drawing${drawingIndex}_label': drawingName,
     };
+
+    if (audio != null) {
+      values['audio$drawingIndex'] = audio;
+    }
 
     // Check if session exists
     final existing = await db.query(

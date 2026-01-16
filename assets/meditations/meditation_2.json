@@ -1,1224 +1,1656 @@
 {
-"title" : "Body Awareness",
-"id" : 2,
-"description" : "This is the long bodyscan meditation",
-"author" : "Dekyi Lee Oldershaw",
-"coordinateBounds" : [580,756],
-"touchRegionElement" : "body_outer",
-"pathOnlyInventory" : [],
-"fillBitmapInventory" : ["body_full","feet","base","sacral","solarplexus","heart","throat","head","crown"],
-"fillBitmapColors":["white","white","brown","red","orange","yellow","green","aqua","blue","purple"],
-"strokeBitmapInventory" : ["body_full"],
-"strokeBitmapColors":["white","white"],
-"segments": [
-               {
-                   "title": "",
-                   "description": "Get comfortable, whether you're sitting or standing, with your back straight.",
-                   "id":0,
-                   "segmentName":"reading",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic":   {
-                    "startStrokeBitmapIds": [],
-                    "startFillBitmapIds": [],
-                    "sequenceTiming": 57,
-                    "animationPathIds": ["body_full"],
-                    "animationStyle":1,
-                    "animationSpeed":100,
-                    "endFillBitmapIds": [],
-                    "endStrokeBitmapIds":["body_full"]
-                                    },
-                   "audioLocation": "bodyscan1",
-                   "duration": 16
-                 },
-               {
-                   "title": "",
-                   "description": "Gently breathe in and out three times.",
-                   "id":0,
-                   "segmentName":"reading",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic":   {
-                    "startStrokeBitmapIds": [],
-                    "startFillBitmapIds": [],
-                    "sequenceTiming": 57,
-                    "animationPathIds": ["body_full"],
-                    "animationStyle":1,
-                    "animationSpeed":100,
-                    "endFillBitmapIds": [],
-                    "endStrokeBitmapIds":["body_full"]
-                                    },
-                   "audioLocation": "bodyscan2_1",
-                   "duration": 30
-                 },
-               {
-                     "title": "",
-                     "description": "Bring your attention to your body.",
-                     "id":1,
-                     "segmentName":"appearing",
-                      "drawingIndex":0,
-                      "drawingName":"",
-                     "graphic":   {
-                      "startStrokeBitmapIds": ["body_full"],
-                      "startFillBitmapIds": [],
-                      "sequenceTiming": 0,
-                      "animationPathIds": [],
-                      "animationStyle":1,
-                      "animationSpeed":80,
-                      "endFillBitmapIds": [],
-                      "endStrokeBitmapIds":["body_full"]
-                                      },
-                     "audioLocation": "bodyscan2_2",
-                     "duration": 20
-                 },
-               {
-                   "title": "",
-                   "description": "Allow your awareness to move down to both your feet.",
-                   "id":2,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":[],
-                      "sequenceTiming": 0,
-                       "animationPathIds": ["feet"],
-                       "animationStyle":1,
-                       "animationSpeed":100,
-                       "endFillBitmapIds": ["feet"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_feet1_1",
-                   "duration": 18
-                 },
-               {
-                   "title": "",
-                   "description": "How comfortable does it feel, from 1 to 10?",
-                   "id":2,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":["feet"],
-                      "sequenceTiming": 0,
-                       "animationPathIds": [],
-                       "animationStyle":1,
-                       "animationSpeed":100,
-                       "endFillBitmapIds": ["feet"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_feet1_2",
-                   "duration": 14
-                 },
-               {
-                   "title": "",
-                   "description": "Check your connection to the ground.",
-                   "id":2,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":["feet"],
-                      "sequenceTiming": 0,
-                       "animationPathIds": [],
-                       "animationStyle":1,
-                       "animationSpeed":100,
-                       "endFillBitmapIds": ["feet"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_feet1_3",
-                   "duration": 21
-                 },
-                {
-                    "title": "",
-                    "description": "Listen for an image, color, words or feeling...",
-                    "id":2,
-                    "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                    "graphic": {
-                        "startStrokeBitmapIds": ["body_full"],
-                        "startFillBitmapIds":["feet"],
-                       "sequenceTiming": 0,
-                        "animationPathIds": [],
-                        "animationStyle":1,
-                        "animationSpeed":100,
-                        "endFillBitmapIds": ["feet"],
-                        "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_feet1_4",
-                    "duration": 40
-                  },
-                {
-                    "title": "",
-                    "description": "Now record whatever words or image you've received. Include a comfort rating between 1 and 10.",
-                    "id":3,
-                    "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"Feet",
-                    "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":["feet"],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":1,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": ["feet"],
-                          "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_feet2_1",
-                    "duration": 28
-                                },
-
-                {
-                    "title": "",
-                    "description": "Press the paintbrush button to begin.",
-                    "id":3,
-                    "segmentName":"recording",
-                    "drawingIndex":1,
-                    "drawingName":"Feet",
-                    "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":["feet"],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":1,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": ["feet"],
-                          "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_paintinstruction",
-                    "duration": 120
-                                },
-               {
-                     "title": "",
-                     "description": "Let the image fade",
-                     "id":4,
-                     "segmentName":"fading",
-                     "drawingIndex":1,
-                     "drawingName":"",
-                     "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["feet"],
-                      "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":2,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": [],
-                            "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_feet3",
-                     "duration": 11
-                                 },
-
-               {
-                    "title": "",
-                    "description": "Move your mind to a neutral place, a blank inner screen.",
-                    "id":5,
-                    "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                    "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":[],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":2,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": [],
-                           "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_feet4",
-                    "duration": 20
-                                },
-               {
-                   "title": "",
-                   "description": "Now focus on the base of your spine, and the areas I'm outlining now.",
-                   "id":6,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":[],
-                      "sequenceTiming": 0,
-                       "animationPathIds": ["base"],
-                       "animationStyle":1,
-                       "animationSpeed":100,
-                       "endFillBitmapIds": ["base"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_base1_1",
-                   "duration": 44
-                 },
-                     {
-                                    "title": "",
-                                    "description": "Sense it, and let it show itself as an image, color or shape.",
-                                    "id":6,
-                                    "segmentName":"focusing",
-                                     "drawingIndex":0,
-                                     "drawingName":"",
-                                    "graphic": {
-                                        "startStrokeBitmapIds": ["body_full"],
-                                        "startFillBitmapIds":["base"],
-                                       "sequenceTiming": 0,
-                                        "animationPathIds": [],
-                                        "animationStyle":1,
-                                        "animationSpeed":100,
-                                        "endFillBitmapIds": ["base"],
-                                        "endStrokeBitmapIds": ["body_full"]
-                                                          },
-                                    "audioLocation": "bodyscan_base1_2",
-                                    "duration": 55
-                                  },
-                {
-                    "title": "",
-                    "description": "Draw whatever words or images you received.",
-                    "id":7,
-                    "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"Base",
-                    "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":["base"],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":1,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": ["base"],
-                          "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_base2_1",
-                    "duration": 28
-                                },
-               {
-                    "title": "",
-                    "description": "Press the paintbrush button to begin.",
-                    "id":7,
-                    "segmentName":"recording",
-                    "drawingIndex":2,
-                    "drawingName":"Base",
-                    "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":["base"],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":1,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": ["base"],
-                          "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_paintinstruction2",
-                    "duration": 120
-                                },
-               {
-                     "title": "",
-                     "description": "Let that image fade.",
-                     "id":4,
-                     "segmentName":"fading",
-                     "drawingIndex":2,
-                     "drawingName":"",
-                     "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["base"],
-                      "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":2,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": [],
-                            "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_base3",
-                     "duration": 7
-                                 },
-
-               {
-                    "title": "",
-                    "description": "Move your mind to a neutral place, a quiet stillness.",
-                    "id":5,
-                    "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                    "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":[],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":2,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": [],
-                           "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_base4",
-                    "duration": 19
-                                },
-               {
-                   "title": "",
-                   "description": "Move your focus to the area I'm outlining now. Its center is four finger widths below your navel.",
-                   "id":2,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":[],
-                      "sequenceTiming": 0,
-                       "animationPathIds": ["sacral"],
-                       "animationStyle":1,
-                       "animationSpeed":50,
-                       "endFillBitmapIds": ["sacral"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_sacral1_1",
-                   "duration": 27
-                 },
-               {
-                   "title": "",
-                   "description": "Allow this area to show itself to you, as an image, color or words.",
-                   "id":2,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":["sacral"],
-                      "sequenceTiming": 0,
-                       "animationPathIds": [],
-                       "animationStyle":1,
-                       "animationSpeed":100,
-                       "endFillBitmapIds": ["sacral"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_sacral1_2",
-                   "duration": 19
-                 },
-                {
-                    "title": "",
-                    "description": "How comfortable is it, from 1 to 10? Simply accept whatever you experience.",
-                    "id":2,
-                    "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                    "graphic": {
-                        "startStrokeBitmapIds": ["body_full"],
-                        "startFillBitmapIds":["sacral"],
-                       "sequenceTiming": 0,
-                        "animationPathIds": [],
-                        "animationStyle":1,
-                        "animationSpeed":100,
-                        "endFillBitmapIds": ["sacral"],
-                        "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_sacral1_3",
-                    "duration": 35
-                  },
-                {
-                    "title": "",
-                    "description": "Document your experience. Include a number between 1 and 10, and words to describe the feeling.",
-                    "id":3,
-                    "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"Sacral",
-                    "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":["sacral"],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":1,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": ["sacral"],
-                          "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_sacral2",
-                    "duration": 27
-                                },
-                {
-                    "title": "",
-                    "description": "Press the paintbrush button when you're ready.",
-                    "id":3,
-                    "segmentName":"recording",
-                    "drawingIndex":3,
-                    "drawingName":"Sacral",
-                    "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":["sacral"],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":1,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": ["sacral"],
-                          "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_paintinstruction2",
-                    "duration": 120
-                                },
-               {
-                     "title": "",
-                     "description": "Let go of the image and feeling.",
-                     "id":4,
-                     "segmentName":"fading",
-                     "drawingIndex":3,
-                     "drawingName":"",
-                     "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["sacral"],
-                      "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":2,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": [],
-                            "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_sacral3",
-                     "duration": 8
-                                 },
-
-               {
-                    "title": "",
-                    "description": "Rest in a clear open space.",
-                    "id":5,
-                    "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                    "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":[],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":2,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": [],
-                           "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_sacral4",
-                    "duration": 15
-                                },
-               {
-                   "title": "",
-                   "description": "Move your inner focus to the area I'm outlining.",
-                   "id":2,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":[],
-                      "sequenceTiming": 0,
-                       "animationPathIds": ["solarplexus"],
-                       "animationStyle":1,
-                       "animationSpeed":50,
-                       "endFillBitmapIds": ["solarplexus"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_solarplexus1_1",
-                   "duration": 20
-                 },
-               {
-                   "title": "",
-                   "description": "It includes your stomach, upper intestine, kidneys, liver and the middle part of your spine.",
-                   "id":2,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":["solarplexus"],
-                      "sequenceTiming": 0,
-                       "animationPathIds": [],
-                       "animationStyle":1,
-                       "animationSpeed":50,
-                       "endFillBitmapIds": ["solarplexus"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_solarplexus1_2",
-                   "duration": 20
-                 },
-               {
-                   "title": "",
-                   "description": "How comfortable is it, between 1 and 10? Simply sense the feelings there.",
-                   "id":2,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":["solarplexus"],
-                      "sequenceTiming": 0,
-                       "animationPathIds": [],
-                       "animationStyle":1,
-                       "animationSpeed":100,
-                       "endFillBitmapIds": ["solarplexus"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_solarplexus1_3",
-                   "duration": 55
-                 },
-                {
-                    "title": "",
-                    "description": "Record the information you received. Include one or two words to describe the feeling.",
-                    "id":4,
-                    "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"Solar Plexus",
-                    "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":["solarplexus"],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":1,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": ["solarplexus"],
-                          "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_solarplexus2_1",
-                    "duration": 27
-                                },
-                 {
-                     "title": "",
-                     "description": "Press the paintbrush button when you're ready.",
-                     "id":4,
-                     "segmentName":"recording",
-                     "drawingIndex":4,
-                     "drawingName":"Solar Plexus",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["solarplexus"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": ["solarplexus"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_paintinstruction",
-                     "duration": 120
-                                 },
-               {
-                     "title": "",
-                     "description": "Allow this image to go and breathe out the feeling there.",
-                     "id":4,
-                     "segmentName":"fading",
-                     "drawingIndex":4,
-                     "drawingName":"",
-                     "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["solarplexus"],
-                      "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":2,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": [],
-                            "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_solarplexus3",
-                     "duration": 7
-                                 },
-
-               {
-                    "title": "Step 3",
-                    "description": "Let your mind move into a neutral space again.",
-                    "id":5,
-                    "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                    "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":[],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":2,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": [],
-                           "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_solarplexus4",
-                    "duration": 17
-                                },
-               {
-                   "title": "",
-                   "description": "Move your inner focus to your chest area. Include your heart, lungs, shoulders and arms, ribs, chest, and diagraphm.",
-                   "id":2,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":[],
-                      "sequenceTiming": 0,
-                       "animationPathIds": ["heart"],
-                       "animationStyle":1,
-                       "animationSpeed":140,
-                       "endFillBitmapIds": ["heart"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_chest1_1",
-                   "duration": 38
-                 },
-               {
-                   "title": "",
-                   "description": "How comfortable are these areas?",
-                   "id":2,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":["heart"],
-                      "sequenceTiming": 0,
-                       "animationPathIds": [],
-                       "animationStyle":1,
-                       "animationSpeed":100,
-                       "endFillBitmapIds": ["heart"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_chest1_2",
-                   "duration": 18
-                 },
-                {
-                    "title": "",
-                    "description": "Let this area present itself as an image or color.",
-                    "id":2,
-                    "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                    "graphic": {
-                        "startStrokeBitmapIds": ["body_full"],
-                        "startFillBitmapIds":["heart"],
-                       "sequenceTiming": 0,
-                        "animationPathIds": [],
-                        "animationStyle":1,
-                        "animationSpeed":100,
-                        "endFillBitmapIds": ["heart"],
-                        "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_chest1_3",
-                    "duration": 10
-                  },
-                {
-                    "title": "",
-                    "description": "Notice the emotions and feelings. Listen for words.",
-                    "id":2,
-                    "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                    "graphic": {
-                        "startStrokeBitmapIds": ["body_full"],
-                        "startFillBitmapIds":["heart"],
-                       "sequenceTiming": 0,
-                        "animationPathIds": [],
-                        "animationStyle":1,
-                        "animationSpeed":100,
-                        "endFillBitmapIds": ["heart"],
-                        "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_chest1_4",
-                    "duration": 28
-                  },
-                {
-                    "title": "",
-                    "description": "Now record whatever you experienced, and include one word that describes the feeling.",
-                    "id":4,
-                    "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"Heart",
-                    "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":["heart"],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":1,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": ["heart"],
-                          "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_chest2",
-                    "duration": 12
-                                },
-                 {
-                     "title": "",
-                     "description": "Press the paintbrush button to begin.",
-                     "id":4,
-                     "segmentName":"recording",
-                     "drawingIndex":5,
-                     "drawingName":"Heart",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["heart"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": ["heart"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_paintinstruction",
-                     "duration": 120
-                                 },
-               {
-                     "title": "",
-                     "description": "Allow this image to fade, breathing out the feeling.",
-                     "id":4,
-                     "segmentName":"fading",
-                     "drawingIndex":5,
-                     "drawingName":"",
-                     "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["heart"],
-                      "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":2,
-                           "animationSpeed":130,
-                           "endFillBitmapIds": [],
-                            "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_chest3",
-                     "duration": 10
-                                 },
-
-               {
-                    "title": "Step 3",
-                    "description": "Move your mind into a neutral place.",
-                    "id":5,
-                    "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                    "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":[],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":2,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": [],
-                           "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_chest4",
-                    "duration": 18
-                                },
-               {
-                   "title": "",
-                   "description": "Feel the air as you breathe in and out through your mouth. Let your awareness focus on your throat area.",
-                   "id":2,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":[],
-                      "sequenceTiming": 0,
-                       "animationPathIds": ["throat"],
-                       "animationStyle":1,
-                       "animationSpeed":80,
-                       "endFillBitmapIds": ["throat"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_throat1_1",
-                   "duration": 18
-                 },
-                {
-                    "title": "",
-                    "description": "This area includes your neck vertebrae, throat, mouth, teeth and jaw.",
-                    "id":2,
-                    "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                    "graphic": {
-                        "startStrokeBitmapIds": ["body_full"],
-                        "startFillBitmapIds":["throat"],
-                       "sequenceTiming": 0,
-                        "animationPathIds": [],
-                        "animationStyle":1,
-                        "animationSpeed":80,
-                        "endFillBitmapIds": ["throat"],
-                        "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_throat1_2",
-                    "duration": 23
-                  },
-                 {
-                     "title": "",
-                     "description": "Listen for images, colors, feelings, and especially words.",
-                     "id":2,
-                     "segmentName":"focusing",
-                      "drawingIndex":0,
-                      "drawingName":"",
-                     "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                         "startFillBitmapIds":["throat"],
-                        "sequenceTiming": 0,
-                         "animationPathIds": [],
-                         "animationStyle":1,
-                         "animationSpeed":80,
-                         "endFillBitmapIds": ["throat"],
-                         "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_throat1_3",
-                     "duration": 15
-                   },
-                 {
-                     "title": "",
-                     "description": "Is this area trying to say something, or holding something back?",
-                     "id":2,
-                     "segmentName":"focusing",
-                      "drawingIndex":0,
-                      "drawingName":"",
-                     "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                         "startFillBitmapIds":["throat"],
-                        "sequenceTiming": 0,
-                         "animationPathIds": [],
-                         "animationStyle":1,
-                         "animationSpeed":80,
-                         "endFillBitmapIds": ["throat"],
-                         "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_throat1_4",
-                     "duration": 40
-                   },
-                {
-                    "title": "",
-                    "description": "Draw whatever images or words you received. Also write one word that describes how it felt.",
-                    "id":4,
-                    "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"Throat",
-                    "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":["throat"],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":1,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": ["throat"],
-                          "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_throat2",
-                    "duration": 21
-                                },
-                 {
-                     "title": "",
-                     "description": "Press the paintbrush button to begin.",
-                     "id":4,
-                     "segmentName":"recording",
-                     "drawingIndex":6,
-                     "drawingName":"Throat",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["throat"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":0,
-                           "endFillBitmapIds": ["throat"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_paintinstruction2",
-                     "duration": 120
-                                 },
-               {
-                     "title": "",
-                     "description": "Let go of any image, feeling or words.",
-                     "id":4,
-                     "segmentName":"fading",
-                     "drawingIndex":6,
-                     "drawingName":"",
-                     "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["throat"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":2,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": [],
-                            "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_throat3",
-                     "duration": 11
-                                 },
-
-               {
-                    "title": "",
-                    "description": "Breathe out the feeling and bring yourself to neutral again.",
-                    "id":5,
-                    "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                    "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":[],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":2,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": [],
-                           "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_throat4",
-                    "duration": 17
-                                },
-                {
-                    "title": "",
-                    "description": "Bring your attention to your forehead and the area I'm outlining. It includes your eyes, ears, nose and brain.",
-                    "id":2,
-                    "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                    "graphic": {
-                        "startStrokeBitmapIds": ["body_full"],
-                        "startFillBitmapIds":[],
-                       "sequenceTiming": 0,
-                        "animationPathIds": ["head"],
-                        "animationStyle":1,
-                        "animationSpeed":60,
-                        "endFillBitmapIds": ["head"],
-                        "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_head1_1",
-                    "duration": 22
-                  },
-                {
-                    "title": "",
-                    "description": "Scan this area, noticing its comfort level, and listen for images, colors, words and feelings.",
-                    "id":2,
-                    "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                    "graphic": {
-                        "startStrokeBitmapIds": ["body_full"],
-                        "startFillBitmapIds":["head"],
-                       "sequenceTiming": 0,
-                        "animationPathIds": [],
-                        "animationStyle":1,
-                        "animationSpeed":60,
-                        "endFillBitmapIds": ["head"],
-                        "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_head1_2",
-                    "duration": 55
-                  },
-                 {
-                     "title": "",
-                     "description": "Now draw your experience. When your drawing feels complete, write one or two words to describe the feeling.",
-                     "id":4,
-                     "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"Head",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["head"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": ["head"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_head2",
-                     "duration": 17
-                                 },
-                 {
-                     "title": "",
-                     "description": "Press the paintbrush button to begin.",
-                     "id":4,
-                     "segmentName":"recording",
-                     "drawingIndex":7,
-                     "drawingName":"Head",
-                     "graphic": {
-                          "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["head"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":1,
-                           "animationSpeed":0,
-                           "endFillBitmapIds": ["head"],
-                           "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_paintinstruction",
-                     "duration": 120
-                                 },
-                {
-                      "title": "",
-                      "description": "Breathe this image and feeling out.",
-                      "id":4,
-                      "segmentName":"fading",
-                      "drawingIndex":7,
-                      "drawingName":"",
-                      "graphic": {
-                            "startStrokeBitmapIds": ["body_full"],
-                            "startFillBitmapIds":["head"],
-                            "sequenceTiming": 0,
-                            "animationPathIds": [],
-                            "animationStyle":2,
-                            "animationSpeed":100,
-                            "endFillBitmapIds": [],
-                             "endStrokeBitmapIds": ["body_full"]
-                                            },
-                      "audioLocation": "bodyscan_head3",
-                      "duration": 7
-                                  },
-
-                {
-                     "title": "",
-                     "description": "Make your mind neutral again.",
-                     "id":5,
-                     "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                     "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":[],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":2,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": [],
-                            "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_head4",
-                     "duration": 17
-                                 },
-               {
-                   "title": "",
-                   "description": "Move your focus to the area I'm outlining. It includes the top of your head and the area above it.",
-                   "id":2,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":[],
-                      "sequenceTiming": 0,
-                       "animationPathIds": ["crown"],
-                       "animationStyle":1,
-                       "animationSpeed":40,
-                       "endFillBitmapIds": ["crown"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_crown1_1",
-                   "duration": 27
-                 },
-               {
-                   "title": "",
-                   "description": "If it had a color or shape, what would that be?",
-                   "id":2,
-                   "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                   "graphic": {
-                       "startStrokeBitmapIds": ["body_full"],
-                       "startFillBitmapIds":["crown"],
-                      "sequenceTiming": 0,
-                       "animationPathIds": [],
-                       "animationStyle":1,
-                       "animationSpeed":100,
-                       "endFillBitmapIds": ["crown"],
-                       "endStrokeBitmapIds": ["body_full"]
-                                         },
-                   "audioLocation": "bodyscan_crown1_2",
-                   "duration": 55
-                 },
-                {
-                    "title": "",
-                    "description": "Now record what you experienced, remembering to write one word describing the feeling.",
-                    "id":4,
-                    "segmentName":"focusing",
-                    "drawingIndex":0,
-                    "drawingName":"Crown",
-                    "graphic": {
-                         "startStrokeBitmapIds": ["body_full"],
-                          "startFillBitmapIds":["crown"],
-                          "sequenceTiming": 0,
-                          "animationPathIds": [],
-                          "animationStyle":1,
-                          "animationSpeed":100,
-                          "endFillBitmapIds": ["crown"],
-                          "endStrokeBitmapIds": ["body_full"]
-                                          },
-                    "audioLocation": "bodyscan_crown2",
-                    "duration": 17
-                                },
-                  {
-                      "title": "",
-                      "description": "Press the paintbrush button to begin.",
-                      "id":4,
-                      "segmentName":"recording",
-                      "drawingIndex":8,
-                      "drawingName":"Crown",
-                      "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                            "startFillBitmapIds":["crown"],
-                            "sequenceTiming": 0,
-                            "animationPathIds": [],
-                            "animationStyle":1,
-                            "animationSpeed":0,
-                            "endFillBitmapIds": ["crown"],
-                            "endStrokeBitmapIds": ["body_full"]
-                                            },
-                      "audioLocation": "bodyscan_paintinstruction2",
-                      "duration": 120
-                                  },
-               {
-                     "title": "",
-                     "description": "Let the image fade",
-                     "id":4,
-                     "segmentName":"fading",
-                     "drawingIndex":8,
-                     "drawingName":"",
-                     "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":["crown"],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":2,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": [],
-                            "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_crown3",
-                     "duration": 8
-                                 },
-               {
-                     "title": "",
-                     "description": "Let go of that image. Bring your mind to a stillness.",
-                     "id":5,
-                     "segmentName":"focusing",
-                     "drawingIndex":0,
-                     "drawingName":"",
-                     "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":[],
-                           "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":2,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": [],
-                            "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "bodyscan_crown4",
-                     "duration": 18
-                                 },
-                {
-                    "title": "",
-                    "description": "Review which areas feel blocked or conflicted by swiping left and right. Which area needs your attention right now? Use this area as the basis for a Transformation meditation.",
-                        "id":17,
-                    "segmentName":"reviewing",
-                    "drawingIndex":0,
-                    "drawingName":"",
-                    "graphic":  {
-                     "startStrokeBitmapIds": [],
-                             "startFillBitmapIds":[],
-                    "sequenceTiming": 0,
-                             "animationPathIds": [],
-                             "animationStyle":2,
-                             "animationSpeed":0,
-                             "endFillBitmapIds": [],
-                              "endStrokeBitmapIds": []
-                                           },
-                    "audioLocation": "bodyscan_review",
-                    "duration": 85
-                                }
-]
-
+  "title": "Body Awareness",
+  "id": 2,
+  "description": "This is the long bodyscan meditation",
+  "author": "Dekyi Lee Oldershaw",
+  "coordinateBounds": [
+    580,
+    756
+  ],
+  "touchRegionElement": "body_outer",
+  "pathOnlyInventory": [],
+  "fillBitmapInventory": [
+    "body_full",
+    "feet",
+    "base",
+    "sacral",
+    "solarplexus",
+    "heart",
+    "throat",
+    "head",
+    "crown"
+  ],
+  "fillBitmapColors": [
+    "white",
+    "white",
+    "brown",
+    "red",
+    "orange",
+    "yellow",
+    "green",
+    "aqua",
+    "blue",
+    "purple"
+  ],
+  "strokeBitmapInventory": [
+    "body_full"
+  ],
+  "strokeBitmapColors": [
+    "white",
+    "white"
+  ],
+  "segments": [
+    {
+      "title": "",
+      "description": "Get comfortable, whether you're sitting or standing, with your back straight.",
+      "id": 0,
+      "segmentName": "reading",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 57,
+        "animationPathIds": [
+          "body_full"
+        ],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan1",
+      "duration": 16
+    },
+    {
+      "title": "",
+      "description": "Gently breathe in and out three times.",
+      "id": 0,
+      "segmentName": "reading",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 57,
+        "animationPathIds": [
+          "body_full"
+        ],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan2_1",
+      "duration": 30
+    },
+    {
+      "title": "",
+      "description": "Bring your attention to your body.",
+      "id": 1,
+      "segmentName": "appearing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 80,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan2_2",
+      "duration": 20
+    },
+    {
+      "title": "",
+      "description": "Allow your awareness to move down to both your feet.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [
+          "feet"
+        ],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "feet"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_feet1_1",
+      "duration": 18
+    },
+    {
+      "title": "",
+      "description": "How comfortable does it feel, from 1 to 10?",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "feet"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "feet"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_feet1_2",
+      "duration": 14
+    },
+    {
+      "title": "",
+      "description": "Check your connection to the ground.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "feet"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "feet"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_feet1_3",
+      "duration": 21
+    },
+    {
+      "title": "",
+      "description": "Listen for an image, color, words or feeling...",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "feet"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "feet"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_feet1_4",
+      "duration": 40
+    },
+    {
+      "title": "",
+      "description": "Now record whatever words or image you've received. Include a comfort rating between 1 and 10.",
+      "id": 3,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "Feet",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "feet"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "feet"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_feet2_1",
+      "duration": 28
+    },
+    {
+      "title": "",
+      "description": "Press the paintbrush button to begin.",
+      "id": 3,
+      "segmentName": "recording",
+      "drawingIndex": 1,
+      "drawingName": "Feet",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "feet"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "feet"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_paintinstruction",
+      "duration": 120
+    },
+    {
+      "title": "",
+      "description": "Let the image fade",
+      "id": 4,
+      "segmentName": "fading",
+      "drawingIndex": 1,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "feet"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_feet3",
+      "duration": 11
+    },
+    {
+      "title": "",
+      "description": "Move your mind to a neutral place, a blank inner screen.",
+      "id": 5,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_feet4",
+      "duration": 20
+    },
+    {
+      "title": "",
+      "description": "Now focus on the base of your spine, and the areas I'm outlining now.",
+      "id": 6,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [
+          "base"
+        ],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "base"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_base1_1",
+      "duration": 44
+    },
+    {
+      "title": "",
+      "description": "Sense it, and let it show itself as an image, color or shape.",
+      "id": 6,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "base"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "base"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_base1_2",
+      "duration": 55
+    },
+    {
+      "title": "",
+      "description": "Draw whatever words or images you received.",
+      "id": 7,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "Base",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "base"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "base"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_base2_1",
+      "duration": 28
+    },
+    {
+      "title": "",
+      "description": "Press the paintbrush button to begin.",
+      "id": 7,
+      "segmentName": "recording",
+      "drawingIndex": 2,
+      "drawingName": "Base",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "base"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "base"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_paintinstruction2",
+      "duration": 120
+    },
+    {
+      "title": "",
+      "description": "Let that image fade.",
+      "id": 4,
+      "segmentName": "fading",
+      "drawingIndex": 2,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "base"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_base3",
+      "duration": 7
+    },
+    {
+      "title": "",
+      "description": "Move your mind to a neutral place, a quiet stillness.",
+      "id": 5,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_base4",
+      "duration": 19
+    },
+    {
+      "title": "",
+      "description": "Move your focus to the area I'm outlining now. Its center is four finger widths below your navel.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [
+          "sacral"
+        ],
+        "animationStyle": 1,
+        "animationSpeed": 50,
+        "endFillBitmapIds": [
+          "sacral"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_sacral1_1",
+      "duration": 27
+    },
+    {
+      "title": "",
+      "description": "Allow this area to show itself to you, as an image, color or words.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "sacral"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "sacral"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_sacral1_2",
+      "duration": 19
+    },
+    {
+      "title": "",
+      "description": "How comfortable is it, from 1 to 10? Simply accept whatever you experience.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "sacral"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "sacral"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_sacral1_3",
+      "duration": 35
+    },
+    {
+      "title": "",
+      "description": "Document your experience. Include a number between 1 and 10, and words to describe the feeling.",
+      "id": 3,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "Sacral",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "sacral"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "sacral"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_sacral2",
+      "duration": 27
+    },
+    {
+      "title": "",
+      "description": "Press the paintbrush button when you're ready.",
+      "id": 3,
+      "segmentName": "recording",
+      "drawingIndex": 3,
+      "drawingName": "Sacral",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "sacral"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "sacral"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_paintinstruction2",
+      "duration": 120
+    },
+    {
+      "title": "",
+      "description": "Let go of the image and feeling.",
+      "id": 4,
+      "segmentName": "fading",
+      "drawingIndex": 3,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "sacral"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_sacral3",
+      "duration": 8
+    },
+    {
+      "title": "",
+      "description": "Rest in a clear open space.",
+      "id": 5,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_sacral4",
+      "duration": 15
+    },
+    {
+      "title": "",
+      "description": "Move your inner focus to the area I'm outlining.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [
+          "solarplexus"
+        ],
+        "animationStyle": 1,
+        "animationSpeed": 50,
+        "endFillBitmapIds": [
+          "solarplexus"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_solarplexus1_1",
+      "duration": 20
+    },
+    {
+      "title": "",
+      "description": "It includes your stomach, upper intestine, kidneys, liver and the middle part of your spine.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "solarplexus"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 50,
+        "endFillBitmapIds": [
+          "solarplexus"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_solarplexus1_2",
+      "duration": 20
+    },
+    {
+      "title": "",
+      "description": "How comfortable is it, between 1 and 10? Simply sense the feelings there.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "solarplexus"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "solarplexus"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_solarplexus1_3",
+      "duration": 55
+    },
+    {
+      "title": "",
+      "description": "Record the information you received. Include one or two words to describe the feeling.",
+      "id": 4,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "Solar Plexus",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "solarplexus"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "solarplexus"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_solarplexus2_1",
+      "duration": 27
+    },
+    {
+      "title": "",
+      "description": "Press the paintbrush button when you're ready.",
+      "id": 4,
+      "segmentName": "recording",
+      "drawingIndex": 4,
+      "drawingName": "Solar Plexus",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "solarplexus"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "solarplexus"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_paintinstruction",
+      "duration": 120
+    },
+    {
+      "title": "",
+      "description": "Allow this image to go and breathe out the feeling there.",
+      "id": 4,
+      "segmentName": "fading",
+      "drawingIndex": 4,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "solarplexus"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_solarplexus3",
+      "duration": 7
+    },
+    {
+      "title": "Step 3",
+      "description": "Let your mind move into a neutral space again.",
+      "id": 5,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_solarplexus4",
+      "duration": 17
+    },
+    {
+      "title": "",
+      "description": "Move your inner focus to your chest area. Include your heart, lungs, shoulders and arms, ribs, chest, and diagraphm.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [
+          "heart"
+        ],
+        "animationStyle": 1,
+        "animationSpeed": 140,
+        "endFillBitmapIds": [
+          "heart"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_chest1_1",
+      "duration": 38
+    },
+    {
+      "title": "",
+      "description": "How comfortable are these areas?",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "heart"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "heart"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_chest1_2",
+      "duration": 18
+    },
+    {
+      "title": "",
+      "description": "Let this area present itself as an image or color.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "heart"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "heart"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_chest1_3",
+      "duration": 10
+    },
+    {
+      "title": "",
+      "description": "Notice the emotions and feelings. Listen for words.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "heart"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "heart"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_chest1_4",
+      "duration": 28
+    },
+    {
+      "title": "",
+      "description": "Now record whatever you experienced, and include one word that describes the feeling.",
+      "id": 4,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "Heart",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "heart"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "heart"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_chest2",
+      "duration": 12
+    },
+    {
+      "title": "",
+      "description": "Press the paintbrush button to begin.",
+      "id": 4,
+      "segmentName": "recording",
+      "drawingIndex": 5,
+      "drawingName": "Heart",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "heart"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "heart"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_paintinstruction",
+      "duration": 120
+    },
+    {
+      "title": "",
+      "description": "Allow this image to fade, breathing out the feeling.",
+      "id": 4,
+      "segmentName": "fading",
+      "drawingIndex": 5,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "heart"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 130,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_chest3",
+      "duration": 10
+    },
+    {
+      "title": "Step 3",
+      "description": "Move your mind into a neutral place.",
+      "id": 5,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_chest4",
+      "duration": 18
+    },
+    {
+      "title": "",
+      "description": "Feel the air as you breathe in and out through your mouth. Let your awareness focus on your throat area.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [
+          "throat"
+        ],
+        "animationStyle": 1,
+        "animationSpeed": 80,
+        "endFillBitmapIds": [
+          "throat"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_throat1_1",
+      "duration": 18
+    },
+    {
+      "title": "",
+      "description": "This area includes your neck vertebrae, throat, mouth, teeth and jaw.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "throat"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 80,
+        "endFillBitmapIds": [
+          "throat"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_throat1_2",
+      "duration": 23
+    },
+    {
+      "title": "",
+      "description": "Listen for images, colors, feelings, and especially words.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "throat"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 80,
+        "endFillBitmapIds": [
+          "throat"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_throat1_3",
+      "duration": 15
+    },
+    {
+      "title": "",
+      "description": "Is this area trying to say something, or holding something back?",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "throat"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 80,
+        "endFillBitmapIds": [
+          "throat"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_throat1_4",
+      "duration": 40
+    },
+    {
+      "title": "",
+      "description": "Draw whatever images or words you received. Also write one word that describes how it felt.",
+      "id": 4,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "Throat",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "throat"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "throat"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_throat2",
+      "duration": 21
+    },
+    {
+      "title": "",
+      "description": "Press the paintbrush button to begin.",
+      "id": 4,
+      "segmentName": "recording",
+      "drawingIndex": 6,
+      "drawingName": "Throat",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "throat"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 0,
+        "endFillBitmapIds": [
+          "throat"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_paintinstruction2",
+      "duration": 120
+    },
+    {
+      "title": "",
+      "description": "Let go of any image, feeling or words.",
+      "id": 4,
+      "segmentName": "fading",
+      "drawingIndex": 6,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "throat"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_throat3",
+      "duration": 11
+    },
+    {
+      "title": "",
+      "description": "Breathe out the feeling and bring yourself to neutral again.",
+      "id": 5,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_throat4",
+      "duration": 17
+    },
+    {
+      "title": "",
+      "description": "Bring your attention to your forehead and the area I'm outlining. It includes your eyes, ears, nose and brain.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [
+          "head"
+        ],
+        "animationStyle": 1,
+        "animationSpeed": 60,
+        "endFillBitmapIds": [
+          "head"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_head1_1",
+      "duration": 22
+    },
+    {
+      "title": "",
+      "description": "Scan this area, noticing its comfort level, and listen for images, colors, words and feelings.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "head"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 60,
+        "endFillBitmapIds": [
+          "head"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_head1_2",
+      "duration": 55
+    },
+    {
+      "title": "",
+      "description": "Now draw your experience. When your drawing feels complete, write one or two words to describe the feeling.",
+      "id": 4,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "Head",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "head"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "head"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_head2",
+      "duration": 17
+    },
+    {
+      "title": "",
+      "description": "Press the paintbrush button to begin.",
+      "id": 4,
+      "segmentName": "recording",
+      "drawingIndex": 7,
+      "drawingName": "Head",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "head"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 0,
+        "endFillBitmapIds": [
+          "head"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_paintinstruction",
+      "duration": 120
+    },
+    {
+      "title": "",
+      "description": "Breathe this image and feeling out.",
+      "id": 4,
+      "segmentName": "fading",
+      "drawingIndex": 7,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "head"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_head3",
+      "duration": 7
+    },
+    {
+      "title": "",
+      "description": "Make your mind neutral again.",
+      "id": 5,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_head4",
+      "duration": 17
+    },
+    {
+      "title": "",
+      "description": "Move your focus to the area I'm outlining. It includes the top of your head and the area above it.",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [
+          "crown"
+        ],
+        "animationStyle": 1,
+        "animationSpeed": 40,
+        "endFillBitmapIds": [
+          "crown"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_crown1_1",
+      "duration": 27
+    },
+    {
+      "title": "",
+      "description": "If it had a color or shape, what would that be?",
+      "id": 2,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "crown"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "crown"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_crown1_2",
+      "duration": 55
+    },
+    {
+      "title": "",
+      "description": "Now record what you experienced, remembering to write one word describing the feeling.",
+      "id": 4,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "Crown",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "crown"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [
+          "crown"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_crown2",
+      "duration": 17
+    },
+    {
+      "title": "",
+      "description": "Press the paintbrush button to begin.",
+      "id": 4,
+      "segmentName": "recording",
+      "drawingIndex": 8,
+      "drawingName": "Crown",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "crown"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 1,
+        "animationSpeed": 0,
+        "endFillBitmapIds": [
+          "crown"
+        ],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_paintinstruction2",
+      "duration": 120
+    },
+    {
+      "title": "",
+      "description": "Let the image fade",
+      "id": 4,
+      "segmentName": "fading",
+      "drawingIndex": 8,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [
+          "crown"
+        ],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_crown3",
+      "duration": 8
+    },
+    {
+      "title": "",
+      "description": "Let go of that image. Bring your mind to a stillness.",
+      "id": 5,
+      "segmentName": "focusing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [
+          "body_full"
+        ],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 100,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": [
+          "body_full"
+        ]
+      },
+      "audioLocation": "bodyscan_crown4",
+      "duration": 18
+    },
+    {
+      "title": "",
+      "description": "Review which areas feel blocked or conflicted by swiping left and right. Which area needs your attention right now? Use this area as the basis for a Transformation meditation.",
+      "id": 17,
+      "segmentName": "reviewing",
+      "drawingIndex": 0,
+      "drawingName": "",
+      "graphic": {
+        "startStrokeBitmapIds": [],
+        "startFillBitmapIds": [],
+        "sequenceTiming": 0,
+        "animationPathIds": [],
+        "animationStyle": 2,
+        "animationSpeed": 0,
+        "endFillBitmapIds": [],
+        "endStrokeBitmapIds": []
+      },
+      "audioLocation": "bodyscan_review",
+      "duration": 85
+    }
+  ]
 }

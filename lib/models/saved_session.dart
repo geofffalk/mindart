@@ -8,6 +8,7 @@ class SavedSession {
   final int sessionTime;
   final List<Uint8List?> drawings;
   final List<String?> drawingLabels;
+  final List<Uint8List?> audioRecordings;
   final int? locationX;
   final int? locationY;
 
@@ -18,6 +19,7 @@ class SavedSession {
     required this.sessionTime,
     this.drawings = const [],
     this.drawingLabels = const [],
+    this.audioRecordings = const [],
     this.locationX,
     this.locationY,
   });
@@ -26,10 +28,12 @@ class SavedSession {
   factory SavedSession.fromMap(Map<String, dynamic> map) {
     final drawings = <Uint8List?>[];
     final labels = <String?>[];
+    final audio = <Uint8List?>[];
     
     for (int i = 1; i <= 10; i++) {
       drawings.add(map['drawing$i'] as Uint8List?);
       labels.add(map['drawing${i}_label'] as String?);
+      audio.add(map['audio$i'] as Uint8List?);
     }
 
     return SavedSession(
@@ -39,6 +43,7 @@ class SavedSession {
       sessionTime: map['session_time'] as int,
       drawings: drawings,
       drawingLabels: labels,
+      audioRecordings: audio,
       locationX: map['location_x'] as int?,
       locationY: map['location_y'] as int?,
     );
@@ -59,6 +64,9 @@ class SavedSession {
       if (i < drawingLabels.length) {
         map['drawing${i + 1}_label'] = drawingLabels[i];
       }
+      if (i < audioRecordings.length) {
+        map['audio${i + 1}'] = audioRecordings[i];
+      }
     }
 
     return map;
@@ -74,18 +82,21 @@ class SavedSession {
   /// Number of drawings in this session
   int get drawingCount => validDrawings.length;
 
-  /// Copy with updated drawings
-  SavedSession copyWithDrawing(int index, Uint8List drawing, String? label) {
+  /// Copy with updated drawings and audio
+  SavedSession copyWithDrawing(int index, Uint8List drawing, String? label, {Uint8List? audio}) {
     final newDrawings = List<Uint8List?>.from(drawings);
     final newLabels = List<String?>.from(drawingLabels);
+    final newAudio = List<Uint8List?>.from(audioRecordings);
     
     while (newDrawings.length <= index) {
       newDrawings.add(null);
       newLabels.add(null);
+      newAudio.add(null);
     }
     
     newDrawings[index] = drawing;
     if (label != null) newLabels[index] = label;
+    if (audio != null) newAudio[index] = audio;
     
     return SavedSession(
       id: id,
@@ -94,6 +105,7 @@ class SavedSession {
       sessionTime: sessionTime,
       drawings: newDrawings,
       drawingLabels: newLabels,
+      audioRecordings: newAudio,
       locationX: locationX,
       locationY: locationY,
     );

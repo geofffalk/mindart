@@ -34,6 +34,9 @@ class PathAnimation extends StatelessWidget {
   /// If true, pathPoints are absolute pixel coordinates (not normalized).
   /// Points will be used directly without scaling to canvas size.
   final bool useAbsoluteCoords;
+  
+  /// Animation style from legacy script (0, 1, 2)
+  final int animationStyle;
 
   const PathAnimation({
     super.key,
@@ -47,6 +50,7 @@ class PathAnimation extends StatelessWidget {
     this.fillColor,
     this.size,
     this.useAbsoluteCoords = false,
+    this.animationStyle = 1,
   });
 
   @override
@@ -63,6 +67,7 @@ class PathAnimation extends StatelessWidget {
         showFillOnComplete: showFillOnComplete && progress >= 1.0,
         fillColor: fillColor,
         useAbsoluteCoords: useAbsoluteCoords,
+        animationStyle: animationStyle,
       ),
     );
   }
@@ -78,6 +83,7 @@ class _PathPainter extends CustomPainter {
   final bool showFillOnComplete;
   final Color? fillColor;
   final bool useAbsoluteCoords;
+  final int animationStyle;
 
   _PathPainter({
     required this.pathPoints,
@@ -89,6 +95,7 @@ class _PathPainter extends CustomPainter {
     required this.showFillOnComplete,
     this.fillColor,
     this.useAbsoluteCoords = false,
+    this.animationStyle = 1,
   });
 
   @override
@@ -177,10 +184,11 @@ class _PathPainter extends CustomPainter {
     }
 
     // Draw main stroke
+    final effectiveStrokeWidth = animationStyle == 0 ? 2.0 : strokeWidth;
     final strokePaint = Paint()
       ..color = strokeColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth
+      ..strokeWidth = effectiveStrokeWidth
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round;
     canvas.drawPath(path, strokePaint);

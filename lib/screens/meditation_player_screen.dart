@@ -41,6 +41,9 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
   int _currentDrawingIndex = 0;
   bool _hasStarted = false; // Track if playback has ever started
   int _segmentElapsedSeconds = 0; // Track elapsed time in current segment
+  bool _audioFinished = false;  // Track if audio for segment has finished
+  bool _timerFinished = false;  // Track if duration timer has finished
+  Timer? _sequenceTimer;        // Timer for sequenceTiming delay
 
   // Animation controllers for different segment types
   late AnimationController _pathAnimationController;
@@ -134,6 +137,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
   @override
   void dispose() {
     _progressTimer?.cancel();
+    _sequenceTimer?.cancel();
     _positionSubscription?.cancel();
     _audioService.dispose();
     _pathAnimationController.dispose();
@@ -146,6 +150,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     final expanded = <String>[];
     for (final id in pathIds) {
       if (id == 'body_full') {
+        // Expand body_full to standard outer and inner outlines
         expanded.add('body_outer');
         expanded.add('body_inner');
       } else {
@@ -155,41 +160,34 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     return expanded;
   }
   
-  /// Loads a single path by ID, caching results in _loadedPaths
-  /// Tries JSON multi-path format first, then falls back to CSV
-  Future<void> _loadSinglePath(String pathId) async {
-    if (_loadedPaths.containsKey(pathId)) return; // Already loaded
+  Future<Map<String, List<Offset>>?> _loadSinglePath(String pathId) async {
+    if (_loadedPaths.containsKey(pathId)) return {pathId: _loadedPaths[pathId]!};
+    if (_loadedMultiPaths.containsKey(pathId)) return _loadedMultiPaths[pathId];
     
     try {
-      // TODO: Use user's gender preference instead of hardcoded 'woman'
-      
-      // First try JSON multi-path format (for files like woman_meditating.json)
-      final jsonPaths = await _meditationService.loadJsonPaths(pathId, 'woman');
+      // First try JSON multi-path format (e.g., assets/body_paths/man_meditate.json)
+      final jsonPaths = await _meditationService.loadJsonPaths(pathId, _genderPrefix);
       if (jsonPaths.isNotEmpty) {
         // Store the multi-path data
         _loadedMultiPaths[pathId] = jsonPaths;
-        
-        // Also store first path in _loadedPaths for backward compatibility
-        if (jsonPaths.isNotEmpty) {
-          final firstPath = jsonPaths.values.first;
-          _loadedPaths[pathId] = firstPath;
-        }
         debugPrint('📍 Loaded JSON multi-path $pathId with ${jsonPaths.length} sub-paths');
-        return;
+        return jsonPaths;
       }
     } catch (_) {
       // JSON not found or invalid, try CSV
     }
     
     try {
-      // Fall back to CSV format (for files like woman_body_outer.csv)
-      final pathData = await _meditationService.loadAbsolutePath(pathId, 'woman');
+      // Fall back to CSV format (for older assets)
+      final pathData = await _meditationService.loadAbsolutePath(pathId, _genderPrefix);
       if (pathData.isNotEmpty) {
         _loadedPaths[pathId] = pathData;
+        return {pathId: pathData}; 
       }
     } catch (e) {
       debugPrint('Failed to load path $pathId: $e');
     }
+    return null; // Path not found
   }
   
   /// Loads all paths needed for a segment based on its graphic configuration
@@ -204,14 +202,65 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     // Load all unique paths
     final allIds = {...strokeIds, ...fillIds, ...animationIds};
     for (final id in allIds) {
-      await _loadSinglePath(id);
+      final loadedData = await _loadSinglePath(id);
+      if (loadedData != null && loadedData.length == 1 && loadedData.containsKey(id)) {
+        // It was a single path, already stored in _loadedPaths by _loadSinglePath
+      } else if (loadedData != null && loadedData.length > 1) {
+        // It was a multi-path, stored in _loadedMultiPathData by _loadSinglePath
+        // We don't need to do anything here, it's already cached.
+      }
+    }
+    
+    // Multi-path expansion: check if any loaded IDs are JSON multi-paths
+    // and expand them into individual path references (e.g., man_meditate_path_1)
+    final finalStrokeIds = <String>[];
+    for (final id in strokeIds) {
+      if (_loadedMultiPaths.containsKey(id)) {
+        final multiPaths = _loadedMultiPaths[id]!;
+        for (final subId in multiPaths.keys) {
+          final compositeId = '${id}_$subId';
+          _loadedPaths[compositeId] = multiPaths[subId]!;
+          finalStrokeIds.add(compositeId);
+        }
+      } else {
+        finalStrokeIds.add(id);
+      }
+    }
+    
+    final finalFillIds = <String>[];
+    for (final id in fillIds) {
+      if (_loadedMultiPaths.containsKey(id)) {
+        final multiPaths = _loadedMultiPaths[id]!;
+        for (final subId in multiPaths.keys) {
+          final compositeId = '${id}_$subId';
+          _loadedPaths[compositeId] = multiPaths[subId]!;
+          finalFillIds.add(compositeId);
+        }
+      } else {
+        finalFillIds.add(id);
+      }
+    }
+    
+    final finalAnimationIds = <String>[];
+    for (final id in animationIds) {
+      if (_loadedMultiPaths.containsKey(id)) {
+        final multiPaths = _loadedMultiPaths[id]!;
+        for (final subId in multiPaths.keys) {
+          final compositeId = '${id}_$subId';
+          _loadedPaths[compositeId] = multiPaths[subId]!;
+          finalAnimationIds.add(compositeId);
+        }
+      } else {
+        finalAnimationIds.add(id);
+      }
     }
     
     // Update current segment's path configurations
     setState(() {
-      _currentStrokePaths = strokeIds;
-      _currentFillPaths = fillIds;
-      _currentAnimationPaths = animationIds;
+      // Clear all current paths first to ensure a clean state for the new segment
+      _currentStrokePaths = finalStrokeIds;
+      _currentFillPaths = finalFillIds;
+      _currentAnimationPaths = finalAnimationIds;
       _currentFillBitmapIds = graphic.endFillBitmapIds;
       _allAnimationsComplete = false; // Reset for new segment
       
@@ -225,8 +274,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       
       // Set up for first animation path
       _currentAnimationIndex = 0;
-      if (animationIds.isNotEmpty && _loadedPaths.containsKey(animationIds.first)) {
-        _currentPathData = _loadedPaths[animationIds.first];
+      if (finalAnimationIds.isNotEmpty && _loadedPaths.containsKey(finalAnimationIds.first)) {
+        _currentPathData = _loadedPaths[finalAnimationIds.first];
       } else {
         _currentPathData = null;
       }
@@ -241,42 +290,58 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     final segment = _meditation!.currentSegment;
     
     // For recording segments, don't auto-play audio - wait for user to tap record button
-    // This matches the original Android behavior where the RecordButton is displayed
     if (segment.segmentType == SegmentType.recording) {
       setState(() => _playerState = PlayerState.paused);
       return;
     }
 
-    setState(() => _playerState = PlayerState.playing);
+    setState(() {
+      _playerState = PlayerState.playing;
+      _audioFinished = false;
+      _timerFinished = false;
+    });
     
     // Load path data for this segment based on its graphic configuration
-    // This applies to ALL segment types - reading, appearing, focusing, fading, recording
     if (!_isHandScanMeditation) {
       await _loadPathForSegment(segment);
     }
     
     // Start path animation if this segment has animation paths
     if (segment.graphic.animationPathIds.isNotEmpty) {
-      // Split duration among all animation paths for sequential playback
-      final pathCount = _currentAnimationPaths.length;
-      final durationPerPath = segment.duration ~/ pathCount.clamp(1, 999);
-      _pathAnimationController.duration = Duration(seconds: durationPerPath);
+      // Respect animationSpeed: calculate duration based on path length
+      // If speed is 100 and points is 1000, duration = 10s
+      final firstPathId = _currentAnimationPaths.first;
+      final firstPathPoints = _loadedPaths[firstPathId]?.length ?? 0;
       
-      debugPrint('Starting animation for segment ${segment.id}: $pathCount paths, ${durationPerPath}s each');
-      debugPrint('Animation paths: $_currentAnimationPaths');
-      debugPrint('Fill bitmaps: ${segment.graphic.endFillBitmapIds}');
+      // Calculate speed-based duration (seconds)
+      // Dividing by speed/10 to get reasonable durations for standard CSVs
+      double calculatedSeconds = firstPathPoints / (segment.graphic.animationSpeed.clamp(1, 9999) / 10.0);
+      calculatedSeconds = calculatedSeconds.clamp(0.5, 60.0); // Keep it sane
       
-      _pathAnimationController.forward(from: 0.0);
+      _pathAnimationController.duration = Duration(milliseconds: (calculatedSeconds * 1000).toInt());
+      
+      debugPrint('Starting animation for segment ${segment.id}: Speed ${segment.graphic.animationSpeed}, Points $firstPathPoints, Duration ${calculatedSeconds}s');
+      
+      // Implement sequenceTiming support
+      _sequenceTimer?.cancel();
+      if (segment.graphic.sequenceTiming > 0) {
+        debugPrint('⏳ sequenceTiming delay: ${segment.graphic.sequenceTiming}ms');
+        _sequenceTimer = Timer(Duration(milliseconds: segment.graphic.sequenceTiming), () {
+          if (mounted && _playerState == PlayerState.playing) {
+            _pathAnimationController.forward(from: 0.0);
+          }
+        });
+      } else {
+        _pathAnimationController.forward(from: 0.0);
+      }
       
       // Remove any existing listener before adding to prevent duplicates
       _pathAnimationController.removeStatusListener(_onPathAnimationComplete);
-      // Listen for animation completion to sequence through multiple paths
       _pathAnimationController.addStatusListener(_onPathAnimationComplete);
-      debugPrint('✅ Animation listener ATTACHED. Duration: ${_pathAnimationController.duration}');
+      debugPrint('✅ Animation listener ATTACHED.');
     } else {
       // No animation paths - show bitmaps immediately if this segment has any
       if (segment.graphic.endFillBitmapIds.isNotEmpty) {
-        debugPrint('No animation paths - showing bitmaps immediately: ${segment.graphic.endFillBitmapIds}');
         setState(() {
           _allAnimationsComplete = true;
         });
@@ -286,16 +351,37 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     // Start fade animation for fading segments
     if (segment.segmentType == SegmentType.fading) {
       _fadeAnimationController.duration = Duration(seconds: segment.duration);
-      _fadeAnimationController.reverse(from: 1.0); // Fade from visible to invisible
+      _fadeAnimationController.reverse(from: 1.0);
     }
     
+    // Start min duration timer
+    _startProgressTimer();
+
     // Play audio for current segment
     if (segment.audioLocation.isNotEmpty) {
       _audioService.playAsset(segment.audioLocation);
-      _audioService.onComplete(_onSegmentComplete);
+      _audioService.onComplete(() {
+        debugPrint('🎵 Audio finished for segment ${segment.id}');
+        _audioFinished = true;
+        _checkSegmentCompletion();
+      });
     } else {
-      // No audio, use timer based on duration
-      _startProgressTimer();
+      // No audio, consider audio finished immediately
+      _audioFinished = true;
+      _checkSegmentCompletion();
+    }
+  }
+
+  void _checkSegmentCompletion() {
+    if (_audioFinished && _timerFinished) {
+      debugPrint('✅ Both audio and timer finished. Moving to next segment.');
+      _onSegmentComplete();
+    } else {
+      if (!_audioFinished && _timerFinished) {
+        debugPrint('⏳ Timer finished, waiting for audio...');
+      } else if (_audioFinished && !_timerFinished) {
+        debugPrint('⏳ Audio finished, waiting for timer (${_meditation!.currentSegment.duration}s)...');
+      }
     }
   }
 
@@ -322,6 +408,14 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
         });
         
         // Start animating the next path
+        final nextPathPoints = _currentPathData?.length ?? 0;
+        final segment = _meditation!.currentSegment;
+        double nextCalculatedSeconds = nextPathPoints / (segment.graphic.animationSpeed.clamp(1, 9999) / 10.0);
+        nextCalculatedSeconds = nextCalculatedSeconds.clamp(0.5, 60.0);
+        
+        _pathAnimationController.duration = Duration(milliseconds: (nextCalculatedSeconds * 1000).toInt());
+        debugPrint('Next path duration: ${nextCalculatedSeconds}s (Points: $nextPathPoints)');
+        
         _pathAnimationController.forward(from: 0.0);
       } else {
         // No more paths to animate - all animations complete
@@ -379,6 +473,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     final duration = _meditation!.currentSegment.duration;
     _progressTimer?.cancel();
     _segmentElapsedSeconds = 0;
+    _timerFinished = false;
     
     _progressTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!mounted) {
@@ -390,7 +485,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       });
       if (_segmentElapsedSeconds >= duration) {
         timer.cancel();
-        _onSegmentComplete();
+        _timerFinished = true;
+        _checkSegmentCompletion();
       }
     });
   }
@@ -512,6 +608,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     return Column(
       children: [
         // Flexible animation area - expands to fill available space
+                const SizedBox(height: 5),
         Expanded(
           flex: 3,
           child: Center(
@@ -618,14 +715,21 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       return _buildLocatingAnimation(segment);
     }
     
-    // For OPENING segments: show pulsing circle at user-selected location (continuous pulse)
-    if (segment.segmentType == SegmentType.opening) {
-      return _buildOpeningAnimation(segment, fadeAfterPulse: false);
+    // For INVESTIGATING segments: show static user location circle
+    // (white circle before recording, with user drawing after)
+    if (segment.segmentType == SegmentType.investigating) {
+      return _buildInvestigatingAnimation(segment);
     }
     
-    // For OPENING_FADING segments: show pulsing circle that fades after 3 pulses
-    if (segment.segmentType == SegmentType.openingFading) {
-      return _buildOpeningAnimation(segment, fadeAfterPulse: true);
+    // For ASKING segments: show slowly pulsing user location circle
+    // (white circle before recording, with user drawing after)
+    if (segment.segmentType == SegmentType.asking) {
+      return _buildAskingAnimation(segment);
+    }
+    
+    // For OPENING segments: show fading user location circle in a slow calming loop
+    if (segment.segmentType == SegmentType.opening) {
+      return _buildOpeningAnimation(segment);
     }
     
     // For REVIEWING segments: show saved drawings as horizontal carousel
@@ -882,9 +986,16 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     // Expand the configured startStrokeBitmapIds (e.g., body_full -> body_outer, body_inner)
     final expandedIds = _expandPathIds(segment.graphic.startStrokeBitmapIds);
     for (final pathId in expandedIds) {
-      if (_loadedPaths[pathId] != null && _loadedPaths[pathId]!.isNotEmpty) {
+      // If it's a multi-path (like 'meditate'), add all sub-paths
+      if (_loadedMultiPaths.containsKey(pathId)) {
+        final multiPath = _loadedMultiPaths[pathId]!;
+        bodyPaths.addAll(multiPath.values);
+        debugPrint('📍 LOCATING using multi-path: $pathId (${multiPath.length} sub-paths)');
+      } 
+      // Fallback to single path
+      else if (_loadedPaths[pathId] != null && _loadedPaths[pathId]!.isNotEmpty) {
         bodyPaths.add(_loadedPaths[pathId]!);
-        debugPrint('📍 LOCATING using path: $pathId');
+        debugPrint('📍 LOCATING using single path: $pathId');
       }
     }
     
@@ -928,27 +1039,17 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     );
   }
   
-  /// Builds opening animation for OPENING and OPENING_FADING segments
-  /// Shows pulsing circle at user-selected location from LOCATING segment
-  Widget _buildOpeningAnimation(MeditationSegment segment, {required bool fadeAfterPulse}) {
+  /// Helper to build the common base layout for segments with user location
+  Widget _buildUserLocationSegmentBase({
+    required MeditationSegment segment,
+    required Widget circleWidget,
+  }) {
     // If no user location was selected, show nothing
     if (_userLocation == null) {
       return const SizedBox(height: 120);
     }
     
-    // Get body path from loaded paths - use expanded path IDs since body_full becomes body_outer
-    List<Offset> bodyPath = [];
-    if (segment.graphic.startStrokeBitmapIds.isNotEmpty) {
-      final expandedIds = _expandPathIds(segment.graphic.startStrokeBitmapIds);
-      for (final pathId in expandedIds) {
-        if (_loadedPaths[pathId] != null && _loadedPaths[pathId]!.isNotEmpty) {
-          bodyPath = _loadedPaths[pathId]!;
-          break;
-        }
-      }
-    }
-    
-    // Calculate canvas dimensions - full width and available height
+    // Calculate canvas dimensions
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final topPadding = MediaQuery.of(context).padding.top;
@@ -957,7 +1058,6 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     const closeButtonHeight = 50;
     final availableHeight = screenHeight - topPadding - closeButtonHeight - textAreaHeight - bottomPadding;
     
-    // Full width and available height
     final canvasWidth = screenWidth;
     final canvasHeight = availableHeight;
     
@@ -968,7 +1068,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
         height: canvasHeight,
         child: Stack(
           children: [
-            // Show the segment's configured stroke bitmaps (white, like other segments)
+            // Show the segment's configured stroke bitmaps
             ..._currentStrokePaths.map((pathId) {
               final pathData = _loadedPaths[pathId];
               if (pathData == null || pathData.isEmpty) return const SizedBox.shrink();
@@ -982,36 +1082,96 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                 size: const Size(580, 756),
               );
             }),
-            // User drawing overlay at user location
-            if (_savedDrawings.isNotEmpty)
-              _buildOpeningDrawingOverlay(fadeAfterPulse: fadeAfterPulse),
+            // Circle at user location
+            circleWidget,
           ],
         ),
       ),
     );
   }
   
-  /// Builds the user drawing overlay for OPENING/OPENING_FADING segments
-  Widget _buildOpeningDrawingOverlay({required bool fadeAfterPulse}) {
-    if (_userLocation == null || _savedDrawings.isEmpty) {
-      return const SizedBox.shrink();
-    }
+  /// Builds the circle content - white if no drawing, drawing if available
+  Widget _buildUserLocationCircle({double circleRadius = 40.0}) {
+    if (_userLocation == null) return const SizedBox.shrink();
     
-    final drawingData = _savedDrawings.values.first;
-    const circleRadius = 40.0;
+    final hasDrawing = _savedDrawings.isNotEmpty;
+    final drawingData = hasDrawing ? _savedDrawings.values.first : null;
     
     return Positioned(
       left: _userLocation!.dx - circleRadius,
       top: _userLocation!.dy - circleRadius,
-      child: fadeAfterPulse
-          ? _PulsingFadeDrawing(
-              drawingData: drawingData,
-              circleRadius: circleRadius,
-            )
-          : _ContinuousPulsingDrawing(
-              drawingData: drawingData,
-              circleRadius: circleRadius,
+      child: Container(
+        width: circleRadius * 2,
+        height: circleRadius * 2,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white.withOpacity(0.5),
+              blurRadius: 8,
+              spreadRadius: 2,
             ),
+          ],
+        ),
+        child: hasDrawing
+            ? ClipOval(
+                child: Image.memory(drawingData!, fit: BoxFit.cover),
+              )
+            : null,
+      ),
+    );
+  }
+  
+  /// Builds INVESTIGATING animation - static user location circle
+  Widget _buildInvestigatingAnimation(MeditationSegment segment) {
+    return _buildUserLocationSegmentBase(
+      segment: segment,
+      circleWidget: _buildUserLocationCircle(),
+    );
+  }
+  
+  /// Builds ASKING animation - slowly pulsing user location circle
+  Widget _buildAskingAnimation(MeditationSegment segment) {
+    return _buildUserLocationSegmentBase(
+      segment: segment,
+      circleWidget: _buildSlowPulsingCircle(),
+    );
+  }
+  
+  /// Builds OPENING animation - fading user location circle in slow calming loop
+  Widget _buildOpeningAnimation(MeditationSegment segment) {
+    return _buildUserLocationSegmentBase(
+      segment: segment,
+      circleWidget: _buildFadingCircle(),
+    );
+  }
+  
+  /// Slowly pulsing circle for ASKING segments
+  Widget _buildSlowPulsingCircle({double circleRadius = 40.0}) {
+    if (_userLocation == null) return const SizedBox.shrink();
+    
+    return Positioned(
+      left: _userLocation!.dx - circleRadius,
+      top: _userLocation!.dy - circleRadius,
+      child: _SlowPulsingCircle(
+        circleRadius: circleRadius,
+        drawingData: _savedDrawings.isNotEmpty ? _savedDrawings.values.first : null,
+      ),
+    );
+  }
+  
+  /// Fading circle for OPENING segments
+  Widget _buildFadingCircle({double circleRadius = 40.0}) {
+    if (_userLocation == null) return const SizedBox.shrink();
+    
+    return Positioned(
+      left: _userLocation!.dx - circleRadius,
+      top: _userLocation!.dy - circleRadius,
+      child: _FadingCircle(
+        circleRadius: circleRadius,
+        drawingData: _savedDrawings.isNotEmpty ? _savedDrawings.values.first : null,
+      ),
     );
   }
   
@@ -1212,6 +1372,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                           glowColor: Colors.transparent,
                           useAbsoluteCoords: true,
                           size: const Size(580, 756),
+                          animationStyle: _meditation?.currentSegment.graphic.animationStyle ?? 1,
                         );
                       }),
                       // Static fill paths
@@ -1226,6 +1387,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                           glowColor: Colors.transparent,
                           useAbsoluteCoords: true,
                           size: const Size(580, 756),
+                          animationStyle: _meditation?.currentSegment.graphic.animationStyle ?? 1,
                         );
                       }),
                       // Completed path
@@ -1238,6 +1400,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                           glowColor: Colors.transparent,
                           useAbsoluteCoords: true,
                           size: const Size(580, 756),
+                          animationStyle: _meditation?.currentSegment.graphic.animationStyle ?? 1,
                         ),
                       // Animated path
                       if (_currentPathData != null && _currentPathData!.isNotEmpty)
@@ -1245,10 +1408,11 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                           pathPoints: _currentPathData!,
                           progress: _pathAnimationController.value,
                           strokeColor: AppTheme.primary,
-                          strokeWidth: 3.0,
-                          glowColor: AppTheme.primaryLight,
+                          strokeWidth: 3.5,
+                          glowColor: AppTheme.primary,
                           useAbsoluteCoords: true,
                           size: const Size(580, 756),
+                          animationStyle: _meditation?.currentSegment.graphic.animationStyle ?? 1,
                         ),
                       // Fill regions (code-driven, not bitmaps)
                       if (_allAnimationsComplete) ..._currentFillBitmapIds.map((regionId) {
@@ -1450,108 +1614,22 @@ class _BreathingCircleState extends State<_BreathingCircle>
   }
 }
 
-/// Widget that pulses a drawing 3 times then fades away
-class _PulsingFadeDrawing extends StatefulWidget {
-  final Uint8List drawingData;
+/// Slowly pulsing circle for ASKING segments
+/// Shows white circle (or drawing if available) with slow scale animation
+class _SlowPulsingCircle extends StatefulWidget {
   final double circleRadius;
+  final Uint8List? drawingData;
   
-  const _PulsingFadeDrawing({
-    required this.drawingData,
+  const _SlowPulsingCircle({
     required this.circleRadius,
+    this.drawingData,
   });
   
   @override
-  State<_PulsingFadeDrawing> createState() => _PulsingFadeDrawingState();
+  State<_SlowPulsingCircle> createState() => _SlowPulsingCircleState();
 }
 
-class _PulsingFadeDrawingState extends State<_PulsingFadeDrawing>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _opacityAnimation;
-  
-  @override
-  void initState() {
-    super.initState();
-    // Total animation: 3 pulses (4.8s) + fade out (1s) = 5.8s
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 5800),
-    );
-    
-    // Scale: pulse 3 times (0-0.83 of animation = 4.8s), then stay at 1.0
-    _scaleAnimation = TweenSequence<double>([
-      // Pulse 1
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.3), weight: 14),
-      TweenSequenceItem(tween: Tween(begin: 1.3, end: 1.0), weight: 14),
-      // Pulse 2
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.3), weight: 14),
-      TweenSequenceItem(tween: Tween(begin: 1.3, end: 1.0), weight: 14),
-      // Pulse 3
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.3), weight: 14),
-      TweenSequenceItem(tween: Tween(begin: 1.3, end: 1.0), weight: 14),
-      // Hold during fade
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.0), weight: 17),
-    ]).animate(_controller);
-    
-    // Opacity: stay at 1.0 for pulses, then fade to 0
-    _opacityAnimation = TweenSequence<double>([
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.0), weight: 84),
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 17),
-    ]).animate(_controller);
-    
-    _controller.forward();
-  }
-  
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-  
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: _scaleAnimation.value,
-          child: Opacity(
-            opacity: _opacityAnimation.value,
-            child: child,
-          ),
-        );
-      },
-      child: ClipOval(
-        child: SizedBox(
-          width: widget.circleRadius * 2,
-          height: widget.circleRadius * 2,
-          child: Image.memory(
-            widget.drawingData,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Continuous pulsing drawing overlay for OPENING segments (no fade)
-/// Pulses 20% slower than the fading version
-class _ContinuousPulsingDrawing extends StatefulWidget {
-  final Uint8List drawingData;
-  final double circleRadius;
-  
-  const _ContinuousPulsingDrawing({
-    required this.drawingData,
-    required this.circleRadius,
-  });
-  
-  @override
-  State<_ContinuousPulsingDrawing> createState() => _ContinuousPulsingDrawingState();
-}
-
-class _ContinuousPulsingDrawingState extends State<_ContinuousPulsingDrawing>
+class _SlowPulsingCircleState extends State<_SlowPulsingCircle>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
@@ -1559,14 +1637,14 @@ class _ContinuousPulsingDrawingState extends State<_ContinuousPulsingDrawing>
   @override
   void initState() {
     super.initState();
-    // 20% slower than fading version: 1.6s * 1.2 = 1.92s per pulse cycle
+    // Slow pulse: 3 seconds per cycle
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1920),
+      duration: const Duration(milliseconds: 3000),
     );
     
-    // Scale: continuous pulse from 1.0 to 1.3 and back
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.3).animate(
+    // Scale: gentle pulse from 1.0 to 1.15 and back
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.15).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
     
@@ -1582,23 +1660,103 @@ class _ContinuousPulsingDrawingState extends State<_ContinuousPulsingDrawing>
   
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: _scaleAnimation.value,
-          child: child,
-        );
-      },
-      child: ClipOval(
-        child: SizedBox(
-          width: widget.circleRadius * 2,
-          height: widget.circleRadius * 2,
-          child: Image.memory(
-            widget.drawingData,
-            fit: BoxFit.cover,
-          ),
+    final hasDrawing = widget.drawingData != null;
+    
+    return ScaleTransition(
+      scale: _scaleAnimation,
+      child: Container(
+        width: widget.circleRadius * 2,
+        height: widget.circleRadius * 2,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white.withOpacity(0.5),
+              blurRadius: 8,
+              spreadRadius: 2,
+            ),
+          ],
         ),
+        child: hasDrawing
+            ? ClipOval(
+                child: Image.memory(widget.drawingData!, fit: BoxFit.cover),
+              )
+            : null,
+      ),
+    );
+  }
+}
+
+/// Fading circle for OPENING segments
+/// Shows circle fading in and out in a slow calming loop
+class _FadingCircle extends StatefulWidget {
+  final double circleRadius;
+  final Uint8List? drawingData;
+  
+  const _FadingCircle({
+    required this.circleRadius,
+    this.drawingData,
+  });
+  
+  @override
+  State<_FadingCircle> createState() => _FadingCircleState();
+}
+
+class _FadingCircleState extends State<_FadingCircle>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _opacityAnimation;
+  
+  @override
+  void initState() {
+    super.initState();
+    // Slow fade: 4 seconds per cycle
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 4000),
+    );
+    
+    // Opacity: fade from 1.0 to 0.3 and back
+    _opacityAnimation = Tween<double>(begin: 1.0, end: 0.3).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+    
+    // Repeat forever
+    _controller.repeat(reverse: true);
+  }
+  
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    final hasDrawing = widget.drawingData != null;
+    
+    return FadeTransition(
+      opacity: _opacityAnimation,
+      child: Container(
+        width: widget.circleRadius * 2,
+        height: widget.circleRadius * 2,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white.withOpacity(0.5),
+              blurRadius: 8,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+        child: hasDrawing
+            ? ClipOval(
+                child: Image.memory(widget.drawingData!, fit: BoxFit.cover),
+              )
+            : null,
       ),
     );
   }

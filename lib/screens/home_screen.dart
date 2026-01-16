@@ -4,6 +4,7 @@ import '../services/meditation_service.dart';
 import '../widgets/meditation_card.dart';
 import 'meditation_player_screen.dart';
 import 'gallery_screen.dart';
+import 'settings_screen.dart';
 
 /// Home screen showing list of available meditations
 class HomeScreen extends StatefulWidget {
@@ -26,9 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
           gradient: AppTheme.backgroundGradient,
         ),
         child: SafeArea(
-          child: _selectedIndex == 0 
-              ? _buildMeditationList()
-              : const GalleryScreen(),
+          child: _buildBody(),
         ),
       ),
       bottomNavigationBar: Container(
@@ -47,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onTap: (index) => setState(() => _selectedIndex = index),
           backgroundColor: Colors.transparent,
           elevation: 0,
+          type: BottomNavigationBarType.fixed,
           selectedItemColor: AppTheme.calmBlue,
           unselectedItemColor: Colors.white54,
           items: const [
@@ -58,10 +58,27 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icon(Icons.folder_outlined),
               label: 'Saved sessions',
             ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings_outlined),
+              label: 'Settings',
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildBody() {
+    switch (_selectedIndex) {
+      case 0:
+        return _buildMeditationList();
+      case 1:
+        return const GalleryScreen();
+      case 2:
+        return const SettingsScreen();
+      default:
+        return _buildMeditationList();
+    }
   }
 
   Widget _buildMeditationList() {

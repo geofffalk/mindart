@@ -36,29 +36,45 @@ class FillOperation {
 class PaintCanvasPainter extends CustomPainter {
   final List<DrawnPath> paths;
   final List<FillOperation> fills;
+  final List<String> operationHistory;
   final DrawnPath? currentPath;
   final ui.Image? fillMask;
 
   PaintCanvasPainter({
     required this.paths,
     required this.fills,
+    required this.operationHistory,
     this.currentPath,
     this.fillMask,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Draw fill mask if exists (flood fills are pre-rendered)
-    if (fillMask != null) {
+    // Find the index of the last fill in history
+    final lastFillIndex = operationHistory.lastIndexOf('fill');
+    
+    if (lastFillIndex != -1 && fillMask != null) {
+      // Draw cumulative fill mask which includes all paths and fills up to that point
       canvas.drawImage(fillMask!, Offset.zero, Paint());
+      
+      // Calculate how many paths were captured in that fill mask
+      int pathsInMask = 0;
+      for (int i = 0; i <= lastFillIndex; i++) {
+        if (operationHistory[i] == 'path') pathsInMask++;
+      }
+      
+      // Draw only the paths that were created AFTER the last fill
+      for (int i = pathsInMask; i < paths.length; i++) {
+        _drawPath(canvas, paths[i]);
+      }
+    } else {
+      // No fills or mask, draw all completed paths
+      for (final path in paths) {
+        _drawPath(canvas, path);
+      }
     }
     
-    // Draw all completed paths
-    for (final path in paths) {
-      _drawPath(canvas, path);
-    }
-    
-    // Draw current path being drawn
+    // Always draw current path being drawn
     if (currentPath != null) {
       _drawPath(canvas, currentPath!);
     }
@@ -76,13 +92,13 @@ class PaintCanvasPainter extends CustomPainter {
     
     canvas.drawPath(path, drawnPath.paint);
   }
-
   @override
   bool shouldRepaint(covariant PaintCanvasPainter oldDelegate) {
     // Compare list identity (not just length) to detect undo operations
     return !identical(oldDelegate.paths, paths) || 
            oldDelegate.currentPath != currentPath ||
            !identical(oldDelegate.fills, fills) ||
+           !identical(oldDelegate.operationHistory, operationHistory) ||
            oldDelegate.fillMask != fillMask;
   }
 }
@@ -257,11 +273,11 @@ class PaintCanvasState extends State<PaintCanvas> {
     final targetA = pixels[startIdx + 3];
     
     // Fill color with opacity
-    final fillColor = _brushSettings.color.withAlpha((_brushSettings.opacity * 255).round());
-    final fillR = fillColor.red;
-    final fillG = fillColor.green;
-    final fillB = fillColor.blue;
-    final fillA = fillColor.alpha;
+    final fillColor = _brushSettings.color.withValues(alpha: _brushSettings.opacity);
+    final fillR = (fillColor.r * 255).round();
+    final fillG = (fillColor.g * 255).round();
+    final fillB = (fillColor.b * 255).round();
+    final fillA = (fillColor.a * 255).round();
     
     // Don't fill if clicking on same color
     if (targetR == fillR && targetG == fillG && targetB == fillB && targetA == fillA) {
@@ -347,10 +363,26 @@ class PaintCanvasState extends State<PaintCanvas> {
     return data!.buffer.asUint8List();
   }
   
-  void _regenerateFillMask() async {
-    // TODO: Regenerate fill mask from _fills list
-    // For now, just clear the mask when fills are undone
-    _fillMask = null;
+  Future<void> _regenerateFillMask() async {
+    if (_canvasSize == null) return;
+    final lastFillIndex = _operationHistory.lastIndexOf('fill');
+    if (lastFillIndex == -1) {
+      setState(() => _fillMask = null);
+      return;
+    }
+
+    // To regenerate properly, we need to re-run the fills in sequence
+    // This is complex because each fill depends on the state of the canvas at that time.
+    // For now, if we undo a fill, we clear the mask and we'll need a better strategy
+    // for multiple fills if the user does them frequently.
+    // However, the most important case is undoing the 'last' operation.
+    
+    setState(() => _fillMask = null);
+    
+    // If there are still fills left, we should ideally re-apply them.
+    // But since _fills doesn't store the resulting bitmap for each step, 
+    // we just clear it for now to avoid showing an outdated mask.
+    // In a future update, we could store a snapshot per fill operation.
   }
 
   @override
@@ -409,6 +441,7 @@ class PaintCanvasState extends State<PaintCanvas> {
                         painter: PaintCanvasPainter(
                           paths: _paths,
                           fills: _fills,
+                          operationHistory: List.from(_operationHistory),
                           currentPath: _currentPath,
                           fillMask: _fillMask,
                         ),

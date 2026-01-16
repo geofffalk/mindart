@@ -7,6 +7,7 @@ import '../config/theme.dart';
 import '../models/saved_session.dart';
 import '../services/database_service.dart';
 import '../widgets/gallery_grid.dart';
+import '../services/audio_recording_service.dart';
 
 /// Gallery screen showing saved meditation artwork
 class GalleryScreen extends StatefulWidget {
@@ -255,18 +256,34 @@ class SessionDetailScreen extends StatelessWidget {
                             const SizedBox(height: 16),
                           ],
                           Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                boxShadow: AppTheme.cardShadow,
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(16),
-                                child: Image.memory(
-                                  drawings[index],
-                                  fit: BoxFit.contain,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                    boxShadow: AppTheme.cardShadow,
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Image.memory(
+                                      drawings[index],
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                // Audio playback button overlay
+                                if (index < session.audioRecordings.length && session.audioRecordings[index] != null)
+                                  Positioned(
+                                    bottom: 16,
+                                    right: 16,
+                                    child: FloatingActionButton.small(
+                                      backgroundColor: AppTheme.calmBlue.withOpacity(0.8),
+                                      onPressed: () => AudioRecordingService().playAudio(session.audioRecordings[index]!),
+                                      child: const Icon(Icons.play_arrow, color: Colors.white),
+                                    ),
+                                  ),
+                              ],
                             ),
                           ),
                           const SizedBox(height: 16),

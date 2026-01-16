@@ -222,7 +222,7 @@ class AppTheme {
       
       // Snackbar
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: textPrimary,
+        backgroundColor: surface,
         contentTextStyle: GoogleFonts.inter(color: Colors.white),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
