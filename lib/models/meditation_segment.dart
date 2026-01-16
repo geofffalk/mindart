@@ -6,6 +6,7 @@ enum SegmentType {
   locating,
   scanning,
   opening,
+  openingFading,
   fading,
   contracting,
   relaxing,

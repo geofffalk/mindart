@@ -643,7 +643,7 @@
                    "title": "",
                    "description": "If you feel stuck, simply ask for help again, let go, and simply observe.",
                    "id":2,
-                   "segmentName":"opening",
+                   "segmentName":"openingFading",
                       "drawingIndex":0,
                       "drawingName":"",
                    "graphic": {

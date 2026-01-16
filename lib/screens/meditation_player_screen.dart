@@ -618,9 +618,14 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       return _buildLocatingAnimation(segment);
     }
     
-    // For OPENING segments: show pulsing circle at user-selected location
+    // For OPENING segments: show pulsing circle at user-selected location (continuous pulse)
     if (segment.segmentType == SegmentType.opening) {
-      return _buildOpeningAnimation(segment);
+      return _buildOpeningAnimation(segment, fadeAfterPulse: false);
+    }
+    
+    // For OPENING_FADING segments: show pulsing circle that fades after 3 pulses
+    if (segment.segmentType == SegmentType.openingFading) {
+      return _buildOpeningAnimation(segment, fadeAfterPulse: true);
     }
     
     // For REVIEWING segments: show saved drawings as horizontal carousel
@@ -817,6 +822,28 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                 size: const Size(580, 756),
               );
             }),
+            // User location circle if selected
+            // 50% bigger when user has made drawings
+            if (_userLocation != null)
+              Positioned(
+                left: _userLocation!.dx - (_savedDrawings.isNotEmpty ? 30 : 20),
+                top: _userLocation!.dy - (_savedDrawings.isNotEmpty ? 30 : 20),
+                child: Container(
+                  width: _savedDrawings.isNotEmpty ? 60 : 40,
+                  height: _savedDrawings.isNotEmpty ? 60 : 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withOpacity(0.8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white.withOpacity(0.5),
+                        blurRadius: 8,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             // Paint button positioned to the right
             Positioned(
               right: 40,
@@ -850,18 +877,18 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
   /// Builds locating animation for LOCATING segments
   /// Shows pulsing body outline, allows user to tap to select a location
   Widget _buildLocatingAnimation(MeditationSegment segment) {
-    // Get body path from loaded paths - use config startStrokeBitmapIds
-    List<Offset> bodyPath = [];
-    // Use the configured startStrokeBitmapIds directly (e.g., body_full)
-    for (final pathId in segment.graphic.startStrokeBitmapIds) {
+    // Get all body paths from loaded paths - expand IDs since body_full -> body_outer, body_inner
+    final List<List<Offset>> bodyPaths = [];
+    // Expand the configured startStrokeBitmapIds (e.g., body_full -> body_outer, body_inner)
+    final expandedIds = _expandPathIds(segment.graphic.startStrokeBitmapIds);
+    for (final pathId in expandedIds) {
       if (_loadedPaths[pathId] != null && _loadedPaths[pathId]!.isNotEmpty) {
-        bodyPath = _loadedPaths[pathId]!;
+        bodyPaths.add(_loadedPaths[pathId]!);
         debugPrint('📍 LOCATING using path: $pathId');
-        break;
       }
     }
     
-    debugPrint('📍 LOCATING animation - bodyPath has ${bodyPath.length} points');
+    debugPrint('📍 LOCATING animation - ${bodyPaths.length} paths loaded');
     
     // Calculate canvas dimensions - full width and available height
     final screenWidth = MediaQuery.of(context).size.width;
@@ -882,7 +909,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
         width: canvasWidth,
         height: canvasHeight,
         child: LocatingAnimation(
-          bodyPath: bodyPath,
+          bodyPaths: bodyPaths,
           canvasSize: Size(canvasWidth, canvasHeight),
           onLocationSelected: (location) {
             setState(() {
@@ -901,9 +928,9 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     );
   }
   
-  /// Builds opening animation for OPENING segments
+  /// Builds opening animation for OPENING and OPENING_FADING segments
   /// Shows pulsing circle at user-selected location from LOCATING segment
-  Widget _buildOpeningAnimation(MeditationSegment segment) {
+  Widget _buildOpeningAnimation(MeditationSegment segment, {required bool fadeAfterPulse}) {
     // If no user location was selected, show nothing
     if (_userLocation == null) {
       return const SizedBox(height: 120);
@@ -955,18 +982,17 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                 size: const Size(580, 756),
               );
             }),
-            // User drawing overlay at user location with pulse then fade effect
+            // User drawing overlay at user location
             if (_savedDrawings.isNotEmpty)
-              _buildOpeningDrawingOverlay(),
+              _buildOpeningDrawingOverlay(fadeAfterPulse: fadeAfterPulse),
           ],
         ),
       ),
     );
   }
   
-  /// Builds the fading user drawing overlay for OPENING segments
-  /// Pulses a few times then fades away
-  Widget _buildOpeningDrawingOverlay() {
+  /// Builds the user drawing overlay for OPENING/OPENING_FADING segments
+  Widget _buildOpeningDrawingOverlay({required bool fadeAfterPulse}) {
     if (_userLocation == null || _savedDrawings.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -977,10 +1003,15 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     return Positioned(
       left: _userLocation!.dx - circleRadius,
       top: _userLocation!.dy - circleRadius,
-      child: _PulsingFadeDrawing(
-        drawingData: drawingData,
-        circleRadius: circleRadius,
-      ),
+      child: fadeAfterPulse
+          ? _PulsingFadeDrawing(
+              drawingData: drawingData,
+              circleRadius: circleRadius,
+            )
+          : _ContinuousPulsingDrawing(
+              drawingData: drawingData,
+              circleRadius: circleRadius,
+            ),
     );
   }
   
@@ -1442,31 +1473,31 @@ class _PulsingFadeDrawingState extends State<_PulsingFadeDrawing>
   @override
   void initState() {
     super.initState();
-    // Total animation: 3 pulses (2.4s) + fade out (1s) = 3.4s
+    // Total animation: 3 pulses (4.8s) + fade out (1s) = 5.8s
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 3400),
+      duration: const Duration(milliseconds: 5800),
     );
     
-    // Scale: pulse 3 times (0-0.7 of animation = 2.4s), then stay at 1.0
+    // Scale: pulse 3 times (0-0.83 of animation = 4.8s), then stay at 1.0
     _scaleAnimation = TweenSequence<double>([
       // Pulse 1
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.3), weight: 7),
-      TweenSequenceItem(tween: Tween(begin: 1.3, end: 1.0), weight: 7),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.3), weight: 14),
+      TweenSequenceItem(tween: Tween(begin: 1.3, end: 1.0), weight: 14),
       // Pulse 2
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.3), weight: 7),
-      TweenSequenceItem(tween: Tween(begin: 1.3, end: 1.0), weight: 7),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.3), weight: 14),
+      TweenSequenceItem(tween: Tween(begin: 1.3, end: 1.0), weight: 14),
       // Pulse 3
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.3), weight: 7),
-      TweenSequenceItem(tween: Tween(begin: 1.3, end: 1.0), weight: 7),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.3), weight: 14),
+      TweenSequenceItem(tween: Tween(begin: 1.3, end: 1.0), weight: 14),
       // Hold during fade
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.0), weight: 30),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.0), weight: 17),
     ]).animate(_controller);
     
     // Opacity: stay at 1.0 for pulses, then fade to 0
     _opacityAnimation = TweenSequence<double>([
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.0), weight: 70),
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 30),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.0), weight: 84),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 17),
     ]).animate(_controller);
     
     _controller.forward();
@@ -1489,6 +1520,74 @@ class _PulsingFadeDrawingState extends State<_PulsingFadeDrawing>
             opacity: _opacityAnimation.value,
             child: child,
           ),
+        );
+      },
+      child: ClipOval(
+        child: SizedBox(
+          width: widget.circleRadius * 2,
+          height: widget.circleRadius * 2,
+          child: Image.memory(
+            widget.drawingData,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Continuous pulsing drawing overlay for OPENING segments (no fade)
+/// Pulses 20% slower than the fading version
+class _ContinuousPulsingDrawing extends StatefulWidget {
+  final Uint8List drawingData;
+  final double circleRadius;
+  
+  const _ContinuousPulsingDrawing({
+    required this.drawingData,
+    required this.circleRadius,
+  });
+  
+  @override
+  State<_ContinuousPulsingDrawing> createState() => _ContinuousPulsingDrawingState();
+}
+
+class _ContinuousPulsingDrawingState extends State<_ContinuousPulsingDrawing>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+  
+  @override
+  void initState() {
+    super.initState();
+    // 20% slower than fading version: 1.6s * 1.2 = 1.92s per pulse cycle
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1920),
+    );
+    
+    // Scale: continuous pulse from 1.0 to 1.3 and back
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.3).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+    
+    // Repeat forever
+    _controller.repeat(reverse: true);
+  }
+  
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: _scaleAnimation.value,
+          child: child,
         );
       },
       child: ClipOval(

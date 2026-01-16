@@ -8,8 +8,8 @@ class LocatingAnimation extends StatefulWidget {
   /// Duration of the pulse animation cycle
   final Duration pulseDuration;
   
-  /// Body path coordinates to display
-  final List<Offset> bodyPath;
+  /// Multiple body path coordinates to display (e.g., body_outer + body_inner)
+  final List<List<Offset>> bodyPaths;
   
   /// Called when user taps to select a location
   final ValueChanged<Offset>? onLocationSelected;
@@ -26,7 +26,7 @@ class LocatingAnimation extends StatefulWidget {
   const LocatingAnimation({
     super.key,
     this.pulseDuration = const Duration(milliseconds: 1500),
-    required this.bodyPath,
+    required this.bodyPaths,
     this.onLocationSelected,
     this.outlineColor = const Color(0xFF7CB342),
     this.circleColor = Colors.white,
@@ -101,7 +101,7 @@ class _LocatingAnimationState extends State<LocatingAnimation>
         builder: (context, child) {
           return CustomPaint(
             painter: _LocatingPainter(
-              bodyPath: widget.bodyPath,
+              bodyPaths: widget.bodyPaths,
               outlineColor: widget.outlineColor,
               circleColor: widget.circleColor,
               pulseOpacity: _selectedLocation == null ? _pulseAnimation.value : 1.0,
@@ -117,7 +117,7 @@ class _LocatingAnimationState extends State<LocatingAnimation>
 }
 
 class _LocatingPainter extends CustomPainter {
-  final List<Offset> bodyPath;
+  final List<List<Offset>> bodyPaths;
   final Color outlineColor;
   final Color circleColor;
   final double pulseOpacity;
@@ -125,7 +125,7 @@ class _LocatingPainter extends CustomPainter {
   final double circleProgress;
   
   _LocatingPainter({
-    required this.bodyPath,
+    required this.bodyPaths,
     required this.outlineColor,
     required this.circleColor,
     required this.pulseOpacity,
@@ -135,7 +135,7 @@ class _LocatingPainter extends CustomPainter {
   
   @override
   void paint(Canvas canvas, Size size) {
-    if (bodyPath.isEmpty) return;
+    if (bodyPaths.isEmpty) return;
     
     // Scale body path to canvas
     const originalWidth = 580.0;
@@ -161,20 +161,25 @@ class _LocatingPainter extends CustomPainter {
       ..strokeWidth = 8.0
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
     
-    final path = Path();
-    for (int i = 0; i < bodyPath.length; i++) {
-      final x = offsetX + bodyPath[i].dx * scale;
-      final y = offsetY + bodyPath[i].dy * scale;
-      if (i == 0) {
-        path.moveTo(x, y);
-      } else {
-        path.lineTo(x, y);
+    // Draw all body paths
+    for (final bodyPath in bodyPaths) {
+      if (bodyPath.isEmpty) continue;
+      
+      final path = Path();
+      for (int i = 0; i < bodyPath.length; i++) {
+        final x = offsetX + bodyPath[i].dx * scale;
+        final y = offsetY + bodyPath[i].dy * scale;
+        if (i == 0) {
+          path.moveTo(x, y);
+        } else {
+          path.lineTo(x, y);
+        }
       }
+      path.close();
+      
+      canvas.drawPath(path, glowPaint);
+      canvas.drawPath(path, outlinePaint);
     }
-    path.close();
-    
-    canvas.drawPath(path, glowPaint);
-    canvas.drawPath(path, outlinePaint);
     
     // Draw selection circle if location is selected
     if (selectedLocation != null && circleProgress > 0) {
