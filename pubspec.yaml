@@ -23,6 +23,7 @@ dependencies:
   permission_handler: ^11.1.0   # Mic permissions
   flutter_svg: ^2.0.9           # SVG stencil rendering
   image: ^4.1.7                 # Pixel manipulation for fill/eyedropper
+  shared_preferences: ^2.5.4
 
 dev_dependencies:
   flutter_test:
@@ -38,3 +39,4 @@ flutter:
     - assets/body_paths/
     - assets/images/body/
 
+    - assets/stencils/

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'config/theme.dart';
 import 'screens/home_screen.dart';
+import 'services/settings_service.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize settings service for user preferences
+  await SettingsService().init();
+  
   runApp(const MindArtApp());
 }
 

@@ -6,6 +6,7 @@ import '../models/meditation.dart';
 import '../models/meditation_segment.dart';
 import '../services/audio_service.dart';
 import '../services/meditation_service.dart';
+import '../services/settings_service.dart';
 import '../widgets/hand_scan_animation.dart';
 import '../widgets/path_animation.dart';
 import 'paint_screen.dart';
@@ -53,12 +54,14 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
   List<String> _currentStrokePaths = [];  // Stroke outlines to show
   List<String> _currentFillPaths = [];    // Filled regions to show
   List<String> _currentAnimationPaths = []; // Paths being animated
+  int _currentAnimationIndex = 0;       // Index of current animation path
   
   // Fill bitmap IDs to display (from endFillBitmapIds after animation)
   List<String> _currentFillBitmapIds = [];
+  bool _allAnimationsComplete = false; // Track if all path animations finished
   
-  // TODO: Get this from user settings
-  final String _genderPrefix = 'woman';
+  // Gender prefix for loading gender-specific assets (loaded from settings)
+  late String _genderPrefix;
   
   // Drawing persistence for fading segments
   final Map<int, Uint8List> _savedDrawings = {};
@@ -68,6 +71,9 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
   void initState() {
     super.initState();
     _sessionTime = DateTime.now().millisecondsSinceEpoch;
+    
+    // Load gender preference from settings
+    _genderPrefix = SettingsService().getGender();
     
     // Path animation controller - duration set when segment starts
     _pathAnimationController = AnimationController(
@@ -104,6 +110,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
         _meditation = meditation;
         _playerState = PlayerState.paused;
       });
+      // Autoplay meditation
+      _play();
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -143,9 +151,9 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     if (_loadedPaths.containsKey(pathId)) return; // Already loaded
     
     try {
-      // TODO: Use user's gender preference instead of hardcoded 'man'
-      // Use normalized (0-1) path coordinates that scale to the frame
-      final pathData = await _meditationService.loadNormalizedPath(pathId, 'man');
+      // TODO: Use user's gender preference instead of hardcoded 'woman'
+      // Use absolute coordinates (not normalized)
+      final pathData = await _meditationService.loadAbsolutePath(pathId, 'woman');
       if (pathData.isNotEmpty) {
         _loadedPaths[pathId] = pathData;
       }
@@ -175,6 +183,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       _currentFillPaths = fillIds;
       _currentAnimationPaths = animationIds;
       _currentFillBitmapIds = graphic.endFillBitmapIds;
+      _allAnimationsComplete = false; // Reset for new segment
       
       // Clear completed path if it's not in the new segment's config
       // This prevents showing animations from previous segments
@@ -184,7 +193,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
         _completedPathData = null;
       }
       
-      // For backwards compatibility, also set _currentPathData to the first animation path
+      // Set up for first animation path
+      _currentAnimationIndex = 0;
       if (animationIds.isNotEmpty && _loadedPaths.containsKey(animationIds.first)) {
         _currentPathData = _loadedPaths[animationIds.first];
       } else {
@@ -215,10 +225,16 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       await _loadPathForSegment(segment);
     }
     
-    // Start animation for segments that have animation paths configured
+    // Start path animation if this segment has animation paths
     if (segment.graphic.animationPathIds.isNotEmpty) {
-      _pathAnimationController.duration = Duration(seconds: segment.duration);
+      // Split duration among all animation paths for sequential playback
+      final pathCount = _currentAnimationPaths.length;
+      final durationPerPath = segment.duration ~/ pathCount.clamp(1, 999);
+      _pathAnimationController.duration = Duration(seconds: durationPerPath);
       _pathAnimationController.forward(from: 0.0);
+      
+      // Listen for animation completion to sequence through multiple paths
+      _pathAnimationController.addStatusListener(_onPathAnimationComplete);
     }
     
     // Start fade animation for fading segments
@@ -237,8 +253,41 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     }
   }
 
+  
+  void _onPathAnimationComplete(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      // Animation path completed, check if there are more paths to animate
+      if (_currentAnimationIndex + 1 < _currentAnimationPaths.length) {
+        // Move to next animation path
+        _currentAnimationIndex++;
+        final nextPathId = _currentAnimationPaths[_currentAnimationIndex];
+        
+        setState(() {
+          // Persist current completed path
+          if (_currentPathData != null) {
+            _completedPathData = _currentPathData;
+          }
+          // Load next path
+          _currentPathData = _loadedPaths[nextPathId];
+        });
+        
+        // Start animating the next path
+        _pathAnimationController.forward(from: 0.0);
+      } else {
+        // No more paths to animate - all animations complete
+        setState(() {
+          _allAnimationsComplete = true;
+        });
+      }
+      // If no more paths, the segment completion will be handled by audio or timer
+    }
+  }
+
   void _onSegmentComplete() {
     if (!mounted || _meditation == null) return;
+    
+    // Remove the animation listener to avoid duplicate calls
+    _pathAnimationController.removeStatusListener(_onPathAnimationComplete);
     
     // Persist the completed animation path for the next segment
     if (_currentPathData != null && _currentPathData!.isNotEmpty) {
@@ -248,6 +297,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     // Reset animation and elapsed time for next segment
     _pathAnimationController.reset();
     _currentPathData = null;
+    _currentAnimationIndex = 0;
     _segmentElapsedSeconds = 0;
     
     if (_meditation!.move(1)) {
@@ -291,6 +341,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     _audioService.resume();
     final segment = _meditation?.currentSegment;
     if (segment?.segmentType == SegmentType.focusing) {
+      // Re-attach listener for sequential animations
+      _pathAnimationController.addStatusListener(_onPathAnimationComplete);
       _pathAnimationController.forward();
     }
     setState(() => _playerState = PlayerState.playing);
@@ -656,9 +708,11 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     return AnimatedBuilder(
       animation: _pathAnimationController,
       builder: (context, child) {
-        return SizedBox(
-          width: 260,
-          height: 280,
+        return Align(
+          alignment: Alignment.centerRight,
+          child: SizedBox(
+            width: 580,
+            height: 760,
           child: Stack(
             children: [
               // Static stroke paths from segment configuration (e.g., body_outer, body_inner)
@@ -671,6 +725,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                   strokeColor: Colors.white24, // Subtle background
                   strokeWidth: pathId == 'body_outer' ? 2.0 : 1.5,
                   glowColor: Colors.transparent,
+                  useAbsoluteCoords: true,
+                  size: const Size(580, 760), // Fixed canvas size for absolute coords
                 );
               }),
               // Static fill paths from segment configuration (rendered as filled regions)
@@ -683,6 +739,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                   strokeColor: AppTheme.primary.withValues(alpha: 0.5),
                   strokeWidth: 2.0,
                   glowColor: Colors.transparent,
+                  useAbsoluteCoords: true,
+                  size: const Size(580, 760), // Fixed canvas size for absolute coords
                 );
               }),
               // Completed path from previous animation (persisted)
@@ -693,6 +751,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                   strokeColor: AppTheme.primary.withValues(alpha: 0.7),
                   strokeWidth: 2.5,
                   glowColor: Colors.transparent,
+                  useAbsoluteCoords: true,
+                  size: const Size(580, 760), // Fixed canvas size for absolute coords
                 ),
               // Animated chakra/body part path on top (only if path data exists)
               if (_currentPathData != null && _currentPathData!.isNotEmpty)
@@ -702,9 +762,12 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                   strokeColor: AppTheme.primary,
                   strokeWidth: 3.0,
                   glowColor: AppTheme.primaryLight,
+                  useAbsoluteCoords: true,
+                  size: const Size(580, 760), // Fixed canvas size for absolute coords
                 ),
               // Fill bitmap images (displayed after animation completes)
-              ..._currentFillBitmapIds.map((bitmapId) {
+              if (_allAnimationsComplete)
+                ..._currentFillBitmapIds.map((bitmapId) {
                 final assetPath = 'assets/images/body/${_genderPrefix}_$bitmapId.png';
                 return Image.asset(
                   assetPath,
@@ -717,6 +780,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
               }),
             ],
           ),
+        ),
         );
       },
     );

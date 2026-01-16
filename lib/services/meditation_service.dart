@@ -173,8 +173,8 @@ class MeditationService {
     }
   }
 
-  /// Load body path with absolute pixel coordinates (no normalization)
-  /// Returns the raw x,y coordinates from the CSV file
+  /// Load body path with raw absolute coordinates
+  /// No scaling or transformation - preserves exact spatial relationships
   Future<List<Offset>> loadAbsolutePath(String pathName, String model) async {
     try {
       final assetPath = 'assets/body_paths/${model}_$pathName.csv';

@@ -33,6 +33,8 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
   BrushSettings _brushSettings = BrushSettings.forStyle(BrushStyle.pen);
   bool _isSaving = false;
   bool _isToolbarExpanded = false;
+  Offset _toolbarPosition = const Offset(20, 50); // Draggable toolbar position
+  double _lastScale = 1.0; // Track pinch gesture scale
   
   late AnimationController _toolbarAnimController;
   late Animation<double> _toolbarAnimation;
@@ -245,20 +247,33 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
       ),
       body: Stack(
         children: [
-          // Full-screen canvas
-          Positioned.fill(
+          // Canvas with pinch-to-zoom and pan using InteractiveViewer
+          InteractiveViewer(
+            minScale: 0.5,
+            maxScale: 4.0,
+            boundaryMargin: const EdgeInsets.all(80),
             child: PaintCanvas(
               key: _canvasKey,
-              backgroundColor: Colors.white,
             ),
           ),
-
-          // Floating toolbar
+          // Draggable floating toolbar
           Positioned(
-            left: 16,
-            right: 16,
-            bottom: MediaQuery.of(context).padding.bottom + 16,
-            child: _buildFloatingToolbar(),
+            left: _toolbarPosition.dx,
+            top: _toolbarPosition.dy,
+            child: GestureDetector(
+              onPanUpdate: (details) {
+                setState(() {
+                  _toolbarPosition += details.delta;
+                  // Keep toolbar on screen
+                  final size = MediaQuery.of(context).size;
+                  _toolbarPosition = Offset(
+                    _toolbarPosition.dx.clamp(0, size.width - 200),
+                    _toolbarPosition.dy.clamp(0, size.height - 100),
+                  );
+                });
+              },
+              child: _buildFloatingToolbar(),
+            ),
           ),
         ],
       ),
