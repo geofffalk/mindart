@@ -22,11 +22,11 @@ class PathAnimation extends StatelessWidget {
   /// Glow blur radius
   final double glowRadius;
   
-  /// Whether to show fill at end of animation
-  final bool showEndFill;
+  /// Whether to show fill when animation completes
+  final bool showFillOnComplete;
   
-  /// Fill color when animation completes
-  final Color? endFillColor;
+  /// Fill color (used when showFillOnComplete is true and progress >= 1.0)
+  final Color? fillColor;
   
   /// Size to render the path in
   final Size? size;
@@ -43,8 +43,8 @@ class PathAnimation extends StatelessWidget {
     this.strokeWidth = 3.0,
     this.glowColor,
     this.glowRadius = 8.0,
-    this.showEndFill = false,
-    this.endFillColor,
+    this.showFillOnComplete = false,
+    this.fillColor,
     this.size,
     this.useAbsoluteCoords = false,
   });
@@ -60,8 +60,8 @@ class PathAnimation extends StatelessWidget {
         strokeWidth: strokeWidth,
         glowColor: glowColor,
         glowRadius: glowRadius,
-        showEndFill: showEndFill && progress >= 1.0,
-        endFillColor: endFillColor,
+        showFillOnComplete: showFillOnComplete && progress >= 1.0,
+        fillColor: fillColor,
         useAbsoluteCoords: useAbsoluteCoords,
       ),
     );
@@ -75,8 +75,8 @@ class _PathPainter extends CustomPainter {
   final double strokeWidth;
   final Color? glowColor;
   final double glowRadius;
-  final bool showEndFill;
-  final Color? endFillColor;
+  final bool showFillOnComplete;
+  final Color? fillColor;
   final bool useAbsoluteCoords;
 
   _PathPainter({
@@ -86,8 +86,8 @@ class _PathPainter extends CustomPainter {
     required this.strokeWidth,
     this.glowColor,
     required this.glowRadius,
-    required this.showEndFill,
-    this.endFillColor,
+    required this.showFillOnComplete,
+    this.fillColor,
     this.useAbsoluteCoords = false,
   });
 
@@ -122,12 +122,19 @@ class _PathPainter extends CustomPainter {
       path.lineTo(scaledPoints[i].dx, scaledPoints[i].dy);
     }
 
-    // Draw end fill if animation complete
-    if (showEndFill && endFillColor != null) {
-      // Close the path for filling
+    // Draw fill if animation complete and fill enabled
+    if (showFillOnComplete && fillColor != null) {
+      // Close the path for filling using same scaling as stroke
       final fullPath = Path();
       final allScaledPoints = pathPoints.map((p) {
-        return Offset(p.dx * size.width, p.dy * size.height);
+        if (useAbsoluteCoords) {
+          return Offset(
+            p.dx * size.width / sourceWidth,
+            p.dy * size.height / sourceHeight,
+          );
+        } else {
+          return Offset(p.dx * size.width, p.dy * size.height);
+        }
       }).toList();
       fullPath.moveTo(allScaledPoints.first.dx, allScaledPoints.first.dy);
       for (int i = 1; i < allScaledPoints.length; i++) {
@@ -135,8 +142,16 @@ class _PathPainter extends CustomPainter {
       }
       fullPath.close();
       
+      // Draw glow layer first (larger, blurred)
+      final glowFillPaint = Paint()
+        ..color = fillColor!.withValues(alpha: 0.6)
+        ..style = PaintingStyle.fill
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 15);
+      canvas.drawPath(fullPath, glowFillPaint);
+      
+      // Draw solid fill on top (brighter)
       final fillPaint = Paint()
-        ..color = endFillColor!.withValues(alpha: 0.3)
+        ..color = fillColor!.withValues(alpha: 0.7)
         ..style = PaintingStyle.fill;
       canvas.drawPath(fullPath, fillPaint);
     }

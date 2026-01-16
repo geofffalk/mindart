@@ -821,18 +821,25 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                           useAbsoluteCoords: true,
                           size: const Size(580, 756),
                         ),
-                      // Fill bitmaps
-                      if (_allAnimationsComplete) ..._currentFillBitmapIds.map((bitmapId) {
-                        final assetPath = 'assets/images/body/${_genderPrefix}_$bitmapId.png';
-                        return Positioned.fill(
-                          child: Image.asset(
-                            assetPath,
-                            fit: BoxFit.fill,
-                            errorBuilder: (context, error, stackTrace) {
-                              debugPrint('ERROR loading $assetPath: $error');
-                              return const SizedBox.shrink();
-                            },
-                          ),
+                      // Fill regions (code-driven, not bitmaps)
+                      if (_allAnimationsComplete) ..._currentFillBitmapIds.map((regionId) {
+                        // Load the path data for this region
+                        final pathData = _loadedPaths[regionId];
+                        if (pathData == null || pathData.isEmpty) {
+                          debugPrint('No path data for fill region: $regionId');
+                          return const SizedBox.shrink();
+                        }
+                        // Get fill color for this region (default to primary with alpha)
+                        final fillColor = _getFillColorForRegion(regionId);
+                        return PathAnimation(
+                          pathPoints: pathData,
+                          progress: 1.0,
+                          strokeColor: Colors.transparent,
+                          strokeWidth: 0,
+                          showFillOnComplete: true,
+                          fillColor: fillColor,
+                          useAbsoluteCoords: true,
+                          size: const Size(580, 756),
                         );
                       }),
                 ],
@@ -845,6 +852,23 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
   }
 
 
+
+  /// Returns the fill color for a body region (chakra colors)
+  Color _getFillColorForRegion(String regionId) {
+    // Chakra color mapping
+    const Map<String, Color> chakraColors = {
+      'feet': Colors.white,
+      'body_full': Colors.white24,
+      'base': Color(0xFF8B4513),      // Brown
+      'sacral': Color(0xFFFF4500),    // Orange-red
+      'solarplexus': Color(0xFFFFA500), // Orange
+      'heart': Color(0xFFFFD700),     // Yellow/gold
+      'throat': Color(0xFF00CED1),    // Cyan
+      'head': Color(0xFF4169E1),      // Royal blue
+      'crown': Color(0xFF9932CC),     // Purple
+    };
+    return chakraColors[regionId] ?? AppTheme.primary;
+  }
 
   String _formatTime(int seconds) {
     final minutes = seconds ~/ 60;

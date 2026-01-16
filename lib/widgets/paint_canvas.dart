@@ -147,15 +147,18 @@ class PaintCanvasState extends State<PaintCanvas> {
 
   /// Undo last stroke or fill (in order of creation)
   void undo() {
+    if (_operationHistory.isEmpty) return;
+    
     setState(() {
-      if (_operationHistory.isNotEmpty) {
-        final lastOp = _operationHistory.removeLast();
-        if (lastOp == 'path' && _paths.isNotEmpty) {
-          _paths.removeLast();
-        } else if (lastOp == 'fill' && _fills.isNotEmpty) {
-          _fills.removeLast();
-          _regenerateFillMask();
-        }
+      final lastOp = _operationHistory.removeLast();
+      if (lastOp == 'path' && _paths.isNotEmpty) {
+        // Create new list to force repaint (list identity change)
+        _paths.removeLast();
+        _paths = List.from(_paths);
+      } else if (lastOp == 'fill' && _fills.isNotEmpty) {
+        _fills.removeLast();
+        _fills = List.from(_fills);
+        _regenerateFillMask();
       }
     });
   }
