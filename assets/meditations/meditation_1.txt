@@ -23,11 +23,11 @@
                     "startStrokeBitmapIds": [],
                     "startFillBitmapIds": [],
                     "sequenceTiming": 43,
-                    "animationPathIds": [],
+                    "animationPathIds": ["meditating"],
                     "animationStyle":0,
                     "animationSpeed":100,
                     "endFillBitmapIds": [],
-                    "endStrokeBitmapIds":[]
+                    "endStrokeBitmapIds":["meditating"]
                                     },
                    "audioLocation": "relax1_1",
                    "duration": 12
@@ -37,7 +37,7 @@
                                    "title": "Step 1",
                                    "description": "Gently breathe in and out three times.",
                                    "id":0,
-                                   "segmentName":"reading",
+                                   "segmentName":"breathing",
                                     "drawingIndex":0,
                                     "drawingName":"",
                                    "graphic":   {
@@ -62,14 +62,14 @@
                                                   "drawingIndex":0,
                                                   "drawingName":"",
                                                  "graphic":   {
-                                                  "startStrokeBitmapIds": ["body_outer"],
+                                                  "startStrokeBitmapIds": ["body_full"],
                                                   "startFillBitmapIds": [],
                                                   "sequenceTiming": 0,
                                                   "animationPathIds": [],
                                                   "animationStyle":0,
                                                   "animationSpeed":50,
                                                   "endFillBitmapIds": [],
-                                                  "endStrokeBitmapIds":["body_outer"]
+                                                  "endStrokeBitmapIds":["body_full"]
                                                                   },
                                                  "audioLocation": "relax2_1",
                                                  "duration": 10
@@ -85,14 +85,14 @@
                     "drawingIndex":0,
                     "drawingName":"",
                    "graphic":   {
-                    "startStrokeBitmapIds": ["body_outer"],
+                    "startStrokeBitmapIds": ["body_full"],
                     "startFillBitmapIds": [],
                     "sequenceTiming": 0,
                     "animationPathIds": [],
                     "animationStyle":0,
                     "animationSpeed":200,
                     "endFillBitmapIds": [],
-                    "endStrokeBitmapIds":["body_outer"]
+                    "endStrokeBitmapIds":["body_full"]
                                     },
                    "audioLocation": "relax2_2",
                    "duration": 10
@@ -106,14 +106,14 @@
                     "drawingIndex":0,
                     "drawingName":"",
                    "graphic":   {
-                    "startStrokeBitmapIds": ["body_outer"],
+                    "startStrokeBitmapIds": ["body_full"],
                     "startFillBitmapIds": [],
                     "sequenceTiming": 0,
-                    "animationPathIds": ["body_outer"],
+                    "animationPathIds": ["body_full"],
                     "animationStyle":0,
                     "animationSpeed":26,
                     "endFillBitmapIds": [],
-                    "endStrokeBitmapIds":["body_outer"]
+                    "endStrokeBitmapIds":["body_full"]
                                     },
                    "audioLocation": "relax3_long",
                    "duration": 303

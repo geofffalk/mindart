@@ -10,7 +10,6 @@ enum SegmentType {
   contracting,
   relaxing,
   appearing,
-  cushion,
   breathing,
   reading;
 

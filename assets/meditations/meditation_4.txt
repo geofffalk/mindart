@@ -386,26 +386,6 @@
              "audioLocation": "trans_all_draw1_2",
                    "duration": 120
                                },
-             {
-                     "title": "",
-                     "description": "",
-                     "id":4,
-                     "segmentName":"fading",
-                     "drawingIndex":1,
-                     "drawingName":"",
-                     "graphic": {
-                           "startStrokeBitmapIds": ["body_full"],
-                           "startFillBitmapIds":[],
-                      "sequenceTiming": 0,
-                           "animationPathIds": [],
-                           "animationStyle":2,
-                           "animationSpeed":100,
-                           "endFillBitmapIds": [],
-                            "endStrokeBitmapIds": ["body_full"]
-                                           },
-                     "audioLocation": "stub",
-                     "duration": 5
-                                 },
 
              {
                      "title": "",
@@ -722,7 +702,7 @@
                                },
                  {
                        "title": "Step ",
-                       "description": "If you made drawings during this session, compare them by scrolling up and down. What differences are there between the two images?",
+                       "description": "If you made drawings during this session, compare them by swiping left and right. What differences are there between the two images?",
                            "id":17,
                        "segmentName":"reviewing",
                        "drawingIndex":0,

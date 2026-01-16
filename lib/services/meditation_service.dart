@@ -199,5 +199,80 @@ class MeditationService {
       return [];
     }
   }
+  
+  /// Load a JSON path file containing multiple named path arrays
+  /// Returns a map where keys are path names and values are coordinate lists
+  /// JSON format: { "paths": { "pathName": [[x1,y1], [x2,y2], ...], ... } }
+  Future<Map<String, List<Offset>>> loadJsonPaths(String fileName, String model) async {
+    try {
+      final assetPath = 'assets/body_paths/${model}_$fileName.json';
+      debugPrint('🔍 Loading JSON paths from: $assetPath');
+      final jsonString = await rootBundle.loadString(assetPath);
+      final jsonData = json.decode(jsonString) as Map<String, dynamic>;
+      
+      final result = <String, List<Offset>>{};
+      
+      final pathsData = jsonData['paths'] as Map<String, dynamic>?;
+      if (pathsData == null) {
+        debugPrint('⚠️ No "paths" key found in JSON');
+        return result;
+      }
+      
+      for (final entry in pathsData.entries) {
+        final pathName = entry.key;
+        final pointsList = entry.value as List<dynamic>;
+        final coordinates = <Offset>[];
+        
+        for (final point in pointsList) {
+          if (point is List && point.length >= 2) {
+            final x = (point[0] as num).toDouble();
+            final y = (point[1] as num).toDouble();
+            coordinates.add(Offset(x, y));
+          }
+        }
+        
+        result[pathName] = coordinates;
+        debugPrint('📍 Loaded path "$pathName" with ${coordinates.length} points');
+      }
+      
+      return result;
+    } on Exception catch (e) {
+      debugPrint('Error loading JSON paths $fileName: $e');
+      return {};
+    }
+  }
+  
+  /// Try to load path as JSON first, fall back to CSV if not found
+  /// For JSON, returns the first path in the file
+  /// For CSV, returns the single path array
+  Future<List<Offset>> loadAbsolutePathAuto(String pathName, String model) async {
+    // First try JSON format
+    try {
+      final jsonAssetPath = 'assets/body_paths/${model}_$pathName.json';
+      final jsonString = await rootBundle.loadString(jsonAssetPath);
+      final jsonData = json.decode(jsonString) as Map<String, dynamic>;
+      
+      final pathsData = jsonData['paths'] as Map<String, dynamic>?;
+      if (pathsData != null && pathsData.isNotEmpty) {
+        // Return the first path in the file
+        final firstPath = pathsData.values.first as List<dynamic>;
+        final coordinates = <Offset>[];
+        for (final point in firstPath) {
+          if (point is List && point.length >= 2) {
+            final x = (point[0] as num).toDouble();
+            final y = (point[1] as num).toDouble();
+            coordinates.add(Offset(x, y));
+          }
+        }
+        debugPrint('📍 Loaded JSON path $pathName with ${coordinates.length} points');
+        return coordinates;
+      }
+    } catch (_) {
+      // JSON not found or invalid, try CSV
+    }
+    
+    // Fall back to CSV format
+    return loadAbsolutePath(pathName, model);
+  }
 }
 

@@ -742,7 +742,7 @@
                                  },
                    {
                          "title": "Step ",
-                         "description": "If you made drawings during this session, compare them by scrolling up and down. What differences are there between the two images?",
+                         "description": "If you made drawings during this session, compare them by swiping left and right. What differences are there between the two images?",
                              "id":17,
                          "segmentName":"reviewing",
                          "drawingIndex":0,

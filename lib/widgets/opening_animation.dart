@@ -106,38 +106,8 @@ class _OpeningPainter extends CustomPainter {
   
   @override
   void paint(Canvas canvas, Size size) {
-    // Scale body path to canvas
-    const originalWidth = 580.0;
-    const originalHeight = 756.0;
-    final scaleX = size.width / originalWidth;
-    final scaleY = size.height / originalHeight;
-    final scale = math.min(scaleX, scaleY);
-    final offsetX = (size.width - originalWidth * scale) / 2;
-    final offsetY = (size.height - originalHeight * scale) / 2;
-    
-    // Draw body outline
-    if (bodyPath.isNotEmpty) {
-      final outlinePaint = Paint()
-        ..color = outlineColor.withOpacity(0.8)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 3.0
-        ..strokeCap = StrokeCap.round
-        ..strokeJoin = StrokeJoin.round;
-      
-      final path = Path();
-      for (int i = 0; i < bodyPath.length; i++) {
-        final x = offsetX + bodyPath[i].dx * scale;
-        final y = offsetY + bodyPath[i].dy * scale;
-        if (i == 0) {
-          path.moveTo(x, y);
-        } else {
-          path.lineTo(x, y);
-        }
-      }
-      path.close();
-      canvas.drawPath(path, outlinePaint);
-    }
-    // Circle removed - pulsing drawing overlay handles this separately
+    // No body outline - opening just shows the pulsing drawing overlay
+    // The drawing overlay is handled separately in meditation_player_screen
   }
   
   @override
