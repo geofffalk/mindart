@@ -334,15 +334,11 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
               key: _canvasKey,
             ),
           ),
-          // Floating toolbar (draggable)
+          // Fixed toolbar at bottom
           Positioned(
-            left: _toolbarPosition.dx,
-            top: _toolbarPosition.dy.isInfinite 
-                ? null 
-                : _toolbarPosition.dy,
-            bottom: _toolbarPosition.dy.isInfinite 
-                ? MediaQuery.of(context).padding.bottom + 16 
-                : null,
+            left: 16,
+            right: 16,
+            bottom: MediaQuery.of(context).padding.bottom + 16,
             child: _buildFloatingToolbar(),
           ),
         ],
@@ -354,76 +350,34 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
     return AnimatedBuilder(
       animation: _toolbarAnimation,
       builder: (context, _) {
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Drag handle on left
-            GestureDetector(
-              onPanUpdate: (details) {
-                setState(() {
-                  final screenSize = MediaQuery.of(context).size;
-                  double newX = _toolbarPosition.dx + details.delta.dx;
-                  double newY = _toolbarPosition.dy.isInfinite 
-                      ? (screenSize.height - 100) + details.delta.dy
-                      : _toolbarPosition.dy + details.delta.dy;
-                  // Clamp to screen bounds
-                  newX = newX.clamp(0.0, screenSize.width - 200);
-                  newY = newY.clamp(100.0, screenSize.height - 100);
-                  _toolbarPosition = Offset(newX, newY);
-                });
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 24),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryDark.withValues(alpha: 0.95),
-                  borderRadius: const BorderRadius.horizontal(left: Radius.circular(24)),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 4,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        color: Colors.white38,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                  ],
+        return Container(
+          decoration: BoxDecoration(
+            color: AppTheme.primaryDark.withValues(alpha: 0.95),
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Expanded options (sliders)
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                child: SizeTransition(
+                  sizeFactor: _toolbarAnimation,
+                  child: _buildExpandedOptions(),
                 ),
               ),
-            ),
-            // Main toolbar content
-            Container(
-              decoration: BoxDecoration(
-                color: AppTheme.primaryDark.withValues(alpha: 0.95),
-                borderRadius: const BorderRadius.horizontal(right: Radius.circular(24)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.3),
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Expanded options (sliders)
-                  ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-                    child: SizeTransition(
-                      sizeFactor: _toolbarAnimation,
-                      child: _buildExpandedOptions(),
-                    ),
-                  ),
-                  
-                  // Main toolbar row
-                  _buildMainToolbarRow(),
-                ],
-              ),
-            ),
-          ],
+              
+              // Main toolbar row
+              _buildMainToolbarRow(),
+            ],
+          ),
         );
       },
     );

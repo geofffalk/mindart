@@ -759,7 +759,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
               scale: 0.45,
               child: SizedBox(
                 width: 580,
-                height: 760,
+                height: 756,
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.green, width: 2), // DEBUG: Canvas bounds
@@ -777,7 +777,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                           strokeWidth: pathId == 'body_outer' ? 2.0 : 1.5,
                           glowColor: Colors.transparent,
                           useAbsoluteCoords: true,
-                          size: const Size(580, 760),
+                          size: const Size(580, 756),
                         );
                       }),
                       // Static fill paths
@@ -791,7 +791,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                           strokeWidth: 2.0,
                           glowColor: Colors.transparent,
                           useAbsoluteCoords: true,
-                          size: const Size(580, 760),
+                          size: const Size(580, 756),
                         );
                       }),
                       // Completed path
@@ -803,7 +803,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                           strokeWidth: 2.5,
                           glowColor: Colors.transparent,
                           useAbsoluteCoords: true,
-                          size: const Size(580, 760),
+                          size: const Size(580, 756),
                         ),
                       // Animated path
                       if (_currentPathData != null && _currentPathData!.isNotEmpty)
@@ -814,21 +814,21 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                           strokeWidth: 3.0,
                           glowColor: AppTheme.primaryLight,
                           useAbsoluteCoords: true,
-                          size: const Size(580, 760),
+                          size: const Size(580, 756),
                         ),
                       // Fill bitmaps
                       if (_allAnimationsComplete) ..._currentFillBitmapIds.map((bitmapId) {
                         final assetPath = 'assets/images/body/${_genderPrefix}_$bitmapId.png';
                         return Container(
                           width: 580,
-                          height: 760,
+                          height: 756,
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.red, width: 2), // DEBUG
                           ),
                           child: Image.asset(
                             assetPath,
                             width: 580,
-                            height: 760,
+                            height: 756,
                             fit: BoxFit.fill,
                             errorBuilder: (context, error, stackTrace) {
                               debugPrint('ERROR loading $assetPath: $error');

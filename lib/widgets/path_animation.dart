@@ -97,12 +97,18 @@ class _PathPainter extends CustomPainter {
 
     final pointsToDraw = (pathPoints.length * progress).ceil();
     if (pointsToDraw == 0) return;
-
-    // Scale points to canvas size (unless using absolute coordinates)
+    // Scale points to canvas size
+    // For absolute coordinates, scale from source bounds (580x756) to canvas size
+    const sourceWidth = 580.0;
+    const sourceHeight = 756.0;
+    
     final scaledPoints = pathPoints.take(pointsToDraw).map((p) {
       if (useAbsoluteCoords) {
-        // Use the raw pixel coordinates directly
-        return p;
+        // Scale from source coordinate space to canvas size
+        return Offset(
+          p.dx * size.width / sourceWidth,
+          p.dy * size.height / sourceHeight,
+        );
       } else {
         // Scale normalized 0-1 coordinates to canvas size
         return Offset(p.dx * size.width, p.dy * size.height);
