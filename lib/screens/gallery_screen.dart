@@ -1,0 +1,287 @@
+import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'dart:typed_data';
+import '../config/theme.dart';
+import '../models/saved_session.dart';
+import '../services/database_service.dart';
+import '../widgets/gallery_grid.dart';
+
+/// Gallery screen showing saved meditation artwork
+class GalleryScreen extends StatefulWidget {
+  const GalleryScreen({super.key});
+
+  @override
+  State<GalleryScreen> createState() => _GalleryScreenState();
+}
+
+class _GalleryScreenState extends State<GalleryScreen> {
+  final DatabaseService _databaseService = DatabaseService();
+  List<SavedSession> _sessions = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSessions();
+  }
+
+  Future<void> _loadSessions() async {
+    setState(() => _isLoading = true);
+    
+    try {
+      final sessions = await _databaseService.getAllSessions();
+      setState(() {
+        _sessions = sessions;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load gallery: $e')),
+        );
+      }
+    }
+  }
+
+  void _onSessionTap(SavedSession session) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SessionDetailScreen(session: session),
+      ),
+    );
+  }
+
+  void _onSessionLongPress(SavedSession session) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.primaryMedium,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: const Icon(Icons.share),
+            title: const Text('Share'),
+            onTap: () {
+              Navigator.pop(context);
+              _shareSession(session);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.delete, color: AppTheme.highlight),
+            title: const Text('Delete', style: TextStyle(color: AppTheme.highlight)),
+            onTap: () {
+              Navigator.pop(context);
+              _deleteSession(session);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _shareSession(SavedSession session) async {
+    final drawings = session.validDrawings;
+    if (drawings.isEmpty) return;
+
+    try {
+      final tempDir = await getTemporaryDirectory();
+      final files = <XFile>[];
+
+      for (int i = 0; i < drawings.length; i++) {
+        final file = File('${tempDir.path}/mindart_${session.sessionTime}_$i.png');
+        await file.writeAsBytes(drawings[i]);
+        files.add(XFile(file.path));
+      }
+
+      await Share.shareXFiles(
+        files,
+        text: 'My artwork from ${session.meditationTitle}',
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to share: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> _deleteSession(SavedSession session) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.primaryMedium,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('Delete Session?'),
+        content: const Text('This will permanently delete this session and all its artwork.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete', style: TextStyle(color: AppTheme.highlight)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      await _databaseService.deleteSession(session.sessionTime);
+      _loadSessions();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Your Gallery',
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '${_sessions.length} ${_sessions.length == 1 ? 'session' : 'sessions'}',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Colors.white60,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : RefreshIndicator(
+                  onRefresh: _loadSessions,
+                  child: GalleryGrid(
+                    sessions: _sessions,
+                    onSessionTap: _onSessionTap,
+                    onSessionLongPress: _onSessionLongPress,
+                  ),
+                ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Detail screen showing all artwork from a session
+class SessionDetailScreen extends StatelessWidget {
+  final SavedSession session;
+
+  const SessionDetailScreen({super.key, required this.session});
+
+  @override
+  Widget build(BuildContext context) {
+    final drawings = session.validDrawings;
+
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        title: Text(session.meditationTitle),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.share),
+            onPressed: () => _shareDrawings(context, drawings),
+          ),
+        ],
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: AppTheme.backgroundGradient,
+        ),
+        child: SafeArea(
+          child: drawings.isEmpty
+              ? const Center(
+                  child: Text('No artwork in this session'),
+                )
+              : PageView.builder(
+                  itemCount: drawings.length,
+                  itemBuilder: (context, index) {
+                    final label = index < session.drawingLabels.length
+                        ? session.drawingLabels[index]
+                        : null;
+
+                    return Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        children: [
+                          if (label != null && label.isNotEmpty) ...[
+                            Text(
+                              label,
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                            const SizedBox(height: 16),
+                          ],
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                boxShadow: AppTheme.cardShadow,
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: Image.memory(
+                                  drawings[index],
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            '${index + 1} of ${drawings.length}',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _shareDrawings(BuildContext context, List<Uint8List> drawings) async {
+    try {
+      final tempDir = await getTemporaryDirectory();
+      final files = <XFile>[];
+
+      for (int i = 0; i < drawings.length; i++) {
+        final file = File('${tempDir.path}/mindart_${session.sessionTime}_$i.png');
+        await file.writeAsBytes(drawings[i]);
+        files.add(XFile(file.path));
+      }
+
+      await Share.shareXFiles(
+        files,
+        text: 'My artwork from ${session.meditationTitle}',
+      );
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to share: $e')),
+        );
+      }
+    }
+  }
+}

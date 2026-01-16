@@ -1,0 +1,40 @@
+name: mindart_flutter
+description: MindArt - Guided meditation with painting interludes
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  just_audio: ^0.9.36
+  sqflite: ^2.3.0
+  path_provider: ^2.1.1
+  share_plus: ^7.2.1
+  provider: ^6.1.1
+  google_fonts: ^6.1.0
+  path: ^1.8.3
+  # Enhanced paint screen
+  image_picker: ^1.0.7          # Photo library access
+  flutter_sound: ^9.2.13        # Audio recording
+  permission_handler: ^11.1.0   # Mic permissions
+  flutter_svg: ^2.0.9           # SVG stencil rendering
+  image: ^4.1.7                 # Pixel manipulation for fill/eyedropper
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/audio/
+    - assets/meditations/
+    - assets/body_paths/
+    - assets/images/body/
+

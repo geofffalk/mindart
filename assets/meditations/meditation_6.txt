@@ -1,0 +1,868 @@
+{
+"title" : "Transforming an emotion",
+"id" : 6,
+"description" : "This is the transformation meditation",
+"author" : "Dekyi Lee Oldershaw",
+"touchRegionElement" : "body_outer",
+"coordinateBounds" : [580,756],
+"pathOnlyInventory" : [],
+"fillBitmapInventory" : ["body_full","feet","base","sacral","solarplexus","heart","throat","head","crown"],
+"fillBitmapColors":["brown","red","orange","yellow","green","aqua","blue","purple"],
+"strokeBitmapInventory" : ["body_outer"],
+"strokeBitmapColors":["white","white"],
+"segments": [
+
+               {
+                     "title": "",
+                     "description": "Take a deep breath.",
+                     "id":1,
+                     "segmentName":"reading",
+                      "drawingIndex":0,
+                      "drawingName":"",
+                     "graphic":   {
+                      "startStrokeBitmapIds": [],
+                      "startFillBitmapIds": [],
+                      "sequenceTiming": 0,
+                      "animationPathIds": [],
+                      "animationStyle":1,
+                      "animationSpeed":100,
+                      "endFillBitmapIds": [],
+                      "endStrokeBitmapIds":[]
+                                      },
+                     "audioLocation": "trans_sad1_1",
+                     "duration": 9
+                 },
+
+               {
+                     "title": "",
+                     "description": "Move your attention to a feeling of unhappiness you may have.",
+                     "id":1,
+                     "segmentName":"reading",
+                      "drawingIndex":0,
+                      "drawingName":"",
+                     "graphic":   {
+                      "startStrokeBitmapIds": [],
+                      "startFillBitmapIds": [],
+                      "sequenceTiming": 0,
+                      "animationPathIds": [],
+                      "animationStyle":1,
+                      "animationSpeed":100,
+                      "endFillBitmapIds": [],
+                      "endStrokeBitmapIds":[]
+                                      },
+                     "audioLocation": "trans_sad1_2",
+                     "duration": 11
+                 },
+
+{
+                      "title": "",
+                      "description": "It could be anger, fear, sadness, anxiety or a general unhappy feeling.",
+                      "id":1,
+                      "segmentName":"reading",
+                       "drawingIndex":0,
+                       "drawingName":"",
+                      "graphic":   {
+                       "startStrokeBitmapIds": [],
+                       "startFillBitmapIds": [],
+                       "sequenceTiming": 0,
+                       "animationPathIds": [],
+                       "animationStyle":1,
+                       "animationSpeed":100,
+                       "endFillBitmapIds": [],
+                       "endStrokeBitmapIds":[]
+                                       },
+                      "audioLocation": "trans_sad2_1",
+                      "duration": 18
+                  },
+{
+                      "title": "",
+                      "description": "No need to understand it. Just identify the feeling.",
+                      "id":1,
+                      "segmentName":"reading",
+                       "drawingIndex":0,
+                       "drawingName":"",
+                      "graphic":   {
+                       "startStrokeBitmapIds": [],
+                       "startFillBitmapIds": [],
+                       "sequenceTiming": 0,
+                       "animationPathIds": [],
+                       "animationStyle":1,
+                       "animationSpeed":100,
+                       "endFillBitmapIds": [],
+                       "endStrokeBitmapIds":[]
+                                       },
+                      "audioLocation": "trans_sad2_2",
+                      "duration": 14
+                  },
+                {
+                      "title": "",
+                      "description": "As you do this, let your focus move into your body.",
+                      "id":1,
+                      "segmentName":"appearing",
+                       "drawingIndex":0,
+                       "drawingName":"",
+                      "graphic":   {
+                       "startStrokeBitmapIds": [],
+                       "startFillBitmapIds": [],
+                       "sequenceTiming": 0,
+                       "animationPathIds": [],
+                       "animationStyle":1,
+                       "animationSpeed":50,
+                       "endFillBitmapIds": [],
+                       "endStrokeBitmapIds":["body_full"]
+                                       },
+                      "audioLocation": "trans_sad3_1",
+                      "duration": 10
+                  },
+                 {
+                       "title": "",
+                       "description": "Scan it for areas of tension or pain which are related to this unhappiness.",
+                       "id":1,
+                       "segmentName":"focusing",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                       "graphic":   {
+                        "startStrokeBitmapIds": ["body_full"],
+                        "startFillBitmapIds": [],
+                        "sequenceTiming": 0,
+                        "animationPathIds": [],
+                        "animationStyle":1,
+                        "animationSpeed":50,
+                        "endFillBitmapIds": [],
+                        "endStrokeBitmapIds":["body_full"]
+                                        },
+                       "audioLocation": "trans_sad3_2",
+                       "duration": 20
+                   },
+                {
+                      "title": "",
+                      "description": "You may feel it as tension, heat, or numbness.",
+                      "id":1,
+                      "segmentName":"focusing",
+                       "drawingIndex":0,
+                       "drawingName":"",
+                      "graphic":   {
+                       "startStrokeBitmapIds": ["body_full"],
+                       "startFillBitmapIds": [],
+                       "sequenceTiming": 0,
+                       "animationPathIds": [],
+                       "animationStyle":1,
+                       "animationSpeed":50,
+                       "endFillBitmapIds": [],
+                       "endStrokeBitmapIds":["body_full"]
+                                       },
+                      "audioLocation": "trans_sad3_3",
+                      "duration": 28
+          },
+               {
+                     "title": "",
+                     "description": "Scan for where the thoughts and emotions seem to reside in your body.",
+                     "id":1,
+                     "segmentName":"scanning",
+                      "drawingIndex":0,
+                      "drawingName":"",
+                     "graphic":   {
+                      "startStrokeBitmapIds": ["body_full"],
+                      "startFillBitmapIds": [],
+                      "sequenceTiming": 0,
+                      "animationPathIds": [],
+                      "animationStyle":1,
+                      "animationSpeed":400,
+                      "endFillBitmapIds": [],
+                      "endStrokeBitmapIds":["body_full"]
+                                      },
+                     "audioLocation": "trans_sad4_scanning",
+                     "duration": 30
+                 },
+
+    {
+                       "title": "Step 2",
+                       "description": "Now identify this area by touching its location on the screen.",
+                       "id":1,
+                       "segmentName":"locating",
+                          "drawingIndex":0,
+                          "drawingName":"",
+                       "graphic": {
+                           "startStrokeBitmapIds": ["body_full"],
+                           "startFillBitmapIds":[],
+                           "sequenceTiming": 5,
+                            "animationSpeed":600,
+                           "animationPathIds": [],
+                           "animationStyle":2,
+                           "endStrokeBitmapIds": ["body_full"]
+                                             },
+                       "audioLocation": "trans_all_locating",
+                       "duration": 22
+                                   },
+      {
+                        "title": "Step 9",
+                        "description": "Ask the sensation to show itself in more detail.",
+                            "id":8,
+                        "segmentName":"focusing",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                        "graphic":  {
+                            "startStrokeBitmapIds": ["body_full"],
+                                 "startFillBitmapIds":[],
+                                 "sequenceTiming": 0,
+                                 "animationPathIds": [],
+                             "animationSpeed":100,
+                                 "animationStyle":2,
+                                 "endFillBitmapIds": [],
+                                      "endStrokeBitmapIds": ["body_full"]
+
+                                               },
+               "audioLocation": "trans_all_focusingdeep_1",
+                     "duration": 10
+                                 },
+      {
+                        "title": "Step 9",
+                        "description": "Where exactly is the sensation? Close to the surface or deep inside?",
+                            "id":8,
+                        "segmentName":"focusing",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                        "graphic":  {
+                            "startStrokeBitmapIds": ["body_full"],
+                                 "startFillBitmapIds":[],
+                                 "sequenceTiming": 0,
+                                 "animationPathIds": [],
+                             "animationSpeed":100,
+                                 "animationStyle":2,
+                                 "endFillBitmapIds": [],
+                                      "endStrokeBitmapIds": ["body_full"]
+
+                                               },
+               "audioLocation": "trans_all_focusingdeep_2",
+                     "duration": 21
+                                 },
+      {
+                        "title": "Step 9",
+                        "description": "What is its size?",
+                            "id":8,
+                        "segmentName":"focusing",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                        "graphic":  {
+                            "startStrokeBitmapIds": ["body_full"],
+                                 "startFillBitmapIds":[],
+                                 "sequenceTiming": 0,
+                                 "animationPathIds": [],
+                             "animationSpeed":100,
+                                 "animationStyle":2,
+                                 "endFillBitmapIds": [],
+                                      "endStrokeBitmapIds": ["body_full"]
+
+                                               },
+               "audioLocation": "trans_all_focusingdeep_3",
+                     "duration": 23
+                                 },
+      {
+                        "title": "Step 9",
+                        "description": "What is its shape?",
+                            "id":8,
+                        "segmentName":"focusing",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                        "graphic":  {
+                            "startStrokeBitmapIds": ["body_full"],
+                                 "startFillBitmapIds":[],
+                                 "sequenceTiming": 0,
+                                 "animationPathIds": [],
+                             "animationSpeed":100,
+                                 "animationStyle":2,
+                                 "endFillBitmapIds": [],
+                                      "endStrokeBitmapIds": ["body_full"]
+
+                                               },
+               "audioLocation": "trans_all_focusingdeep_4",
+                     "duration": 18
+                                 },
+      {
+                        "title": "Step 9",
+                        "description": "If it had a color, what would that be?",
+                            "id":8,
+                        "segmentName":"focusing",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                        "graphic":  {
+                            "startStrokeBitmapIds": ["body_full"],
+                                 "startFillBitmapIds":[],
+                                 "sequenceTiming": 0,
+                                 "animationPathIds": [],
+                             "animationSpeed":100,
+                                 "animationStyle":2,
+                                 "endFillBitmapIds": [],
+                                      "endStrokeBitmapIds": ["body_full"]
+
+                                               },
+               "audioLocation": "trans_all_focusingdeep_5",
+                     "duration": 24
+                                 },
+      {
+                        "title": "Step 9",
+                        "description": "What is its texture and density?",
+                            "id":8,
+                        "segmentName":"focusing",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                        "graphic":  {
+                            "startStrokeBitmapIds": ["body_full"],
+                                 "startFillBitmapIds":[],
+                                 "sequenceTiming": 0,
+                                 "animationPathIds": [],
+                             "animationSpeed":100,
+                                 "animationStyle":2,
+                                 "endFillBitmapIds": [],
+                                      "endStrokeBitmapIds": ["body_full"]
+
+                                               },
+               "audioLocation": "trans_all_focusingdeep_6",
+                     "duration": 32
+                                 },
+      {
+                        "title": "Step 9",
+                        "description": "If it had its own emotions, what would they be?",
+                            "id":8,
+                        "segmentName":"focusing",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                        "graphic":  {
+                            "startStrokeBitmapIds": ["body_full"],
+                                 "startFillBitmapIds":[],
+                                 "sequenceTiming": 0,
+                                 "animationPathIds": [],
+                             "animationSpeed":100,
+                                 "animationStyle":2,
+                                 "endFillBitmapIds": [],
+                                      "endStrokeBitmapIds": ["body_full"]
+
+                                               },
+               "audioLocation": "trans_all_focusingdeep_7",
+                     "duration": 25
+                                 },
+      {
+                        "title": "Step 9",
+                        "description": "How old does it feel?",
+                            "id":8,
+                        "segmentName":"focusing",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                        "graphic":  {
+                            "startStrokeBitmapIds": ["body_full"],
+                                 "startFillBitmapIds":[],
+                                 "sequenceTiming": 0,
+                                 "animationPathIds": [],
+                             "animationSpeed":100,
+                                 "animationStyle":2,
+                                 "endFillBitmapIds": [],
+                                      "endStrokeBitmapIds": ["body_full"]
+
+                                               },
+               "audioLocation": "trans_all_focusingdeep_8",
+                     "duration": 18
+                                 },
+      {
+                        "title": "Step 9",
+                        "description": "If it feels old, check again. Does it feel old or ancient?",
+                            "id":8,
+                        "segmentName":"focusing",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                        "graphic":  {
+                            "startStrokeBitmapIds": ["body_full"],
+                                 "startFillBitmapIds":[],
+                                 "sequenceTiming": 0,
+                                 "animationPathIds": [],
+                             "animationSpeed":100,
+                                 "animationStyle":2,
+                                 "endFillBitmapIds": [],
+                                      "endStrokeBitmapIds": ["body_full"]
+
+                                               },
+               "audioLocation": "trans_all_focusingdeep_9",
+                     "duration": 15
+                                 },
+       {
+                         "title": "Step 9",
+                         "description": "What was its initial function or purpose?",
+                             "id":8,
+                         "segmentName":"focusing",
+                         "drawingIndex":0,
+                         "drawingName":"",
+                         "graphic":  {
+                             "startStrokeBitmapIds": ["body_full"],
+                                  "startFillBitmapIds":[],
+                                  "sequenceTiming": 0,
+                                  "animationPathIds": [],
+                              "animationSpeed":100,
+                                  "animationStyle":2,
+                                  "endFillBitmapIds": [],
+                                       "endStrokeBitmapIds": ["body_full"]
+
+                                                },
+                "audioLocation": "trans_all_focusingdeep_10",
+                      "duration": 32
+                                  },
+        {
+                          "title": "Step 9",
+                          "description": "Gently listen for an answer.",
+                              "id":8,
+                          "segmentName":"focusing",
+                          "drawingIndex":0,
+                          "drawingName":"",
+                          "graphic":  {
+                              "startStrokeBitmapIds": ["body_full"],
+                                   "startFillBitmapIds":[],
+                                   "sequenceTiming": 0,
+                                   "animationPathIds": [],
+                               "animationSpeed":100,
+                                   "animationStyle":2,
+                                   "endFillBitmapIds": [],
+                                        "endStrokeBitmapIds": ["body_full"]
+
+                                                 },
+                 "audioLocation": "trans_all_focusingdeep_11",
+                       "duration": 22
+                                   },
+        {
+                          "title": "Step 9",
+                          "description": "What does it know? Does it have any wisdom?",
+                              "id":8,
+                          "segmentName":"focusing",
+                          "drawingIndex":0,
+                          "drawingName":"",
+                          "graphic":  {
+                              "startStrokeBitmapIds": ["body_full"],
+                                   "startFillBitmapIds":[],
+                                   "sequenceTiming": 0,
+                                   "animationPathIds": [],
+                               "animationSpeed":100,
+                                   "animationStyle":2,
+                                   "endFillBitmapIds": [],
+                                        "endStrokeBitmapIds": ["body_full"]
+
+                                                 },
+                 "audioLocation": "trans_all_focusingdeep_12",
+                       "duration": 31
+                                   },
+         {
+                           "title": "Step 9",
+                           "description": "Do you still need it in its current form?",
+                               "id":8,
+                           "segmentName":"focusing",
+                           "drawingIndex":0,
+                           "drawingName":"",
+                           "graphic":  {
+                               "startStrokeBitmapIds": ["body_full"],
+                                    "startFillBitmapIds":[],
+                                    "sequenceTiming": 0,
+                                    "animationPathIds": [],
+                                "animationSpeed":100,
+                                    "animationStyle":2,
+                                    "endFillBitmapIds": [],
+                                         "endStrokeBitmapIds": ["body_full"]
+
+                                                  },
+                  "audioLocation": "trans_all_focusingdeep_13",
+                        "duration": 20
+                                    },
+      {
+                        "title": "Step 9",
+                        "description": "Now draw your experience as an image or words.",
+                            "id":8,
+                        "segmentName":"focusing",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                        "graphic":  {
+                "startStrokeBitmapIds": ["body_full"],
+                                 "startFillBitmapIds":[],
+                                 "sequenceTiming": 0,
+                            "animationSpeed":100,
+                                 "animationPathIds": [],
+                                 "animationStyle":2,
+                     "endStrokeBitmapIds": ["body_full"]
+
+                                               },
+               "audioLocation": "trans_all_draw1_1",
+                     "duration": 17
+                                 },
+      {
+                        "title": "Step 9",
+                        "description": "Press the paintbrush button when you're ready.",
+                            "id":8,
+                        "segmentName":"recording",
+                        "drawingIndex":1,
+                        "drawingName":"Before",
+                        "graphic":  {
+                "startStrokeBitmapIds": ["body_full"],
+                                 "startFillBitmapIds":[],
+                                 "sequenceTiming": 0,
+                            "animationSpeed":100,
+                                 "animationPathIds": [],
+                                 "animationStyle":2,
+                     "endStrokeBitmapIds": ["body_full"]
+
+                                               },
+               "audioLocation": "trans_all_draw1_2",
+                     "duration": 120
+                                 },
+               {
+                       "title": "",
+                       "description": "",
+                       "id":4,
+                       "segmentName":"fading",
+                       "drawingIndex":1,
+                       "drawingName":"",
+                       "graphic": {
+                             "startStrokeBitmapIds": ["body_full"],
+                             "startFillBitmapIds":[],
+                        "sequenceTiming": 0,
+                             "animationPathIds": [],
+                             "animationStyle":2,
+                             "animationSpeed":100,
+                             "endFillBitmapIds": [],
+                              "endStrokeBitmapIds": ["body_full"]
+                                             },
+                       "audioLocation": "stub",
+                       "duration": 5
+                                   },
+
+               {
+                       "title": "",
+                       "description": "Take a deep breath and drop your focus back into this area.",
+                       "id":4,
+                       "segmentName":"focusing",
+                       "drawingIndex":0,
+                       "drawingName":"",
+                       "graphic": {
+                             "startStrokeBitmapIds": ["body_full"],
+                             "startFillBitmapIds":[],
+                        "sequenceTiming": 0,
+                             "animationPathIds": [],
+                             "animationStyle":2,
+                             "animationSpeed":100,
+                             "endFillBitmapIds": [],
+                              "endStrokeBitmapIds": ["body_full"]
+                                             },
+                       "audioLocation": "trans_all_focusagain_1",
+                       "duration": 18
+                                   },
+               {
+                       "title": "",
+                       "description": "Check to see whether you are willing to let it change.",
+                       "id":4,
+                       "segmentName":"focusing",
+                       "drawingIndex":0,
+                       "drawingName":"",
+                       "graphic": {
+                             "startStrokeBitmapIds": ["body_full"],
+                             "startFillBitmapIds":[],
+                        "sequenceTiming": 0,
+                             "animationPathIds": [],
+                             "animationStyle":2,
+                             "animationSpeed":100,
+                             "endFillBitmapIds": [],
+                              "endStrokeBitmapIds": ["body_full"]
+                                             },
+                       "audioLocation": "trans_all_focusagain_2",
+                       "duration": 15
+                                   },
+                {
+                        "title": "",
+                        "description": "This may have already started. You only need to be a little willing.",
+                        "id":4,
+                        "segmentName":"focusing",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                        "graphic": {
+                              "startStrokeBitmapIds": ["body_full"],
+                              "startFillBitmapIds":[],
+                         "sequenceTiming": 0,
+                              "animationPathIds": [],
+                              "animationStyle":2,
+                              "animationSpeed":100,
+                              "endFillBitmapIds": [],
+                               "endStrokeBitmapIds": ["body_full"]
+                                              },
+                        "audioLocation": "trans_all_focusagain_3",
+                        "duration": 10
+                                    },
+                {
+                        "title": "",
+                        "description": "Like a door, you only need to be a little open.",
+                        "id":4,
+                        "segmentName":"focusing",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                        "graphic": {
+                              "startStrokeBitmapIds": ["body_full"],
+                              "startFillBitmapIds":[],
+                         "sequenceTiming": 0,
+                              "animationPathIds": [],
+                              "animationStyle":2,
+                              "animationSpeed":100,
+                              "endFillBitmapIds": [],
+                               "endStrokeBitmapIds": ["body_full"]
+                                              },
+                        "audioLocation": "trans_all_focusagain_4",
+                        "duration": 17
+                                    },
+   {
+                    "title": "",
+                    "description": "Now, ask for help.",
+                    "id":2,
+                    "segmentName":"focusing",
+                       "drawingIndex":0,
+                       "drawingName":"",
+                    "graphic": {
+                        "startStrokeBitmapIds": ["body_full"],
+                        "startFillBitmapIds":[],
+                      "sequenceTiming": 5,
+                            "animationSpeed":120,
+                        "animationPathIds": [],
+                        "animationStyle":2,
+                      "endStrokeBitmapIds": ["body_full"]
+                                          },
+                    "audioLocation": "trans_all_askforhelp_1",
+                    "duration": 8
+                                },
+    {
+                     "title": "",
+                     "description": "Ask for help from your own inner strength, inner wisdom...",
+                     "id":2,
+                     "segmentName":"focusing",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                     "graphic": {
+                         "startStrokeBitmapIds": ["body_full"],
+                         "startFillBitmapIds":[],
+                       "sequenceTiming": 5,
+                             "animationSpeed":120,
+                         "animationPathIds": [],
+                         "animationStyle":2,
+                       "endStrokeBitmapIds": ["body_full"]
+                                           },
+                     "audioLocation": "trans_all_askforhelp_2",
+                     "duration": 8
+                                 },
+    {
+                     "title": "",
+                     "description": "Or that part of you that's connected with a power greater than yourself...",
+                     "id":2,
+                     "segmentName":"focusing",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                     "graphic": {
+                         "startStrokeBitmapIds": ["body_full"],
+                         "startFillBitmapIds":[],
+                       "sequenceTiming": 5,
+                             "animationSpeed":120,
+                         "animationPathIds": [],
+                         "animationStyle":2,
+                       "endStrokeBitmapIds": ["body_full"]
+                                           },
+                     "audioLocation": "trans_all_askforhelp_3",
+                     "duration": 8
+                                 },
+
+   {
+                    "title": "",
+                    "description": "...love and compassion...",
+                    "id":2,
+                    "segmentName":"focusing",
+                       "drawingIndex":0,
+                       "drawingName":"",
+                    "graphic": {
+                        "startStrokeBitmapIds": ["body_full"],
+                        "startFillBitmapIds":[],
+                      "sequenceTiming": 5,
+                            "animationSpeed":100,
+                        "animationPathIds": [],
+                        "animationStyle":2,
+                      "endStrokeBitmapIds": ["body_full"]
+                                          },
+                    "audioLocation": "trans_all_askforhelp_4",
+                    "duration": 6
+                                },
+   {
+                    "title": "",
+                    "description": "Ask for help and let it come in any way that seems appropriate.",
+                    "id":2,
+                    "segmentName":"focusing",
+                       "drawingIndex":0,
+                       "drawingName":"",
+                    "graphic": {
+                        "startStrokeBitmapIds": ["body_full"],
+                        "startFillBitmapIds":[],
+                      "sequenceTiming": 5,
+                            "animationSpeed":100,
+                        "animationPathIds": [],
+                        "animationStyle":2,
+                      "endStrokeBitmapIds": ["body_full"]
+                                          },
+                    "audioLocation": "trans_all_askforhelp_5",
+                    "duration": 9
+                                },
+   {
+                    "title": "",
+                    "description": "Relax and observe any changes in the image or feeling.",
+                    "id":2,
+                    "segmentName":"opening",
+                       "drawingIndex":0,
+                       "drawingName":"",
+                    "graphic": {
+                        "startStrokeBitmapIds": ["body_full"],
+                        "startFillBitmapIds":[],
+                      "sequenceTiming": 5,
+                            "animationSpeed":100,
+                        "animationPathIds": [],
+                        "animationStyle":2,
+                      "endStrokeBitmapIds": ["body_full"]
+                                          },
+                    "audioLocation": "trans_all_askforhelp_6",
+                    "duration": 25
+                                },
+   {
+                     "title": "",
+                     "description": "Let go of any expectations.",
+                     "id":2,
+                     "segmentName":"opening",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                     "graphic": {
+                         "startStrokeBitmapIds": ["body_full"],
+                         "startFillBitmapIds":[],
+                       "sequenceTiming": 5,
+                             "animationSpeed":100,
+                         "animationPathIds": [],
+                         "animationStyle":2,
+                       "endStrokeBitmapIds": ["body_full"]
+                                           },
+                     "audioLocation": "trans_all_askforhelp_7",
+                     "duration": 15
+                                 },
+   {
+                     "title": "",
+                     "description": "Let yourself move out of the way and observe what's happening.",
+                     "id":2,
+                     "segmentName":"opening",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                     "graphic": {
+                         "startStrokeBitmapIds": ["body_full"],
+                         "startFillBitmapIds":[],
+                       "sequenceTiming": 5,
+                             "animationSpeed":100,
+                         "animationPathIds": [],
+                         "animationStyle":2,
+                       "endStrokeBitmapIds": ["body_full"]
+                                           },
+                     "audioLocation": "trans_all_askforhelp_8",
+                     "duration": 10
+                                 },
+   {
+                     "title": "",
+                     "description": "Take the next few minutes to observe the image or feeling as you ask for help.",
+                     "id":2,
+                     "segmentName":"opening",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                     "graphic": {
+                         "startStrokeBitmapIds": ["body_full"],
+                         "startFillBitmapIds":[],
+                       "sequenceTiming": 5,
+                             "animationSpeed":100,
+                         "animationPathIds": [],
+                         "animationStyle":2,
+                       "endStrokeBitmapIds": ["body_full"]
+                                           },
+                     "audioLocation": "trans_all_askforhelp_9",
+                     "duration": 40
+                                 },
+   {
+                     "title": "",
+                     "description": "If you feel stuck, simply ask for help again, let go, and simply observe.",
+                     "id":2,
+                     "segmentName":"opening",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                     "graphic": {
+                         "startStrokeBitmapIds": ["body_full"],
+                         "startFillBitmapIds":[],
+                       "sequenceTiming": 5,
+                             "animationSpeed":100,
+                         "animationPathIds": [],
+                         "animationStyle":2,
+                       "endStrokeBitmapIds": ["body_full"]
+                                           },
+                     "audioLocation": "trans_all_askforhelp_10",
+                     "duration": 44
+                                 },
+
+      {
+                        "title": "Step 9",
+                        "description": "Now document any images, key words or feelings to capture your experience.",
+                            "id":8,
+                        "segmentName":"opening",
+                        "drawingIndex":0,
+                        "drawingName":"",
+                        "graphic":  {
+                "startStrokeBitmapIds": ["body_full"],
+                                 "startFillBitmapIds":[],
+                                 "sequenceTiming": 0,
+                                  "animationSpeed":100,
+                                 "animationPathIds": [],
+                                 "animationStyle":2,
+                     "endStrokeBitmapIds": ["body_full"]
+
+                                               },
+               "audioLocation": "trans_all_draw2_1",
+                     "duration": 13
+                                 },
+
+      {
+                        "title": "Step 9",
+                        "description": "Press the paintbrush button to begin.",
+                            "id":8,
+                        "segmentName":"recording",
+                        "drawingIndex":2,
+                        "drawingName":"After",
+                        "graphic":  {
+                "startStrokeBitmapIds": ["body_full"],
+                                 "startFillBitmapIds":[],
+                                 "sequenceTiming": 0,
+                                 "animationSpeed":100,
+                                 "animationPathIds": [],
+                                 "animationStyle":2,
+                     "endStrokeBitmapIds": ["body_full"]
+
+                                               },
+               "audioLocation": "trans_all_draw2_2",
+                     "duration": 120
+                                 },
+                   {
+                         "title": "Step ",
+                         "description": "If you made drawings during this session, compare them by scrolling up and down. What differences are there between the two images?",
+                             "id":17,
+                         "segmentName":"reviewing",
+                         "drawingIndex":0,
+                         "drawingName":"",
+                         "graphic":  {
+                                 "startStrokeBitmapIds": ["body_full"],
+                                  "startFillBitmapIds":[],
+                         "sequenceTiming": 0,
+                                  "animationPathIds": [],
+                                  "animationStyle":2,
+                                  "endStrokeBitmapIds": ["body_full"]
+                                                },
+                         "audioLocation": "trans_all_review",
+                         "duration": 140
+                                     }
+
+
+
+
+  ]
+
+  }
