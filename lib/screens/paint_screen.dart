@@ -161,72 +161,6 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
     );
   }
 
-  void _onStencilTap() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppTheme.primaryDark,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Choose a Stencil',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildStencilOption(context, 'Circle', Icons.circle_outlined),
-                _buildStencilOption(context, 'Heart', Icons.favorite_outline),
-                _buildStencilOption(context, 'Star', Icons.star_outline),
-                _buildStencilOption(context, 'Mandala', Icons.blur_circular),
-              ],
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
-      ),
-    );
-  }
-  
-  Widget _buildStencilOption(BuildContext context, String name, IconData icon) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('$name stencil selected'),
-            duration: const Duration(seconds: 1),
-          ),
-        );
-        // TODO: Apply stencil to canvas
-      },
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(icon, color: Colors.white, size: 32),
-          ),
-          const SizedBox(height: 8),
-          Text(name, style: const TextStyle(color: Colors.white70, fontSize: 12)),
-        ],
-      ),
-    );
-  }
 
   Future<void> _onSave() async {
     if (_isSaving) return;
@@ -385,48 +319,36 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
 
   Widget _buildMainToolbarRow() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           // Pen tool
-          _FloatingToolButton(
+          _ToolButton(
             icon: Icons.edit,
-            label: 'Pen',
             isSelected: _brushSettings.style == BrushStyle.pen,
             onTap: () => _onBrushStyleChanged(BrushStyle.pen),
           ),
           
           // Fill tool
-          _FloatingToolButton(
+          _ToolButton(
             icon: Icons.format_color_fill,
-            label: 'Fill',
             isSelected: _brushSettings.style == BrushStyle.fill,
             onTap: () => _onBrushStyleChanged(BrushStyle.fill),
           ),
           
           // Eraser tool
-          _FloatingToolButton(
+          _ToolButton(
             icon: Icons.auto_fix_normal,
-            label: 'Erase',
             isSelected: _brushSettings.style == BrushStyle.eraser,
             onTap: () => _onBrushStyleChanged(BrushStyle.eraser),
           ),
           
           // Color button
-          _FloatingToolButton(
+          _ToolButton(
             icon: Icons.palette,
-            label: 'Color',
             color: _brushSettings.color,
             onTap: _onColorTap,
-          ),
-          
-          
-          // Stencil
-          _FloatingToolButton(
-            icon: Icons.auto_awesome,
-            label: 'Stencil',
-            onTap: _onStencilTap,
           ),
         ],
       ),
@@ -471,16 +393,14 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
   }
 }
 
-class _FloatingToolButton extends StatelessWidget {
+class _ToolButton extends StatelessWidget {
   final IconData icon;
-  final String label;
   final Color? color;
   final bool isSelected;
   final VoidCallback onTap;
 
-  const _FloatingToolButton({
+  const _ToolButton({
     required this.icon,
-    required this.label,
     this.color,
     this.isSelected = false,
     required this.onTap,
@@ -492,47 +412,33 @@ class _FloatingToolButton extends StatelessWidget {
     
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 150),
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: isColorButton 
-                  ? color 
-                  : (isSelected ? AppTheme.calmBlue : Colors.white.withValues(alpha: 0.1)),
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: isSelected ? Colors.white : Colors.white30,
-                width: isSelected ? 2 : 1,
-              ),
-              boxShadow: isColorButton ? [
-                BoxShadow(
-                  color: color!.withValues(alpha: 0.4),
-                  blurRadius: 8,
-                ),
-              ] : null,
-            ),
-            child: Icon(
-              icon,
-              color: isColorButton 
-                  ? _getContrastColor(color!) 
-                  : Colors.white,
-              size: 20,
-            ),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          color: isColorButton 
+              ? color 
+              : (isSelected ? AppTheme.calmBlue : Colors.white.withValues(alpha: 0.1)),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: isSelected ? Colors.white : Colors.white30,
+            width: isSelected ? 2 : 1,
           ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              color: isSelected ? Colors.white : Colors.white60,
-              fontSize: 10,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+          boxShadow: isColorButton ? [
+            BoxShadow(
+              color: color!.withValues(alpha: 0.4),
+              blurRadius: 8,
             ),
-          ),
-        ],
+          ] : null,
+        ),
+        child: Icon(
+          icon,
+          color: isColorButton 
+              ? _getContrastColor(color!) 
+              : Colors.white,
+          size: 20,
+        ),
       ),
     );
   }

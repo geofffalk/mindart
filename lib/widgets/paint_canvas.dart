@@ -79,9 +79,10 @@ class PaintCanvasPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant PaintCanvasPainter oldDelegate) {
-    return oldDelegate.paths != paths || 
+    // Compare list lengths since we modify in place
+    return oldDelegate.paths.length != paths.length || 
            oldDelegate.currentPath != currentPath ||
-           oldDelegate.fills != fills ||
+           oldDelegate.fills.length != fills.length ||
            oldDelegate.fillMask != fillMask;
   }
 }

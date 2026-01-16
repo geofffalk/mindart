@@ -7,12 +7,14 @@ class GalleryGrid extends StatelessWidget {
   final List<SavedSession> sessions;
   final void Function(SavedSession session) onSessionTap;
   final void Function(SavedSession session)? onSessionLongPress;
+  final bool isEditMode;
 
   const GalleryGrid({
     super.key,
     required this.sessions,
     required this.onSessionTap,
     this.onSessionLongPress,
+    this.isEditMode = false,
   });
 
   @override
@@ -61,6 +63,7 @@ class GalleryGrid extends StatelessWidget {
           onLongPress: onSessionLongPress != null 
             ? () => onSessionLongPress!(sessions[index])
             : null,
+          isEditMode: isEditMode,
         );
       },
     );
@@ -71,11 +74,13 @@ class _GalleryItem extends StatefulWidget {
   final SavedSession session;
   final VoidCallback onTap;
   final VoidCallback? onLongPress;
+  final bool isEditMode;
 
   const _GalleryItem({
     required this.session,
     required this.onTap,
     this.onLongPress,
+    this.isEditMode = false,
   });
 
   @override
@@ -124,21 +129,23 @@ class _GalleryItemState extends State<_GalleryItem>
         builder: (context, child) {
           return Transform.scale(
             scale: _scaleAnimation.value,
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppTheme.primaryMedium,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryMedium,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
                   // Image preview
                   Expanded(
                     child: ClipRRect(
@@ -213,8 +220,35 @@ class _GalleryItemState extends State<_GalleryItem>
                       ],
                     ),
                   ),
-                ],
-              ),
+                    ],
+                  ),
+                ),
+                // Delete badge in edit mode
+                if (widget.isEditMode)
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      width: 28,
+                      height: 28,
+                      decoration: BoxDecoration(
+                        color: AppTheme.highlight,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 18,
+                      ),
+                    ),
+                  ),
+              ],
             ),
           );
         },

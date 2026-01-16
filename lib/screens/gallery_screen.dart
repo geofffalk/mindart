@@ -20,6 +20,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
   final DatabaseService _databaseService = DatabaseService();
   List<SavedSession> _sessions = [];
   bool _isLoading = true;
+  bool _isEditMode = false;
 
   @override
   void initState() {
@@ -47,11 +48,16 @@ class _GalleryScreenState extends State<GalleryScreen> {
   }
 
   void _onSessionTap(SavedSession session) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => SessionDetailScreen(session: session),
-      ),
-    );
+    if (_isEditMode) {
+      // In edit mode, tapping deletes
+      _deleteSession(session);
+    } else {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => SessionDetailScreen(session: session),
+        ),
+      );
+    }
   }
 
   void _onSessionLongPress(SavedSession session) {
@@ -146,22 +152,38 @@ class _GalleryScreenState extends State<GalleryScreen> {
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Your Gallery',
-                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Your Gallery',
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${_sessions.length} ${_sessions.length == 1 ? 'session' : 'sessions'}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.white60,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 4),
-              Text(
-                '${_sessions.length} ${_sessions.length == 1 ? 'session' : 'sessions'}',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white60,
+              if (_sessions.isNotEmpty)
+                TextButton(
+                  onPressed: () => setState(() => _isEditMode = !_isEditMode),
+                  child: Text(
+                    _isEditMode ? 'Done' : 'Edit',
+                    style: TextStyle(
+                      color: _isEditMode ? AppTheme.highlight : AppTheme.calmBlue,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
-              ),
             ],
           ),
         ),
@@ -174,6 +196,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                     sessions: _sessions,
                     onSessionTap: _onSessionTap,
                     onSessionLongPress: _onSessionLongPress,
+                    isEditMode: _isEditMode,
                   ),
                 ),
         ),

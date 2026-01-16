@@ -743,29 +743,34 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     return AnimatedBuilder(
       animation: _pathAnimationController,
       builder: (context, child) {
-        // Calculate available height and position animation above text
+        // Calculate canvas size filling available space from top to text area
+        final screenWidth = MediaQuery.of(context).size.width;
         final screenHeight = MediaQuery.of(context).size.height;
-        final descriptionHeight = 120; // Approximate height of description area
-        final paddingBottom = MediaQuery.of(context).padding.bottom;
-        final availableHeight = screenHeight - descriptionHeight - paddingBottom - 100;
-        final scaledAnimationHeight = 760 * 0.45; // 342px
-        final verticalOffset = -(availableHeight - scaledAnimationHeight) / 2 - 10;
+        final topPadding = MediaQuery.of(context).padding.top;
+        final bottomPadding = MediaQuery.of(context).padding.bottom;
+        final textAreaHeight = 280; // Text + controls at bottom
+        final closeButtonHeight = 50; // X button at top
+        final availableHeight = screenHeight - topPadding - closeButtonHeight - textAreaHeight - bottomPadding;
+        
+        // Fill screen width, calculate height for 5:9 aspect ratio (width:height)
+        double canvasWidth = screenWidth;
+        double canvasHeight = canvasWidth * (9.0 / 5.0); // 5:9 means height = width * 9/5
+        
+        // If too tall for available space, constrain by height
+        if (canvasHeight > availableHeight) {
+          canvasHeight = availableHeight;
+          canvasWidth = canvasHeight * (5.0 / 9.0);
+        }
         
         return Align(
-          alignment: Alignment.centerRight,
-          child: Transform.translate(
-            offset: Offset(0, verticalOffset),
-            child: Transform.scale(
-              scale: 0.45,
-              child: SizedBox(
-                width: 580,
-                height: 756,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.green, width: 2), // DEBUG: Canvas bounds
-                  ),
-                  child: Stack(
-                    children: [
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: EdgeInsets.only(top: topPadding + closeButtonHeight),
+            child: SizedBox(
+              width: canvasWidth,
+              height: canvasHeight,
+              child: Stack(
+                children: [
                       // Static stroke paths
                       ..._currentStrokePaths.map((pathId) {
                         final pathData = _loadedPaths[pathId];
@@ -819,16 +824,9 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                       // Fill bitmaps
                       if (_allAnimationsComplete) ..._currentFillBitmapIds.map((bitmapId) {
                         final assetPath = 'assets/images/body/${_genderPrefix}_$bitmapId.png';
-                        return Container(
-                          width: 580,
-                          height: 756,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.red, width: 2), // DEBUG
-                          ),
+                        return Positioned.fill(
                           child: Image.asset(
                             assetPath,
-                            width: 580,
-                            height: 756,
                             fit: BoxFit.fill,
                             errorBuilder: (context, error, stackTrace) {
                               debugPrint('ERROR loading $assetPath: $error');
@@ -837,9 +835,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                           ),
                         );
                       }),
-                    ],
-                  ),
-                ),
+                ],
               ),
             ),
           ),
