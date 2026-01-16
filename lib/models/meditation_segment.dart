@@ -10,6 +10,8 @@ enum SegmentType {
   contracting,
   relaxing,
   appearing,
+  cushion,
+  breathing,
   reading;
 
   static SegmentType? fromString(String name) {

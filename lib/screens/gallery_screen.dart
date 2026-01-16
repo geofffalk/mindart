@@ -159,7 +159,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Your Gallery',
+                    'Saved sessions',
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),

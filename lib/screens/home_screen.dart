@@ -55,8 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Meditate',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.palette),
-              label: 'Gallery',
+              icon: Icon(Icons.folder_outlined),
+              label: 'Saved sessions',
             ),
           ],
         ),
@@ -94,56 +94,51 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
 
-        // Featured section
+        // Featured section - simplified
         SliverToBoxAdapter(
           child: Container(
-            margin: const EdgeInsets.all(20),
-            padding: const EdgeInsets.all(24),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppTheme.calmBlue.withValues(alpha: 0.3),
-                  AppTheme.softPurple.withValues(alpha: 0.3),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: Colors.white12),
+              color: AppTheme.surface,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.white10),
             ),
             child: Row(
               children: [
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppTheme.primary.withValues(alpha: 0.15),
+                  ),
+                  child: const Icon(
+                    Icons.spa_outlined,
+                    size: 28,
+                    color: AppTheme.primary,
+                  ),
+                ),
+                const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Welcome Back',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
+                        'Welcome',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 2),
                       Text(
-                        'Take a moment to breathe, reflect, and create.',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.white70,
+                        'Breathe, reflect, create.',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.white54,
                         ),
                       ),
                     ],
-                  ),
-                ),
-                Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white10,
-                  ),
-                  child: const Icon(
-                    Icons.spa,
-                    size: 40,
-                    color: AppTheme.calmBlue,
                   ),
                 ),
               ],

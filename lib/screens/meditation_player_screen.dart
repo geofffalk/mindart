@@ -617,6 +617,21 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       }
     }
     
+    // For CUSHION segments: show animated meditation cushion path
+    if (segment.segmentType == SegmentType.cushion) {
+      return _buildCushionAnimation(segment);
+    }
+    
+    // For BREATHING segments: show pulsing circle animation
+    if (segment.segmentType == SegmentType.breathing) {
+      return _buildBreathingAnimation(segment);
+    }
+    
+    // For APPEARING segments: fade in the path animations
+    if (segment.segmentType == SegmentType.appearing) {
+      return _buildAppearingAnimation(segment);
+    }
+    
     // For any segment with graphic configurations (stroke, fill, or animation paths):
     // show the path animation - this includes reading, appearing, focusing, etc.
     final hasGraphicConfig = segment.graphic.startStrokeBitmapIds.isNotEmpty ||
@@ -1006,7 +1021,157 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       },
     );
   }
-
+  
+  /// Builds cushion animation - draws a meditation cushion path
+  Widget _buildCushionAnimation(MeditationSegment segment) {
+    // Load cushion path if available
+    final cushionPath = _loadedPaths['cushion'] ?? [];
+    
+    // Calculate canvas size
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final topPadding = MediaQuery.of(context).padding.top;
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+    const textAreaHeight = 200;
+    const closeButtonHeight = 50;
+    final availableHeight = screenHeight - topPadding - closeButtonHeight - textAreaHeight - bottomPadding;
+    final canvasWidth = screenWidth;
+    final canvasHeight = availableHeight;
+    
+    return Align(
+      alignment: Alignment.topCenter,
+      child: SizedBox(
+        width: canvasWidth,
+        height: canvasHeight,
+        child: AnimatedBuilder(
+          animation: _pathAnimationController,
+          builder: (context, child) {
+            return PathAnimation(
+              pathPoints: cushionPath.isNotEmpty ? cushionPath : _loadedPaths['body_outer'] ?? [],
+              progress: _pathAnimationController.value,
+              strokeColor: AppTheme.primary,
+              strokeWidth: 3.0,
+              glowColor: AppTheme.primaryLight,
+              useAbsoluteCoords: true,
+              size: const Size(580, 756),
+            );
+          },
+        ),
+      ),
+    );
+  }
+  
+  /// Builds breathing animation - pulsing circle for breathing exercises
+  Widget _buildBreathingAnimation(MeditationSegment segment) {
+    // Calculate canvas size
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final topPadding = MediaQuery.of(context).padding.top;
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+    const textAreaHeight = 200;
+    const closeButtonHeight = 50;
+    final availableHeight = screenHeight - topPadding - closeButtonHeight - textAreaHeight - bottomPadding;
+    
+    return Align(
+      alignment: Alignment.topCenter,
+      child: SizedBox(
+        width: screenWidth,
+        height: availableHeight,
+        child: Center(
+          child: TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0.8, end: 1.2),
+            duration: const Duration(milliseconds: 3000),
+            curve: Curves.easeInOut,
+            builder: (context, scale, child) {
+              // Create continuous pulsing
+              return TweenAnimationBuilder<double>(
+                tween: Tween(begin: 1.2, end: 0.8),
+                duration: const Duration(milliseconds: 3000),
+                curve: Curves.easeInOut,
+                builder: (context, _, __) {
+                  return Transform.scale(
+                    scale: scale,
+                    child: Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppTheme.primary.withValues(alpha: 0.3),
+                        border: Border.all(
+                          color: AppTheme.primary,
+                          width: 3,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.primary.withValues(alpha: 0.4),
+                            blurRadius: 20,
+                            spreadRadius: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+  
+  /// Builds appearing animation - fade in the path animations
+  Widget _buildAppearingAnimation(MeditationSegment segment) {
+    // Calculate canvas size
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final topPadding = MediaQuery.of(context).padding.top;
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+    const textAreaHeight = 200;
+    const closeButtonHeight = 50;
+    final availableHeight = screenHeight - topPadding - closeButtonHeight - textAreaHeight - bottomPadding;
+    final canvasWidth = screenWidth;
+    final canvasHeight = availableHeight;
+    
+    // Use segment duration for fade-in
+    final fadeDuration = Duration(seconds: segment.duration > 0 ? segment.duration : 5);
+    
+    return Align(
+      alignment: Alignment.topCenter,
+      child: SizedBox(
+        width: canvasWidth,
+        height: canvasHeight,
+        child: TweenAnimationBuilder<double>(
+          tween: Tween(begin: 0.0, end: 1.0),
+          duration: fadeDuration,
+          curve: Curves.easeIn,
+          builder: (context, opacity, child) {
+            return Opacity(
+              opacity: opacity,
+              child: Stack(
+                children: [
+                  // Stroke paths with fade
+                  ..._currentStrokePaths.map((pathId) {
+                    final pathData = _loadedPaths[pathId];
+                    if (pathData == null || pathData.isEmpty) return const SizedBox.shrink();
+                    return PathAnimation(
+                      pathPoints: pathData,
+                      progress: 1.0,
+                      strokeColor: AppTheme.primary.withValues(alpha: 0.8),
+                      strokeWidth: 2.5,
+                      glowColor: AppTheme.primaryLight.withValues(alpha: 0.3),
+                      useAbsoluteCoords: true,
+                      size: const Size(580, 756),
+                    );
+                  }),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
   /// Builds path animation for body scan segments with CSV path data
   Widget _buildPathAnimation() {
     return AnimatedBuilder(
