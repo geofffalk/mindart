@@ -104,6 +104,7 @@ class PaintCanvas extends StatefulWidget {
 class PaintCanvasState extends State<PaintCanvas> {
   final List<DrawnPath> _paths = [];
   final List<FillOperation> _fills = [];
+  final List<String> _operationHistory = []; // 'path' or 'fill' to track order
   DrawnPath? _currentPath;
   BrushSettings _brushSettings = BrushSettings.forStyle(BrushStyle.pen);
   final GlobalKey _canvasKey = GlobalKey();
@@ -137,19 +138,23 @@ class PaintCanvasState extends State<PaintCanvas> {
     setState(() {
       _paths.clear();
       _fills.clear();
+      _operationHistory.clear();
       _currentPath = null;
       _fillMask = null;
     });
   }
 
-  /// Undo last stroke or fill
+  /// Undo last stroke or fill (in order of creation)
   void undo() {
     setState(() {
-      if (_paths.isNotEmpty) {
-        _paths.removeLast();
-      } else if (_fills.isNotEmpty) {
-        _fills.removeLast();
-        _regenerateFillMask();
+      if (_operationHistory.isNotEmpty) {
+        final lastOp = _operationHistory.removeLast();
+        if (lastOp == 'path' && _paths.isNotEmpty) {
+          _paths.removeLast();
+        } else if (lastOp == 'fill' && _fills.isNotEmpty) {
+          _fills.removeLast();
+          _regenerateFillMask();
+        }
       }
     });
   }
@@ -208,6 +213,7 @@ class PaintCanvasState extends State<PaintCanvas> {
     if (_currentPath != null) {
       setState(() {
         _paths.add(_currentPath!);
+        _operationHistory.add('path'); // Track operation order
         _currentPath = null;
       });
     }
@@ -310,6 +316,7 @@ class PaintCanvasState extends State<PaintCanvas> {
         color: _brushSettings.color,
         opacity: _brushSettings.opacity,
       ));
+      _operationHistory.add('fill'); // Track operation order
       _fillMask = frame.image;
     });
   }

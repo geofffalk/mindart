@@ -4,6 +4,7 @@ import '../models/brush_settings.dart';
 import '../services/database_service.dart';
 import '../widgets/paint_canvas.dart';
 import '../widgets/hsl_color_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Paint screen for drawing during meditation
 class PaintScreen extends StatefulWidget {
@@ -33,7 +34,7 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
   BrushSettings _brushSettings = BrushSettings.forStyle(BrushStyle.pen);
   bool _isSaving = false;
   bool _isToolbarExpanded = false;
-  Offset _toolbarPosition = const Offset(20, 50); // Draggable toolbar position
+  Offset _toolbarPosition = const Offset(16, double.infinity); // Will be positioned at bottom
   double _lastScale = 1.0; // Track pinch gesture scale
   
   late AnimationController _toolbarAnimController;
@@ -50,12 +51,32 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
       parent: _toolbarAnimController,
       curve: Curves.easeOutCubic,
     );
+    
+    // Load saved color from preferences
+    _loadSavedColor();
   }
 
   @override
   void dispose() {
     _toolbarAnimController.dispose();
     super.dispose();
+  }
+
+  
+  Future<void> _loadSavedColor() async {
+    final prefs = await SharedPreferences.getInstance();
+    final colorValue = prefs.getInt('brush_color');
+    if (colorValue != null) {
+      setState(() {
+        _brushSettings = _brushSettings.copyWith(color: Color(colorValue));
+      });
+      _canvasKey.currentState?.brushSettings = _brushSettings;
+    }
+  }
+  
+  Future<void> _saveColor(Color color) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('brush_color', color.value);
   }
 
   void _toggleToolbar() {
@@ -84,6 +105,7 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
         );
       });
       _canvasKey.currentState?.brushSettings = _brushSettings;
+      _saveColor(color); // Persist color
     }
   }
 
@@ -110,6 +132,8 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
 
   void _onUndo() {
     _canvasKey.currentState?.undo();
+    // Force rebuild to show updated canvas
+    setState(() {});
   }
 
   void _onClear() {
@@ -138,11 +162,68 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
   }
 
   void _onStencilTap() {
-    // TODO: Implement stencil picker
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Stencil picker coming soon'),
-        duration: Duration(seconds: 1),
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.primaryDark,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Choose a Stencil',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildStencilOption(context, 'Circle', Icons.circle_outlined),
+                _buildStencilOption(context, 'Heart', Icons.favorite_outline),
+                _buildStencilOption(context, 'Star', Icons.star_outline),
+                _buildStencilOption(context, 'Mandala', Icons.blur_circular),
+              ],
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  Widget _buildStencilOption(BuildContext context, String name, IconData icon) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('$name stencil selected'),
+            duration: const Duration(seconds: 1),
+          ),
+        );
+        // TODO: Apply stencil to canvas
+      },
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: Colors.white, size: 32),
+          ),
+          const SizedBox(height: 8),
+          Text(name, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+        ],
       ),
     );
   }
@@ -247,33 +328,22 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
       ),
       body: Stack(
         children: [
-          // Canvas with pinch-to-zoom and pan using InteractiveViewer
-          InteractiveViewer(
-            minScale: 0.5,
-            maxScale: 4.0,
-            boundaryMargin: const EdgeInsets.all(80),
+          // Full-screen paint canvas
+          Positioned.fill(
             child: PaintCanvas(
               key: _canvasKey,
             ),
           ),
-          // Draggable floating toolbar
+          // Floating toolbar (draggable)
           Positioned(
             left: _toolbarPosition.dx,
-            top: _toolbarPosition.dy,
-            child: GestureDetector(
-              onPanUpdate: (details) {
-                setState(() {
-                  _toolbarPosition += details.delta;
-                  // Keep toolbar on screen
-                  final size = MediaQuery.of(context).size;
-                  _toolbarPosition = Offset(
-                    _toolbarPosition.dx.clamp(0, size.width - 200),
-                    _toolbarPosition.dy.clamp(0, size.height - 100),
-                  );
-                });
-              },
-              child: _buildFloatingToolbar(),
-            ),
+            top: _toolbarPosition.dy.isInfinite 
+                ? null 
+                : _toolbarPosition.dy,
+            bottom: _toolbarPosition.dy.isInfinite 
+                ? MediaQuery.of(context).padding.bottom + 16 
+                : null,
+            child: _buildFloatingToolbar(),
           ),
         ],
       ),
@@ -284,34 +354,76 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
     return AnimatedBuilder(
       animation: _toolbarAnimation,
       builder: (context, _) {
-        return Container(
-          decoration: BoxDecoration(
-            color: AppTheme.primaryDark.withValues(alpha: 0.95),
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.3),
-                blurRadius: 20,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Expanded options (sliders)
-              ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-                child: SizeTransition(
-                  sizeFactor: _toolbarAnimation,
-                  child: _buildExpandedOptions(),
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Drag handle on left
+            GestureDetector(
+              onPanUpdate: (details) {
+                setState(() {
+                  final screenSize = MediaQuery.of(context).size;
+                  double newX = _toolbarPosition.dx + details.delta.dx;
+                  double newY = _toolbarPosition.dy.isInfinite 
+                      ? (screenSize.height - 100) + details.delta.dy
+                      : _toolbarPosition.dy + details.delta.dy;
+                  // Clamp to screen bounds
+                  newX = newX.clamp(0.0, screenSize.width - 200);
+                  newY = newY.clamp(100.0, screenSize.height - 100);
+                  _toolbarPosition = Offset(newX, newY);
+                });
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 24),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryDark.withValues(alpha: 0.95),
+                  borderRadius: const BorderRadius.horizontal(left: Radius.circular(24)),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 4,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        color: Colors.white38,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              
-              // Main toolbar row
-              _buildMainToolbarRow(),
-            ],
-          ),
+            ),
+            // Main toolbar content
+            Container(
+              decoration: BoxDecoration(
+                color: AppTheme.primaryDark.withValues(alpha: 0.95),
+                borderRadius: const BorderRadius.horizontal(right: Radius.circular(24)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.3),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Expanded options (sliders)
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                    child: SizeTransition(
+                      sizeFactor: _toolbarAnimation,
+                      child: _buildExpandedOptions(),
+                    ),
+                  ),
+                  
+                  // Main toolbar row
+                  _buildMainToolbarRow(),
+                ],
+              ),
+            ),
+          ],
         );
       },
     );
@@ -355,13 +467,6 @@ class _PaintScreenState extends State<PaintScreen> with SingleTickerProviderStat
             onTap: _onColorTap,
           ),
           
-          // Settings toggle (opacity/thickness)
-          _FloatingToolButton(
-            icon: _isToolbarExpanded ? Icons.expand_more : Icons.tune,
-            label: 'Settings',
-            isSelected: _isToolbarExpanded,
-            onTap: _toggleToolbar,
-          ),
           
           // Stencil
           _FloatingToolButton(

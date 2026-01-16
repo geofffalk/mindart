@@ -185,6 +185,14 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       _currentFillBitmapIds = graphic.endFillBitmapIds;
       _allAnimationsComplete = false; // Reset for new segment
       
+      debugPrint('📍 Segment ${segment.id} loaded:');
+      debugPrint('  Stroke paths: $strokeIds');
+      debugPrint('  Fill paths: $fillIds');
+      debugPrint('  Animation paths: $animationIds');
+      debugPrint('  END FILL BITMAP IDs: ${graphic.endFillBitmapIds}');
+      debugPrint('  _currentFillBitmapIds set to: $_currentFillBitmapIds');
+      debugPrint('  _allAnimationsComplete: $_allAnimationsComplete');
+      
       // Clear completed path if it's not in the new segment's config
       // This prevents showing animations from previous segments
       if (_completedPathData != null) {
@@ -231,10 +239,26 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       final pathCount = _currentAnimationPaths.length;
       final durationPerPath = segment.duration ~/ pathCount.clamp(1, 999);
       _pathAnimationController.duration = Duration(seconds: durationPerPath);
+      
+      debugPrint('Starting animation for segment ${segment.id}: $pathCount paths, ${durationPerPath}s each');
+      debugPrint('Animation paths: $_currentAnimationPaths');
+      debugPrint('Fill bitmaps: ${segment.graphic.endFillBitmapIds}');
+      
       _pathAnimationController.forward(from: 0.0);
       
+      // Remove any existing listener before adding to prevent duplicates
+      _pathAnimationController.removeStatusListener(_onPathAnimationComplete);
       // Listen for animation completion to sequence through multiple paths
       _pathAnimationController.addStatusListener(_onPathAnimationComplete);
+      debugPrint('✅ Animation listener ATTACHED. Duration: ${_pathAnimationController.duration}');
+    } else {
+      // No animation paths - show bitmaps immediately if this segment has any
+      if (segment.graphic.endFillBitmapIds.isNotEmpty) {
+        debugPrint('No animation paths - showing bitmaps immediately: ${segment.graphic.endFillBitmapIds}');
+        setState(() {
+          _allAnimationsComplete = true;
+        });
+      }
     }
     
     // Start fade animation for fading segments
@@ -256,11 +280,15 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
   
   void _onPathAnimationComplete(AnimationStatus status) {
     if (status == AnimationStatus.completed) {
+      debugPrint('Animation completed! Index: $_currentAnimationIndex/${_currentAnimationPaths.length - 1}');
+      
       // Animation path completed, check if there are more paths to animate
       if (_currentAnimationIndex + 1 < _currentAnimationPaths.length) {
         // Move to next animation path
         _currentAnimationIndex++;
         final nextPathId = _currentAnimationPaths[_currentAnimationIndex];
+        
+        debugPrint('Advancing to next path: $nextPathId');
         
         setState(() {
           // Persist current completed path
@@ -275,9 +303,16 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
         _pathAnimationController.forward(from: 0.0);
       } else {
         // No more paths to animate - all animations complete
+        // IMPORTANT: Remove listener to prevent looping
+        _pathAnimationController.removeStatusListener(_onPathAnimationComplete);
+        debugPrint('\n🎉 ALL ANIMATIONS COMPLETE!');
+        debugPrint('  Setting _allAnimationsComplete = true');
+        debugPrint('  _currentFillBitmapIds = $_currentFillBitmapIds');
+        debugPrint('  Gender prefix = $_genderPrefix');
         setState(() {
           _allAnimationsComplete = true;
         });
+        debugPrint('  State updated. Bitmaps should now render.');
       }
       // If no more paths, the segment completion will be handled by audio or timer
     }
@@ -708,79 +743,106 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     return AnimatedBuilder(
       animation: _pathAnimationController,
       builder: (context, child) {
+        // Calculate available height and position animation above text
+        final screenHeight = MediaQuery.of(context).size.height;
+        final descriptionHeight = 120; // Approximate height of description area
+        final paddingBottom = MediaQuery.of(context).padding.bottom;
+        final availableHeight = screenHeight - descriptionHeight - paddingBottom - 100;
+        final scaledAnimationHeight = 760 * 0.45; // 342px
+        final verticalOffset = -(availableHeight - scaledAnimationHeight) / 2 - 10;
+        
         return Align(
           alignment: Alignment.centerRight,
-          child: SizedBox(
-            width: 580,
-            height: 760,
-          child: Stack(
-            children: [
-              // Static stroke paths from segment configuration (e.g., body_outer, body_inner)
-              ..._currentStrokePaths.map((pathId) {
-                final pathData = _loadedPaths[pathId];
-                if (pathData == null || pathData.isEmpty) return const SizedBox.shrink();
-                return PathAnimation(
-                  pathPoints: pathData,
-                  progress: 1.0, // Always fully drawn for static background
-                  strokeColor: Colors.white24, // Subtle background
-                  strokeWidth: pathId == 'body_outer' ? 2.0 : 1.5,
-                  glowColor: Colors.transparent,
-                  useAbsoluteCoords: true,
-                  size: const Size(580, 760), // Fixed canvas size for absolute coords
-                );
-              }),
-              // Static fill paths from segment configuration (rendered as filled regions)
-              ..._currentFillPaths.map((pathId) {
-                final pathData = _loadedPaths[pathId];
-                if (pathData == null || pathData.isEmpty) return const SizedBox.shrink();
-                return PathAnimation(
-                  pathPoints: pathData,
-                  progress: 1.0, // Always fully drawn
-                  strokeColor: AppTheme.primary.withValues(alpha: 0.5),
-                  strokeWidth: 2.0,
-                  glowColor: Colors.transparent,
-                  useAbsoluteCoords: true,
-                  size: const Size(580, 760), // Fixed canvas size for absolute coords
-                );
-              }),
-              // Completed path from previous animation (persisted)
-              if (_completedPathData != null && _completedPathData!.isNotEmpty)
-                PathAnimation(
-                  pathPoints: _completedPathData!,
-                  progress: 1.0,
-                  strokeColor: AppTheme.primary.withValues(alpha: 0.7),
-                  strokeWidth: 2.5,
-                  glowColor: Colors.transparent,
-                  useAbsoluteCoords: true,
-                  size: const Size(580, 760), // Fixed canvas size for absolute coords
+          child: Transform.translate(
+            offset: Offset(0, verticalOffset),
+            child: Transform.scale(
+              scale: 0.45,
+              child: SizedBox(
+                width: 580,
+                height: 760,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.green, width: 2), // DEBUG: Canvas bounds
+                  ),
+                  child: Stack(
+                    children: [
+                      // Static stroke paths
+                      ..._currentStrokePaths.map((pathId) {
+                        final pathData = _loadedPaths[pathId];
+                        if (pathData == null || pathData.isEmpty) return const SizedBox.shrink();
+                        return PathAnimation(
+                          pathPoints: pathData,
+                          progress: 1.0,
+                          strokeColor: Colors.white24,
+                          strokeWidth: pathId == 'body_outer' ? 2.0 : 1.5,
+                          glowColor: Colors.transparent,
+                          useAbsoluteCoords: true,
+                          size: const Size(580, 760),
+                        );
+                      }),
+                      // Static fill paths
+                      ..._currentFillPaths.map((pathId) {
+                        final pathData = _loadedPaths[pathId];
+                        if (pathData == null || pathData.isEmpty) return const SizedBox.shrink();
+                        return PathAnimation(
+                          pathPoints: pathData,
+                          progress: 1.0,
+                          strokeColor: AppTheme.primary.withValues(alpha: 0.5),
+                          strokeWidth: 2.0,
+                          glowColor: Colors.transparent,
+                          useAbsoluteCoords: true,
+                          size: const Size(580, 760),
+                        );
+                      }),
+                      // Completed path
+                      if (_completedPathData != null && _completedPathData!.isNotEmpty)
+                        PathAnimation(
+                          pathPoints: _completedPathData!,
+                          progress: 1.0,
+                          strokeColor: AppTheme.primary.withValues(alpha: 0.7),
+                          strokeWidth: 2.5,
+                          glowColor: Colors.transparent,
+                          useAbsoluteCoords: true,
+                          size: const Size(580, 760),
+                        ),
+                      // Animated path
+                      if (_currentPathData != null && _currentPathData!.isNotEmpty)
+                        PathAnimation(
+                          pathPoints: _currentPathData!,
+                          progress: _pathAnimationController.value,
+                          strokeColor: AppTheme.primary,
+                          strokeWidth: 3.0,
+                          glowColor: AppTheme.primaryLight,
+                          useAbsoluteCoords: true,
+                          size: const Size(580, 760),
+                        ),
+                      // Fill bitmaps
+                      if (_allAnimationsComplete) ..._currentFillBitmapIds.map((bitmapId) {
+                        final assetPath = 'assets/images/body/${_genderPrefix}_$bitmapId.png';
+                        return Container(
+                          width: 580,
+                          height: 760,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.red, width: 2), // DEBUG
+                          ),
+                          child: Image.asset(
+                            assetPath,
+                            width: 580,
+                            height: 760,
+                            fit: BoxFit.fill,
+                            errorBuilder: (context, error, stackTrace) {
+                              debugPrint('ERROR loading $assetPath: $error');
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
                 ),
-              // Animated chakra/body part path on top (only if path data exists)
-              if (_currentPathData != null && _currentPathData!.isNotEmpty)
-                PathAnimation(
-                  pathPoints: _currentPathData!,
-                  progress: _pathAnimationController.value,
-                  strokeColor: AppTheme.primary,
-                  strokeWidth: 3.0,
-                  glowColor: AppTheme.primaryLight,
-                  useAbsoluteCoords: true,
-                  size: const Size(580, 760), // Fixed canvas size for absolute coords
-                ),
-              // Fill bitmap images (displayed after animation completes)
-              if (_allAnimationsComplete)
-                ..._currentFillBitmapIds.map((bitmapId) {
-                final assetPath = 'assets/images/body/${_genderPrefix}_$bitmapId.png';
-                return Image.asset(
-                  assetPath,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) {
-                    debugPrint('Failed to load bitmap: $assetPath');
-                    return const SizedBox.shrink();
-                  },
-                );
-              }),
-            ],
+              ),
+            ),
           ),
-        ),
         );
       },
     );
