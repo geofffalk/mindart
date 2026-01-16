@@ -359,28 +359,63 @@ class PaintCanvasState extends State<PaintCanvas> {
       builder: (context, constraints) {
         _canvasSize = Size(constraints.maxWidth, constraints.maxHeight);
         
-        return RepaintBoundary(
-          key: _canvasKey,
+        return Listener(
+          onPointerDown: (event) {
+            _pointerCount++;
+            if (_pointerCount > 1) {
+              setState(() => _isScaling = true);
+            }
+          },
+          onPointerUp: (event) {
+            _pointerCount--;
+            if (_pointerCount <= 1) {
+              // Delay to let InteractiveViewer finish
+              Future.delayed(const Duration(milliseconds: 100), () {
+                if (mounted) setState(() => _isScaling = false);
+              });
+            }
+          },
           child: GestureDetector(
-            onTapUp: _onTapUp,
-            onPanStart: _onPanStart,
-            onPanUpdate: _onPanUpdate,
-            onPanEnd: _onPanEnd,
-            child: Container(
-              decoration: BoxDecoration(
-                color: widget.backgroundColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: CustomPaint(
-                  painter: PaintCanvasPainter(
-                    paths: _paths,
-                    fills: _fills,
-                    currentPath: _currentPath,
-                    fillMask: _fillMask,
+            // Double-tap to reset zoom
+            onDoubleTap: _onDoubleTap,
+            child: InteractiveViewer(
+              transformationController: _transformationController,
+              minScale: _minScale,
+              maxScale: _maxScale,
+              panEnabled: _isZoomed,
+              scaleEnabled: true,
+              onInteractionEnd: (details) {
+                final scale = _transformationController.value.getMaxScaleOnAxis();
+                setState(() {
+                  _isZoomed = scale > 1.05;
+                });
+              },
+              child: RepaintBoundary(
+                key: _canvasKey,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTapUp: _isScaling ? null : _onTapUp,
+                  onPanStart: _isScaling ? null : _onPanStart,
+                  onPanUpdate: _isScaling ? null : _onPanUpdate,
+                  onPanEnd: _isScaling ? null : _onPanEnd,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: widget.backgroundColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: CustomPaint(
+                        painter: PaintCanvasPainter(
+                          paths: _paths,
+                          fills: _fills,
+                          currentPath: _currentPath,
+                          fillMask: _fillMask,
+                        ),
+                        size: Size.infinite,
+                      ),
+                    ),
                   ),
-                  size: Size.infinite,
                 ),
               ),
             ),
@@ -388,5 +423,17 @@ class PaintCanvasState extends State<PaintCanvas> {
         );
       },
     );
+  }
+  
+  // Scale/zoom state
+  bool _isScaling = false;
+  int _pointerCount = 0;
+  
+  void _onDoubleTap() {
+    // Reset zoom to 1.0
+    _transformationController.value = Matrix4.identity();
+    setState(() {
+      _isZoomed = false;
+    });
   }
 }

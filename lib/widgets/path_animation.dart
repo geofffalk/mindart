@@ -98,16 +98,23 @@ class _PathPainter extends CustomPainter {
     final pointsToDraw = (pathPoints.length * progress).ceil();
     if (pointsToDraw == 0) return;
     // Scale points to canvas size
-    // For absolute coordinates, scale from source bounds (580x756) to canvas size
+    // For absolute coordinates, use UNIFORM scaling to preserve aspect ratio
     const sourceWidth = 580.0;
     const sourceHeight = 756.0;
     
+    // Calculate uniform scale factor (same as LocatingAnimation)
+    final scaleX = size.width / sourceWidth;
+    final scaleY = size.height / sourceHeight;
+    final scale = scaleX < scaleY ? scaleX : scaleY; // min without importing math
+    final offsetX = (size.width - sourceWidth * scale) / 2;
+    final offsetY = (size.height - sourceHeight * scale) / 2;
+    
     final scaledPoints = pathPoints.take(pointsToDraw).map((p) {
       if (useAbsoluteCoords) {
-        // Scale from source coordinate space to canvas size
+        // Scale from source coordinate space with uniform scaling + centering
         return Offset(
-          p.dx * size.width / sourceWidth,
-          p.dy * size.height / sourceHeight,
+          offsetX + p.dx * scale,
+          offsetY + p.dy * scale,
         );
       } else {
         // Scale normalized 0-1 coordinates to canvas size
@@ -128,9 +135,10 @@ class _PathPainter extends CustomPainter {
       final fullPath = Path();
       final allScaledPoints = pathPoints.map((p) {
         if (useAbsoluteCoords) {
+          // Use same uniform scaling as stroke path
           return Offset(
-            p.dx * size.width / sourceWidth,
-            p.dy * size.height / sourceHeight,
+            offsetX + p.dx * scale,
+            offsetY + p.dy * scale,
           );
         } else {
           return Offset(p.dx * size.width, p.dy * size.height);

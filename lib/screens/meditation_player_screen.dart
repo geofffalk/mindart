@@ -8,6 +8,8 @@ import '../services/audio_service.dart';
 import '../services/meditation_service.dart';
 import '../services/settings_service.dart';
 import '../widgets/hand_scan_animation.dart';
+import '../widgets/locating_animation.dart';
+import '../widgets/opening_animation.dart';
 import '../widgets/path_animation.dart';
 import 'paint_screen.dart';
 
@@ -62,6 +64,9 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
   
   // Gender prefix for loading gender-specific assets (loaded from settings)
   late String _genderPrefix;
+  
+  // User-selected location from LOCATING segment (persists for OPENING)
+  Offset? _userLocation;
   
   // Drawing persistence for fading segments
   final Map<int, Uint8List> _savedDrawings = {};
@@ -321,6 +326,14 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
   void _onSegmentComplete() {
     if (!mounted || _meditation == null) return;
     
+    final segment = _meditation!.currentSegment;
+    
+    // For LOCATING segments, don't auto-advance - wait for user tap
+    if (segment.segmentType == SegmentType.locating && _userLocation == null) {
+      debugPrint('📍 LOCATING segment - waiting for user tap before advancing');
+      return;
+    }
+    
     // Remove the animation listener to avoid duplicate calls
     _pathAnimationController.removeStatusListener(_onPathAnimationComplete);
     
@@ -575,6 +588,21 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       return _buildRecordButton();
     }
     
+    // For LOCATING segments: show pulsing body outline, allow tap to select location
+    if (segment.segmentType == SegmentType.locating) {
+      return _buildLocatingAnimation(segment);
+    }
+    
+    // For OPENING segments: show pulsing circle at user-selected location
+    if (segment.segmentType == SegmentType.opening) {
+      return _buildOpeningAnimation(segment);
+    }
+    
+    // For REVIEWING segments: show saved drawings as horizontal carousel
+    if (segment.segmentType == SegmentType.reviewing) {
+      return _buildReviewingCarousel();
+    }
+    
     // For FADING segments: display the saved drawing with a fade-out animation
     if (segment.segmentType == SegmentType.fading) {
       final drawingData = _savedDrawings[segment.drawingIndex];
@@ -738,38 +766,271 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     );
   }
 
+  /// Builds locating animation for LOCATING segments
+  /// Shows pulsing body outline, allows user to tap to select a location
+  Widget _buildLocatingAnimation(MeditationSegment segment) {
+    // Get body path from loaded paths - use expanded path IDs since body_full becomes body_outer
+    List<Offset> bodyPath = [];
+    if (segment.graphic.startStrokeBitmapIds.isNotEmpty) {
+      final expandedIds = _expandPathIds(segment.graphic.startStrokeBitmapIds);
+      // Use the first expanded path (body_outer from body_full)
+      for (final pathId in expandedIds) {
+        if (_loadedPaths[pathId] != null && _loadedPaths[pathId]!.isNotEmpty) {
+          bodyPath = _loadedPaths[pathId]!;
+          break;
+        }
+      }
+    }
+    
+    debugPrint('📍 LOCATING animation - bodyPath has ${bodyPath.length} points');
+    
+    // Calculate canvas dimensions - full width and available height
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final topPadding = MediaQuery.of(context).padding.top;
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+    const textAreaHeight = 200;
+    const closeButtonHeight = 50;
+    final availableHeight = screenHeight - topPadding - closeButtonHeight - textAreaHeight - bottomPadding;
+    
+    // Full width and available height
+    final canvasWidth = screenWidth;
+    final canvasHeight = availableHeight;
+    
+    return Align(
+      alignment: Alignment.topCenter,
+      child: SizedBox(
+        width: canvasWidth,
+        height: canvasHeight,
+        child: LocatingAnimation(
+          bodyPath: bodyPath,
+          canvasSize: Size(canvasWidth, canvasHeight),
+          onLocationSelected: (location) {
+            setState(() {
+              _userLocation = location;
+            });
+            debugPrint('📍 User location selected: $location');
+            // User tapped - now advance to next segment with short delay
+            Future.delayed(const Duration(seconds: 2), () {
+              if (mounted && _meditation != null) {
+                _skipNext();
+              }
+            });
+          },
+        ),
+      ),
+    );
+  }
+  
+  /// Builds opening animation for OPENING segments
+  /// Shows pulsing circle at user-selected location from LOCATING segment
+  Widget _buildOpeningAnimation(MeditationSegment segment) {
+    // If no user location was selected, show nothing
+    if (_userLocation == null) {
+      return const SizedBox(height: 120);
+    }
+    
+    // Get body path from loaded paths - use expanded path IDs since body_full becomes body_outer
+    List<Offset> bodyPath = [];
+    if (segment.graphic.startStrokeBitmapIds.isNotEmpty) {
+      final expandedIds = _expandPathIds(segment.graphic.startStrokeBitmapIds);
+      for (final pathId in expandedIds) {
+        if (_loadedPaths[pathId] != null && _loadedPaths[pathId]!.isNotEmpty) {
+          bodyPath = _loadedPaths[pathId]!;
+          break;
+        }
+      }
+    }
+    
+    // Calculate canvas dimensions - full width and available height
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final topPadding = MediaQuery.of(context).padding.top;
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+    const textAreaHeight = 200;
+    const closeButtonHeight = 50;
+    final availableHeight = screenHeight - topPadding - closeButtonHeight - textAreaHeight - bottomPadding;
+    
+    // Full width and available height
+    final canvasWidth = screenWidth;
+    final canvasHeight = availableHeight;
+    
+    return Align(
+      alignment: Alignment.topCenter,
+      child: SizedBox(
+        width: canvasWidth,
+        height: canvasHeight,
+        child: Stack(
+          children: [
+            // Body path with pulsing circle
+            OpeningAnimation(
+              bodyPath: bodyPath,
+              userLocation: _userLocation!,
+            ),
+            // User drawing overlay at circle location with fade effect
+            if (_savedDrawings.isNotEmpty)
+              _buildOpeningDrawingOverlay(),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  /// Builds the fading user drawing overlay for OPENING segments
+  Widget _buildOpeningDrawingOverlay() {
+    if (_userLocation == null || _savedDrawings.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    
+    final drawingData = _savedDrawings.values.first;
+    const circleRadius = 25.0; // Half size for opening
+    
+    return Positioned(
+      left: _userLocation!.dx - circleRadius,
+      top: _userLocation!.dy - circleRadius,
+      child: TweenAnimationBuilder<double>(
+        tween: Tween(begin: 0.8, end: 1.2),
+        duration: const Duration(milliseconds: 1200),
+        curve: Curves.easeInOut,
+        builder: (context, scaleValue, child) {
+          // Create continuous pulsing by rebuilding
+          return TweenAnimationBuilder<double>(
+            tween: Tween(begin: 1.2, end: 0.8),
+            duration: const Duration(milliseconds: 1200),
+            curve: Curves.easeInOut,
+            builder: (context, _, __) {
+              return Transform.scale(
+                scale: scaleValue,
+                child: Opacity(
+                  opacity: 0.7, // Semi-transparent
+                  child: child,
+                ),
+              );
+            },
+          );
+        },
+        child: ClipOval(
+          child: SizedBox(
+            width: circleRadius * 2,
+            height: circleRadius * 2,
+            child: Image.memory(
+              drawingData,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  
+  /// Builds the reviewing carousel for REVIEWING segments
+  /// Shows saved drawings as a horizontally scrollable carousel
+  Widget _buildReviewingCarousel() {
+    if (_savedDrawings.isEmpty) {
+      return Center(
+        child: Text(
+          'No drawings to review',
+          style: TextStyle(
+            color: Colors.white.withValues(alpha: 0.7),
+            fontSize: 18,
+          ),
+        ),
+      );
+    }
+    
+    // Sort drawings by index
+    final sortedEntries = _savedDrawings.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+    
+    return PageView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: sortedEntries.length,
+      itemBuilder: (context, index) {
+        final entry = sortedEntries[index];
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Column(
+            children: [
+              Text(
+                'Drawing ${entry.key}',
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.memory(
+                      entry.value,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Scroll indicator
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  sortedEntries.length,
+                  (i) => Container(
+                    width: i == index ? 12 : 8,
+                    height: 8,
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: i == index 
+                          ? Colors.white 
+                          : Colors.white.withValues(alpha: 0.4),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   /// Builds path animation for body scan segments with CSV path data
   Widget _buildPathAnimation() {
     return AnimatedBuilder(
       animation: _pathAnimationController,
       builder: (context, child) {
-        // Calculate canvas size filling available space from top to text area
+        // Calculate canvas size with 580:756 aspect ratio (width:height)
         final screenWidth = MediaQuery.of(context).size.width;
         final screenHeight = MediaQuery.of(context).size.height;
         final topPadding = MediaQuery.of(context).padding.top;
         final bottomPadding = MediaQuery.of(context).padding.bottom;
-        final textAreaHeight = 280; // Text + controls at bottom
-        final closeButtonHeight = 50; // X button at top
+        const textAreaHeight = 200; // Text + controls at bottom
+        const closeButtonHeight = 50; // X button at top
         final availableHeight = screenHeight - topPadding - closeButtonHeight - textAreaHeight - bottomPadding;
         
-        // Fill screen width, calculate height for 5:9 aspect ratio (width:height)
-        double canvasWidth = screenWidth;
-        double canvasHeight = canvasWidth * (9.0 / 5.0); // 5:9 means height = width * 9/5
-        
-        // If too tall for available space, constrain by height
-        if (canvasHeight > availableHeight) {
-          canvasHeight = availableHeight;
-          canvasWidth = canvasHeight * (5.0 / 9.0);
-        }
+        // Full width and available height
+        final canvasWidth = screenWidth;
+        final canvasHeight = availableHeight;
         
         return Align(
           alignment: Alignment.topCenter,
-          child: Padding(
-            padding: EdgeInsets.only(top: topPadding + closeButtonHeight),
-            child: SizedBox(
-              width: canvasWidth,
-              height: canvasHeight,
-              child: Stack(
+          child: SizedBox(
+            width: canvasWidth,
+            height: canvasHeight,
+            child: Stack(
                 children: [
                       // Static stroke paths
                       ..._currentStrokePaths.map((pathId) {
@@ -842,15 +1103,71 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                           size: const Size(580, 756),
                         );
                       }),
+                      // User location overlay (only if LOCATING has happened)
+                      if (_userLocation != null)
+                        _buildUserLocationOverlay(canvasWidth, canvasHeight),
                 ],
               ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
   }
-
+  
+  /// Builds the user location overlay for FOCUSING segments after LOCATING
+  /// Shows circle if no drawing saved, shows drawing at location if drawing exists
+  Widget _buildUserLocationOverlay(double canvasWidth, double canvasHeight) {
+    if (_userLocation == null) return const SizedBox.shrink();
+    
+    // Check if any drawing has been saved (after RECORDING)
+    final hasDrawing = _savedDrawings.isNotEmpty;
+    
+    // Circle radius for overlay (half size)
+    const circleRadius = 20.0;
+    
+    if (hasDrawing) {
+      // Show user drawing at the circle location (semi-transparent)
+      final drawingData = _savedDrawings.values.first;
+      return Positioned(
+        left: _userLocation!.dx - circleRadius,
+        top: _userLocation!.dy - circleRadius,
+        child: Opacity(
+          opacity: 0.7,
+          child: ClipOval(
+            child: SizedBox(
+              width: circleRadius * 2,
+              height: circleRadius * 2,
+              child: Image.memory(
+                drawingData,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+      );
+    } else {
+      // Show circle at user location (semi-transparent)
+      return Positioned(
+        left: _userLocation!.dx - circleRadius,
+        top: _userLocation!.dy - circleRadius,
+        child: Container(
+          width: circleRadius * 2,
+          height: circleRadius * 2,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white.withValues(alpha: 0.5),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white.withValues(alpha: 0.3),
+                blurRadius: 8,
+                spreadRadius: 2,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+  }
 
 
   /// Returns the fill color for a body region (chakra colors)
