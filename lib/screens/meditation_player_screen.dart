@@ -266,7 +266,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       _currentFillPaths = finalFillIds;
       _currentAnimationPaths = finalAnimationIds;
       _currentFillBitmapIds = graphic.endFillBitmapIds;
-      _allAnimationsComplete = false; // Reset for new segment
+      _allAnimationsComplete = finalAnimationIds.isEmpty; // If no animations, consider complete immediately for bitmaps
       
       // Clear completed paths on segment change
       _completedPaths.clear();
@@ -288,9 +288,22 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
 
     final segment = _meditation!.currentSegment;
     
-    // For recording segments, don't auto-play audio - wait for user to tap record button
+    // Increment transaction ID at start to invalidate any previous listeners/timers
+    _playTransactionId++;
+    final int currentId = _playTransactionId;
+
+    // For recording segments: reset state, load paths, but don't auto-play audio
     if (segment.segmentType == SegmentType.recording) {
-      setState(() => _playerState = PlayerState.paused);
+      setState(() {
+        _playerState = PlayerState.paused;
+        _audioFinished = false;
+        _timerFinished = false;
+        _completedPaths.clear();
+        _allAnimationsComplete = (segment.graphic.animationPathIds.isEmpty);
+      });
+      if (!_isHandScanMeditation) {
+        await _loadPathForSegment(segment);
+      }
       return;
     }
 
@@ -299,7 +312,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       _audioFinished = false;
       _timerFinished = false;
       _completedPaths.clear();
-      _allAnimationsComplete = false;
+      _allAnimationsComplete = (segment.graphic.animationPathIds.isEmpty);
     });
     
     // Load path data for this segment based on its graphic configuration
@@ -360,8 +373,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
 
     // Play audio for current segment
   if (segment.audioLocation.isNotEmpty) {
-    _playTransactionId++;
-    final int currentId = _playTransactionId;
+    // Transaction ID already incremented at start of _play()
     
     debugPrint('🎵 MeditationPlayerScreen: Starting playAsset for ${segment.audioLocation} (ID: $currentId)');
     _audioService.playAsset(segment.audioLocation).then((success) {
@@ -956,9 +968,22 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
               return PathAnimation(
                 pathPoints: pathData,
                 progress: 1.0,
-                strokeColor: _visualTheme == AppVisualTheme.blueNeon 
-                    ? Colors.white24 
-                    : AppTheme.getPrimaryColor(_visualTheme).withValues(alpha: 0.35),
+                strokeColor: AppTheme.getPrimaryColor(_visualTheme).withValues(alpha: _visualTheme == AppVisualTheme.blueNeon ? 0.24 : 0.6),
+                strokeWidth: pathId == 'body_outer' ? 2.0 : 1.5,
+                glowColor: Colors.transparent,
+                useAbsoluteCoords: true,
+                size: const Size(580, 756),
+                visualTheme: _visualTheme,
+              );
+            }),
+            // Show the segment's configured fill outlines
+            ..._currentFillPaths.map((pathId) {
+              final pathData = _loadedPaths[pathId];
+              if (pathData == null || pathData.isEmpty) return const SizedBox.shrink();
+              return PathAnimation(
+                pathPoints: pathData,
+                progress: 1.0,
+                strokeColor: AppTheme.getPrimaryColor(_visualTheme).withValues(alpha: _visualTheme == AppVisualTheme.blueNeon ? 0.4 : 0.75),
                 strokeWidth: 2.0,
                 glowColor: Colors.transparent,
                 useAbsoluteCoords: true,
@@ -966,8 +991,25 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                 visualTheme: _visualTheme,
               );
             }),
+            // Show the actual fill regions (bitmaps)
+            if (_allAnimationsComplete) 
+              ..._currentFillBitmapIds.map((regionId) {
+                final pathData = _loadedPaths[regionId];
+                if (pathData == null || pathData.isEmpty) return const SizedBox.shrink();
+                final fillColor = _getFillColorForRegion(regionId);
+                return PathAnimation(
+                  pathPoints: pathData,
+                  progress: 1.0,
+                  strokeColor: Colors.transparent,
+                  strokeWidth: 0,
+                  showFillOnComplete: true,
+                  fillColor: fillColor,
+                  useAbsoluteCoords: true,
+                  size: const Size(580, 756),
+                  visualTheme: _visualTheme,
+                );
+              }),
             // User location circle if selected
-            // 50% bigger when user has made drawings
             if (_userLocation != null)
               Positioned(
                 left: _userLocation!.dx - (_savedDrawings.isNotEmpty ? 30 : 20),

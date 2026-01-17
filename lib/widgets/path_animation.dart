@@ -369,7 +369,11 @@ class _PathPainter extends CustomPainter {
           final dx = (random.nextDouble() - 0.5) * 5.0;
           final dy = (random.nextDouble() - 0.5) * 5.0;
           final r = random.nextDouble() * 1.5;
-          canvas.drawCircle(Offset(tip.dx + dx, tip.dy + dy), r, tipPaint.copyWith(color: strokeColor.withValues(alpha: 0.3)));
+          canvas.drawCircle(
+            Offset(tip.dx + dx, tip.dy + dy), 
+            r, 
+            Paint()..color = strokeColor.withValues(alpha: 0.3)
+          );
         }
       } else {
         // Styled default tip with ELECTRIC neon glow (for Blue Neon/Childlike)
