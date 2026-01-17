@@ -1,0 +1,67 @@
+Analyzing mindart_flutter...                                    
+
+   info • Use 'const' with the constructor to improve performance • lib/config/theme.dart:70:16 • prefer_const_constructors
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/config/theme.dart:73:19 • prefer_const_literals_to_create_immutables
+  error • The getter 'lightTheme' isn't defined for the type 'AppTheme' • lib/main.dart:23:23 • undefined_getter
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/gallery_screen.dart:281:74 • deprecated_member_use
+   info • Use 'const' with the constructor to improve performance • lib/screens/home_screen.dart:34:21 • prefer_const_constructors
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/screens/home_screen.dart:36:22 • prefer_const_literals_to_create_immutables
+   info • Use 'const' with the constructor to improve performance • lib/screens/home_screen.dart:37:13 • prefer_const_constructors
+warning • Unused import: '../widgets/opening_animation.dart' • lib/screens/meditation_player_screen.dart:12:8 • unused_import
+warning • The value of the local variable 'segmentTimeRemaining' isn't used • lib/screens/meditation_player_screen.dart:609:11 • unused_local_variable
+   info • Use 'const' with the constructor to improve performance • lib/screens/meditation_player_screen.dart:661:25 • prefer_const_constructors
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/meditation_player_screen.dart:944:41 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/meditation_player_screen.dart:947:45 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/meditation_player_screen.dart:1115:35 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/meditation_player_screen.dart:1683:35 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/meditation_player_screen.dart:1757:35 • deprecated_member_use
+   info • The private field _toolbarPosition could be 'final' • lib/screens/paint_screen.dart:39:10 • prefer_final_fields
+warning • The value of the field '_toolbarPosition' isn't used • lib/screens/paint_screen.dart:39:10 • unused_field
+   info • The private field _lastScale could be 'final' • lib/screens/paint_screen.dart:40:10 • prefer_final_fields
+warning • The value of the field '_lastScale' isn't used • lib/screens/paint_screen.dart:40:10 • unused_field
+   info • 'value' is deprecated and shouldn't be used. Use component accessors like .r or .g, or toARGB32 for an explicit conversion • lib/screens/paint_screen.dart:82:45 • deprecated_member_use
+warning • The declaration '_toggleToolbar' isn't referenced • lib/screens/paint_screen.dart:85:8 • unused_element
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/settings_screen.dart:91:33 • deprecated_member_use
+   info • 'groupValue' is deprecated and shouldn't be used. Use a RadioGroup ancestor to manage group value instead. This feature was deprecated after v3.32.0-0.0.pre • lib/screens/settings_screen.dart:101:17 • deprecated_member_use
+   info • 'onChanged' is deprecated and shouldn't be used. Use RadioGroup to handle value change instead. This feature was deprecated after v3.32.0-0.0.pre • lib/screens/settings_screen.dart:102:17 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/settings_screen.dart:106:54 • deprecated_member_use
+   info • 'groupValue' is deprecated and shouldn't be used. Use a RadioGroup ancestor to manage group value instead. This feature was deprecated after v3.32.0-0.0.pre • lib/screens/settings_screen.dart:111:17 • deprecated_member_use
+   info • 'onChanged' is deprecated and shouldn't be used. Use RadioGroup to handle value change instead. This feature was deprecated after v3.32.0-0.0.pre • lib/screens/settings_screen.dart:112:17 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/settings_screen.dart:132:33 • deprecated_member_use
+   info • 'groupValue' is deprecated and shouldn't be used. Use a RadioGroup ancestor to manage group value instead. This feature was deprecated after v3.32.0-0.0.pre • lib/screens/settings_screen.dart:145:21 • deprecated_member_use
+   info • 'onChanged' is deprecated and shouldn't be used. Use RadioGroup to handle value change instead. This feature was deprecated after v3.32.0-0.0.pre • lib/screens/settings_screen.dart:146:21 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/settings_screen.dart:150:71 • deprecated_member_use
+  error • Expected to find ')' • lib/screens/settings_screen.dart:170:6 • expected_token
+  error • Expected to find ']' • lib/screens/settings_screen.dart:170:6 • expected_token
+   info • The import of 'dart:typed_data' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/foundation.dart' • lib/services/audio_recording_service.dart:2:8 • unnecessary_import
+   info • Don't invoke 'print' in production code • lib/services/audio_service.dart:31:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/meditation_service.dart:90:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/meditation_service.dart:122:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/meditation_service.dart:171:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/meditation_service.dart:198:7 • avoid_print
+   info • Use 'const' with the constructor to improve performance • lib/widgets/gallery_grid.dart:27:13 • prefer_const_constructors
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/widgets/gallery_grid.dart:138:32 • prefer_const_literals_to_create_immutables
+   info • Use 'const' with the constructor to improve performance • lib/widgets/gallery_grid.dart:139:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/widgets/gallery_grid.dart:187:29 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/widgets/gallery_grid.dart:234:35 • prefer_const_constructors
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/widgets/gallery_grid.dart:237:36 • prefer_const_literals_to_create_immutables
+   info • Use 'const' with the constructor to improve performance • lib/widgets/gallery_grid.dart:238:27 • prefer_const_constructors
+warning • The value of the field '_cachedWidth' isn't used • lib/widgets/hsl_color_picker.dart:34:11 • unused_field
+   info • Use 'const' with the constructor to improve performance • lib/widgets/hsl_color_picker.dart:224:9 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/widgets/hsl_color_picker.dart:226:18 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/widgets/hsl_color_picker.dart:302:13 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/widgets/hsl_color_picker.dart:304:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/widgets/hsl_color_picker.dart:312:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/widgets/hsl_color_picker.dart:343:13 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/widgets/hsl_color_picker.dart:345:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/widgets/hsl_color_picker.dart:353:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/widgets/hsl_color_picker.dart:415:9 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/widgets/hsl_color_picker.dart:417:18 • prefer_const_constructors
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/locating_animation.dart:151:30 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/locating_animation.dart:159:30 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/locating_animation.dart:191:31 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/locating_animation.dart:197:31 • deprecated_member_use
+warning • Unused import: 'dart:math' • lib/widgets/opening_animation.dart:1:8 • unused_import
+   info • Don't invoke 'print' in production code • lib/widgets/paint_canvas.dart:193:7 • avoid_print
+
+63 issues found. (ran in 1.4s)

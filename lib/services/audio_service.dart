@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 
 /// Service for audio playback during meditation sessions
@@ -22,13 +23,32 @@ class AudioService {
   Stream<Duration> get positionStream => _player.positionStream;
 
   /// Play an audio asset by name (without extension)
-  Future<void> playAsset(String audioName) async {
+  /// Returns true if play started successfully, false otherwise.
+  Future<bool> playAsset(String audioName) async {
     try {
       final assetPath = 'assets/audio/$audioName.mp3';
+      debugPrint('🎵 AudioService: Loading $assetPath');
+      
+      // Ensure volume is set to maximum on every play to avoid silence
+      await _player.setVolume(1.0);
+      
       await _player.setAsset(assetPath);
-      await _player.play();
+      
+      // Log player status before playing
+      debugPrint('🎵 AudioService: Player state before play: ${_player.processingState}');
+      
+      // Don't await play() to allow UI to remain responsive, but start it
+      _player.play();
+      
+      debugPrint('🎵 AudioService: Play command sent for $audioName');
+      return true;
     } on Exception catch (e) {
-      print('Error playing audio $audioName: $e');
+      if (e.toString().contains('abort') || e.toString().contains('interrupted')) {
+        debugPrint('🎵 AudioService: Loading interrupted for $audioName (skipping/navigation)');
+      } else {
+        debugPrint('🎵 AudioService: Error playing audio $audioName: $e');
+      }
+      return false;
     }
   }
 

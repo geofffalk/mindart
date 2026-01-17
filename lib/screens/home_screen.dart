@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import '../config/theme.dart';
 import '../services/meditation_service.dart';
+import '../models/visual_theme.dart';
+import '../models/meditation.dart';
 import '../widgets/meditation_card.dart';
 import 'meditation_player_screen.dart';
 import 'gallery_screen.dart';
 import 'settings_screen.dart';
+import '../services/settings_service.dart';
 
 /// Home screen showing list of available meditations
 class HomeScreen extends StatefulWidget {
@@ -16,15 +19,32 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final MeditationService _meditationService = MeditationService();
+  final SettingsService _settingsService = SettingsService();
   int _selectedIndex = 0;
+  late AppVisualTheme _visualTheme;
+
+  @override
+  void initState() {
+    super.initState();
+    _visualTheme = _settingsService.getTheme();
+  }
+
+  void _refreshTheme() {
+    setState(() {
+      _visualTheme = _settingsService.getTheme();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    // If we're on settings screen, we should refresh the theme in case it was changed
+    final isDark = _visualTheme == AppVisualTheme.blueNeon;
+    
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: AppTheme.backgroundGradient,
+        decoration: BoxDecoration(
+          gradient: AppTheme.getBackgroundGradient(_visualTheme),
         ),
         child: SafeArea(
           child: _buildBody(),
@@ -32,10 +52,10 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: AppTheme.primaryDark,
+          color: isDark ? AppTheme.primaryDark : AppTheme.getSurfaceColor(_visualTheme),
           boxShadow: [
             BoxShadow(
-              color: Colors.black45,
+              color: isDark ? Colors.black45 : Colors.black12,
               blurRadius: 10,
               offset: const Offset(0, -2),
             ),
@@ -43,12 +63,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: BottomNavigationBar(
           currentIndex: _selectedIndex,
-          onTap: (index) => setState(() => _selectedIndex = index),
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+              // Always refresh theme when navigating
+              _visualTheme = _settingsService.getTheme();
+            });
+          },
           backgroundColor: Colors.transparent,
           elevation: 0,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: AppTheme.calmBlue,
-          unselectedItemColor: Colors.white54,
+          selectedItemColor: isDark ? AppTheme.calmBlue : AppTheme.getPrimaryColor(_visualTheme),
+          unselectedItemColor: isDark ? Colors.white54 : Colors.black38,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.self_improvement),
@@ -73,9 +99,9 @@ class _HomeScreenState extends State<HomeScreen> {
       case 0:
         return _buildMeditationList();
       case 1:
-        return const GalleryScreen();
+        return GalleryScreen(visualTheme: _visualTheme);
       case 2:
-        return const SettingsScreen();
+        return SettingsScreen(onThemeChanged: _refreshTheme);
       default:
         return _buildMeditationList();
     }
@@ -83,6 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildMeditationList() {
     final meditations = _meditationService.availableMeditations;
+    final isDark = _visualTheme == AppVisualTheme.blueNeon;
 
     return CustomScrollView(
       slivers: [
@@ -97,13 +124,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   'MindArt',
                   style: Theme.of(context).textTheme.displayMedium?.copyWith(
                     fontWeight: FontWeight.bold,
+                    color: isDark ? Colors.white : Colors.black87,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'Guided meditation with creative expression',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.white60,
+                    color: isDark ? Colors.white60 : Colors.black54,
                   ),
                 ),
               ],
@@ -118,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Text(
               'Choose a Meditation',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Colors.white70,
+                color: isDark ? Colors.white70 : Colors.black45,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -133,6 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return MeditationCard(
                 meditation: meditation,
                 onTap: () => _startMeditation(meditation),
+                visualTheme: _visualTheme,
               );
             },
             childCount: meditations.length,
@@ -152,6 +181,6 @@ class _HomeScreenState extends State<HomeScreen> {
           meditationInfo: meditation,
         ),
       ),
-    );
+    ).then((_) => _refreshTheme()); // Refresh theme after coming back
   }
 }

@@ -11,6 +11,7 @@ import '../widgets/hand_scan_animation.dart';
 import '../widgets/locating_animation.dart';
 import '../widgets/opening_animation.dart';
 import '../widgets/path_animation.dart';
+import '../models/visual_theme.dart';
 import 'paint_screen.dart';
 
 /// Main meditation player screen
@@ -44,11 +45,12 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
   bool _audioFinished = false;  // Track if audio for segment has finished
   bool _timerFinished = false;  // Track if duration timer has finished
   Timer? _sequenceTimer;        // Timer for sequenceTiming delay
+  int _playTransactionId = 0;   // Track current playback "transaction" to prevent race conditions
 
   // Animation controllers for different segment types
   late AnimationController _pathAnimationController;
   List<Offset>? _currentPathData;
-  List<Offset>? _completedPathData; // Persists after animation completes
+  final List<List<Offset>> _completedPaths = []; // Persists after animation completes
   bool _isHandScanMeditation = false;
   
   // Dynamic path data loaded from segment.graphic configuration
@@ -78,14 +80,16 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
   // Drawing persistence for fading segments
   final Map<int, Uint8List> _savedDrawings = {};
   late AnimationController _fadeAnimationController;
+  late AppVisualTheme _visualTheme;
 
   @override
   void initState() {
     super.initState();
     _sessionTime = DateTime.now().millisecondsSinceEpoch;
     
-    // Load gender preference from settings
+    // Load preferences from settings
     _genderPrefix = SettingsService().getGender();
+    _visualTheme = SettingsService().getTheme();
     
     // Path animation controller - duration set when segment starts
     _pathAnimationController = AnimationController(
@@ -264,13 +268,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       _currentFillBitmapIds = graphic.endFillBitmapIds;
       _allAnimationsComplete = false; // Reset for new segment
       
-      // Clear completed path if it's not in the new segment's config
-      // This prevents showing animations from previous segments
-      if (_completedPathData != null) {
-        // Only keep _completedPathData if its corresponding path ID is still relevant
-        // Since we don't track the old path ID, just clear it on segment change
-        _completedPathData = null;
-      }
+      // Clear completed paths on segment change
+      _completedPaths.clear();
       
       // Set up for first animation path
       _currentAnimationIndex = 0;
@@ -299,6 +298,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       _playerState = PlayerState.playing;
       _audioFinished = false;
       _timerFinished = false;
+      _completedPaths.clear();
+      _allAnimationsComplete = false;
     });
     
     // Load path data for this segment based on its graphic configuration
@@ -358,19 +359,40 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     _startProgressTimer();
 
     // Play audio for current segment
-    if (segment.audioLocation.isNotEmpty) {
-      _audioService.playAsset(segment.audioLocation);
-      _audioService.onComplete(() {
-        debugPrint('🎵 Audio finished for segment ${segment.id}');
+  if (segment.audioLocation.isNotEmpty) {
+    _playTransactionId++;
+    final int currentId = _playTransactionId;
+    
+    debugPrint('🎵 MeditationPlayerScreen: Starting playAsset for ${segment.audioLocation} (ID: $currentId)');
+    _audioService.playAsset(segment.audioLocation).then((success) {
+      if (!mounted || currentId != _playTransactionId) return;
+      
+      if (!success) {
+        debugPrint('⚠️ Audio failed to load for segment ${segment.id}, proceeding without audio.');
+        setState(() {
+          _audioFinished = true;
+          _checkSegmentCompletion();
+        });
+      }
+    });
+    
+    _audioService.onComplete(() {
+      if (!mounted || currentId != _playTransactionId) return;
+      
+      debugPrint('🎵 Audio finished for segment ${segment.id} (ID: $currentId)');
+      setState(() {
         _audioFinished = true;
         _checkSegmentCompletion();
       });
-    } else {
-      // No audio, consider audio finished immediately
+    });
+  } else {
+    // No audio, consider audio finished immediately
+    setState(() {
       _audioFinished = true;
       _checkSegmentCompletion();
-    }
+    });
   }
+}
 
   void _checkSegmentCompletion() {
     if (_audioFinished && _timerFinished) {
@@ -401,7 +423,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
         setState(() {
           // Persist current completed path
           if (_currentPathData != null) {
-            _completedPathData = _currentPathData;
+            _completedPaths.add(List.from(_currentPathData!));
           }
           // Load next path
           _currentPathData = _loadedPaths[nextPathId];
@@ -448,9 +470,12 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     // Remove the animation listener to avoid duplicate calls
     _pathAnimationController.removeStatusListener(_onPathAnimationComplete);
     
-    // Persist the completed animation path for the next segment
+    // Persist the current animation paths to the completed list
     if (_currentPathData != null && _currentPathData!.isNotEmpty) {
-      _completedPathData = _currentPathData;
+      // Avoid duplicates if already added in _onPathAnimationComplete
+      if (_completedPaths.isEmpty || _completedPaths.last != _currentPathData) {
+        _completedPaths.add(List.from(_currentPathData!));
+      }
     }
     
     // Reset animation and elapsed time for next segment
@@ -552,10 +577,10 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.primaryMedium,
+        backgroundColor: AppTheme.getSurfaceColor(_visualTheme),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Meditation Complete'),
-        content: Text(message),
+        title: Text('Meditation Complete', style: TextStyle(color: AppTheme.getPrimaryColor(_visualTheme))),
+        content: Text(message, style: TextStyle(color: _visualTheme == AppVisualTheme.blueNeon ? Colors.white70 : Colors.black87)),
         actions: [
           TextButton(
             onPressed: () {
@@ -572,9 +597,10 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent, // Let Container handle background
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: AppTheme.backgroundGradient,
+        decoration: BoxDecoration(
+          gradient: AppTheme.getBackgroundGradient(_visualTheme),
         ),
         child: SafeArea(
           child: Stack(
@@ -588,7 +614,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                 top: 8,
                 right: 8,
                 child: IconButton(
-                  icon: const Icon(Icons.close, color: Colors.white70),
+                  icon: Icon(Icons.close, color: _visualTheme == AppVisualTheme.blueNeon ? Colors.white70 : Colors.black54),
                   onPressed: () => _showExitConfirmation(),
                 ),
               ),
@@ -626,7 +652,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
             child: Text(
               segment.description,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Colors.white,
+                color: _visualTheme == AppVisualTheme.blueNeon ? Colors.white : Colors.black87,
                 height: 1.3,
               ),
               textAlign: TextAlign.center,
@@ -642,7 +668,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
         Text(
           _formatTime(timeRemaining),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Colors.white60,
+            color: _visualTheme == AppVisualTheme.blueNeon ? Colors.white60 : Colors.black45,
           ),
         ),
 
@@ -787,19 +813,24 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
         height: 80,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: AppTheme.calmBlue,
           boxShadow: [
             BoxShadow(
-              color: AppTheme.calmBlue.withValues(alpha: 0.5),
-              blurRadius: 20,
-              spreadRadius: 5,
+              color: AppTheme.getPrimaryColor(_visualTheme).withValues(alpha: 0.3),
+              blurRadius: 15,
+              spreadRadius: 2,
             ),
           ],
+          gradient: LinearGradient(
+            colors: [
+              AppTheme.getPrimaryColor(_visualTheme),
+              AppTheme.getPrimaryColor(_visualTheme).withValues(alpha: 0.8),
+            ],
+          ),
         ),
         child: Icon(
           isPlaying ? Icons.pause : Icons.play_arrow,
           size: 40,
-          color: Colors.white,
+          color: _visualTheme == AppVisualTheme.blueNeon ? Colors.white : Colors.white,
         ),
       ),
     );
@@ -818,12 +849,16 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
         height: 48,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: enabled ? Colors.white12 : Colors.white.withValues(alpha: 0.05),
+          color: enabled 
+              ? (_visualTheme == AppVisualTheme.blueNeon ? Colors.white12 : Colors.black.withValues(alpha: 0.05))
+              : (_visualTheme == AppVisualTheme.blueNeon ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.02)),
         ),
         child: Icon(
           icon,
           size: 28,
-          color: enabled ? Colors.white70 : Colors.white30,
+          color: enabled 
+              ? (_visualTheme == AppVisualTheme.blueNeon ? Colors.white70 : Colors.black54)
+              : (_visualTheme == AppVisualTheme.blueNeon ? Colors.white30 : Colors.black26),
         ),
       ),
     );
@@ -837,10 +872,12 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
     _progressTimer?.cancel();
     _pathAnimationController.reset();
     _currentPathData = null;
+    _completedPaths.clear();
     _segmentElapsedSeconds = 0;
     
     _meditation!.move(-1);
     setState(() {});
+    _completedPaths.clear();
     _play();
   }
 
@@ -919,11 +956,14 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
               return PathAnimation(
                 pathPoints: pathData,
                 progress: 1.0,
-                strokeColor: Colors.white24,
+                strokeColor: _visualTheme == AppVisualTheme.blueNeon 
+                    ? Colors.white24 
+                    : AppTheme.getPrimaryColor(_visualTheme).withValues(alpha: 0.35),
                 strokeWidth: 2.0,
                 glowColor: Colors.transparent,
                 useAbsoluteCoords: true,
                 size: const Size(580, 756),
+                visualTheme: _visualTheme,
               );
             }),
             // User location circle if selected
@@ -972,7 +1012,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       height: 280,
       child: HandScanAnimation(
         duration: duration,
-        traceColor: AppTheme.primary,
+        traceColor: AppTheme.getPrimaryColor(_visualTheme),
         strokeWidth: 3.0,
       ),
     );
@@ -1022,6 +1062,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
         child: LocatingAnimation(
           bodyPaths: bodyPaths,
           canvasSize: Size(canvasWidth, canvasHeight),
+          outlineColor: AppTheme.getPrimaryColor(_visualTheme).withValues(alpha: 0.6),
+          circleColor: _visualTheme == AppVisualTheme.blueNeon ? Colors.white : AppTheme.getPrimaryColor(_visualTheme),
           onLocationSelected: (location) {
             setState(() {
               _userLocation = location;
@@ -1105,11 +1147,15 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
         height: circleRadius * 2,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.white,
+          color: _visualTheme == AppVisualTheme.blueNeon ? Colors.white : AppTheme.getSurfaceColor(_visualTheme),
+          border: Border.all(
+            color: AppTheme.getPrimaryColor(_visualTheme).withValues(alpha: 0.5),
+            width: 2,
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.white.withOpacity(0.5),
-              blurRadius: 8,
+              color: (_visualTheme == AppVisualTheme.blueNeon ? Colors.white : AppTheme.getPrimaryColor(_visualTheme)).withValues(alpha: 0.4),
+              blurRadius: 10,
               spreadRadius: 2,
             ),
           ],
@@ -1205,8 +1251,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
             children: [
               Text(
                 'Drawing ${entry.key}',
-                style: const TextStyle(
-                  color: Colors.white70,
+                style: TextStyle(
+                  color: _visualTheme == AppVisualTheme.blueNeon ? Colors.white70 : Colors.black54,
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
@@ -1246,8 +1292,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
                       color: i == index 
-                          ? Colors.white 
-                          : Colors.white.withValues(alpha: 0.4),
+                          ? (_visualTheme == AppVisualTheme.blueNeon ? Colors.white : Colors.black87)
+                          : (_visualTheme == AppVisualTheme.blueNeon ? Colors.white.withValues(alpha: 0.4) : Colors.black26),
                     ),
                   ),
                 ),
@@ -1275,8 +1321,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       child: SizedBox(
         width: screenWidth,
         height: availableHeight,
-        child: const Center(
-          child: _BreathingCircle(),
+        child: Center(
+          child: _BreathingCircle(visualTheme: _visualTheme),
         ),
       ),
     );
@@ -1320,11 +1366,12 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                     return PathAnimation(
                       pathPoints: pathData,
                       progress: 1.0,
-                      strokeColor: Colors.white24,
+                      strokeColor: _visualTheme == AppVisualTheme.blueNeon ? Colors.white24 : Colors.black12,
                       strokeWidth: 2.0,
                       glowColor: Colors.transparent,
                       useAbsoluteCoords: true,
                       size: const Size(580, 756),
+                      visualTheme: _visualTheme,
                     );
                   }),
                 ],
@@ -1353,6 +1400,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
         final canvasWidth = screenWidth;
         final canvasHeight = availableHeight;
         
+        debugPrint('🎨 MeditationPlayerScreen: _visualTheme = $_visualTheme, BgColor = ${AppTheme.getBackgroundColor(_visualTheme)}, Primary = ${AppTheme.getPrimaryColor(_visualTheme)}');
+        
         return Align(
           alignment: Alignment.topCenter,
           child: SizedBox(
@@ -1367,12 +1416,13 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                         return PathAnimation(
                           pathPoints: pathData,
                           progress: 1.0,
-                          strokeColor: Colors.white24,
+                          strokeColor: AppTheme.getPrimaryColor(_visualTheme).withValues(alpha: _visualTheme == AppVisualTheme.blueNeon ? 0.24 : 0.6),
                           strokeWidth: pathId == 'body_outer' ? 2.0 : 1.5,
                           glowColor: Colors.transparent,
                           useAbsoluteCoords: true,
                           size: const Size(580, 756),
                           animationStyle: _meditation?.currentSegment.graphic.animationStyle ?? 1,
+                          visualTheme: _visualTheme,
                         );
                       }),
                       // Static fill paths
@@ -1382,37 +1432,41 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                         return PathAnimation(
                           pathPoints: pathData,
                           progress: 1.0,
-                          strokeColor: AppTheme.primary.withValues(alpha: 0.5),
+                          strokeColor: AppTheme.getPrimaryColor(_visualTheme).withValues(alpha: _visualTheme == AppVisualTheme.blueNeon ? 0.4 : 0.75),
                           strokeWidth: 2.0,
                           glowColor: Colors.transparent,
                           useAbsoluteCoords: true,
                           size: const Size(580, 756),
                           animationStyle: _meditation?.currentSegment.graphic.animationStyle ?? 1,
+                          visualTheme: _visualTheme,
                         );
                       }),
-                      // Completed path
-                      if (_completedPathData != null && _completedPathData!.isNotEmpty)
-                        PathAnimation(
-                          pathPoints: _completedPathData!,
+                      // Completed paths persistence
+                      ..._completedPaths.map((pathData) {
+                        return PathAnimation(
+                          pathPoints: pathData,
                           progress: 1.0,
-                          strokeColor: AppTheme.primary.withValues(alpha: 0.7),
+                          strokeColor: AppTheme.getPrimaryColor(_visualTheme).withValues(alpha: 0.7),
                           strokeWidth: 2.5,
                           glowColor: Colors.transparent,
                           useAbsoluteCoords: true,
                           size: const Size(580, 756),
                           animationStyle: _meditation?.currentSegment.graphic.animationStyle ?? 1,
-                        ),
+                          visualTheme: _visualTheme,
+                        );
+                      }),
                       // Animated path
                       if (_currentPathData != null && _currentPathData!.isNotEmpty)
                         PathAnimation(
                           pathPoints: _currentPathData!,
                           progress: _pathAnimationController.value,
-                          strokeColor: AppTheme.primary,
+                          strokeColor: AppTheme.getPrimaryColor(_visualTheme),
                           strokeWidth: 3.5,
-                          glowColor: AppTheme.primary,
+                          glowColor: _visualTheme == AppVisualTheme.blueNeon ? AppTheme.getPrimaryColor(_visualTheme) : null,
                           useAbsoluteCoords: true,
                           size: const Size(580, 756),
                           animationStyle: _meditation?.currentSegment.graphic.animationStyle ?? 1,
+                          visualTheme: _visualTheme,
                         ),
                       // Fill regions (code-driven, not bitmaps)
                       if (_allAnimationsComplete) ..._currentFillBitmapIds.map((regionId) {
@@ -1433,6 +1487,7 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
                           fillColor: fillColor,
                           useAbsoluteCoords: true,
                           size: const Size(580, 756),
+                          visualTheme: _visualTheme,
                         );
                       }),
                       // User location overlay (only if LOCATING has happened)
@@ -1516,7 +1571,12 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
       'head': Color(0xFF4169E1),      // Royal blue
       'crown': Color(0xFF9932CC),     // Purple
     };
-    return chakraColors[regionId] ?? AppTheme.primary;
+    // Default to a visible grey for light themes if no chakra color is defined
+    final isDark = _visualTheme == AppVisualTheme.blueNeon;
+    return chakraColors[regionId] ?? 
+           (isDark 
+             ? AppTheme.getPrimaryColor(_visualTheme).withValues(alpha: 0.6) 
+             : Colors.grey.withValues(alpha: 0.4));
   }
 
   String _formatTime(int seconds) {
@@ -1526,26 +1586,39 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
   }
 
   void _showExitConfirmation() {
+    final isDark = _visualTheme == AppVisualTheme.blueNeon;
+    final textColor = isDark ? Colors.white : Colors.black87;
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.primaryMedium,
+        backgroundColor: AppTheme.getSurfaceColor(_visualTheme),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Exit Meditation?'),
-        content: const Text(
+        title: Text(
+          'Exit Meditation?',
+          style: TextStyle(color: AppTheme.getPrimaryColor(_visualTheme), fontWeight: FontWeight.bold),
+        ),
+        content: Text(
           'Your progress in this session will be lost.',
+          style: TextStyle(color: textColor.withValues(alpha: 0.8)),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Continue'),
+            child: Text(
+              'Continue',
+              style: TextStyle(color: isDark ? Colors.white70 : Colors.black54),
+            ),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             },
-            child: const Text('Exit'),
+            child: Text(
+              'Exit',
+              style: TextStyle(color: AppTheme.error, fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),
@@ -1555,7 +1628,8 @@ class _MeditationPlayerScreenState extends State<MeditationPlayerScreen>
 
 /// Self-contained breathing circle with its own animation controller
 class _BreathingCircle extends StatefulWidget {
-  const _BreathingCircle();
+  final AppVisualTheme visualTheme;
+  const _BreathingCircle({required this.visualTheme});
 
   @override
   State<_BreathingCircle> createState() => _BreathingCircleState();
@@ -1591,6 +1665,10 @@ class _BreathingCircleState extends State<_BreathingCircle>
             ? 0.6 + (progress * 1.6)  // 0.6 -> 1.4 (inhale)
             : 1.4 - ((progress - 0.5) * 1.6);  // 1.4 -> 0.6 (exhale)
         
+        final primaryColor = widget.visualTheme == AppVisualTheme.blueNeon 
+            ? AppTheme.getPrimaryColor(widget.visualTheme)
+            : AppTheme.getPrimaryColor(widget.visualTheme); // Use same for now, but ensure it's theme-aware
+            
         return Transform.scale(
           scale: breathScale,
           child: Container(
@@ -1598,10 +1676,10 @@ class _BreathingCircleState extends State<_BreathingCircle>
             height: 100,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppTheme.primary.withValues(alpha: 0.4),
+              color: AppTheme.getPrimaryColor(widget.visualTheme).withValues(alpha: 0.4),
               boxShadow: [
                 BoxShadow(
-                  color: AppTheme.primary.withValues(alpha: 0.3),
+                  color: AppTheme.getPrimaryColor(widget.visualTheme).withValues(alpha: 0.3),
                   blurRadius: 30,
                   spreadRadius: 10,
                 ),

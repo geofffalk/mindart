@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../models/visual_theme.dart';
 
 /// MindArt 2026 Theme Configuration
 /// Dark, calming, meditational aesthetic with proper contrast
@@ -10,36 +11,104 @@ class AppTheme {
   // 2026 Dark Palette - Calm, Readable
   // ============================================
   
-  // Backgrounds - Deep dark blues
-  static const Color background = Color(0xFF0F1419);      // Deep dark
-  static const Color surface = Color(0xFF1A2332);         // Dark surface
-  static const Color card = Color(0xFF1E293B);            // Card dark
-  
-  // Primary - Teal/Cyan accent
+  // ============================================
+  // Themes Palettes
+  // ============================================
+
+  /// Returns the background color for a specific theme
+  static Color getBackgroundColor(AppVisualTheme theme) {
+    switch (theme) {
+      case AppVisualTheme.blueNeon:
+        return const Color(0xFF0F1419);
+      case AppVisualTheme.sketchbook:
+        return const Color(0xFFF7F1E3);
+      case AppVisualTheme.pencil:
+        return const Color(0xFFECF0F1);
+      case AppVisualTheme.childlike:
+        return Colors.white;
+    }
+  }
+
+  /// Returns the surface color for a specific theme
+  static Color getSurfaceColor(AppVisualTheme theme) {
+    switch (theme) {
+      case AppVisualTheme.blueNeon:
+        return const Color(0xFF1A2332);
+      case AppVisualTheme.sketchbook:
+        return const Color(0xFFD1CCC0);
+      case AppVisualTheme.pencil:
+        return const Color(0xFFBDC3C7);
+      case AppVisualTheme.childlike:
+        return const Color(0xFFF1F5F9);
+    }
+  }
+
+  /// Returns the primary color for a specific theme
+  static Color getPrimaryColor(AppVisualTheme theme) {
+    switch (theme) {
+      case AppVisualTheme.blueNeon:
+        return const Color(0xFF4FB3BF);
+      case AppVisualTheme.sketchbook:
+        return const Color(0xFF1E375A); // Darker Blue for "Sketchbook"
+      case AppVisualTheme.pencil:
+        return const Color(0xFF2C4C70); // Blue-ish Graphite for "Pencil"
+      case AppVisualTheme.childlike:
+        return const Color(0xFFFF4757);
+    }
+  }
+
+  /// Returns the background gradient for a specific theme
+  static LinearGradient getBackgroundGradient(AppVisualTheme theme) {
+    switch (theme) {
+      case AppVisualTheme.blueNeon:
+        return const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFF1A2332), Color(0xFF0F1419)],
+        );
+      case AppVisualTheme.sketchbook:
+        return LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [const Color(0xFFF7F1E3), const Color(0xFFE5DECF)],
+        );
+      case AppVisualTheme.pencil:
+        return const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFFECF0F1), Color(0xFFDCE1E2)],
+        );
+      case AppVisualTheme.childlike:
+        return const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.white, Color(0xFFF5F6FA)],
+        );
+    }
+  }
+
+  // Base colors for default access (Blue Neon)
+  static const Color background = Color(0xFF0F1419);
+  static const Color surface = Color(0xFF1A2332);
+  static const Color card = Color(0xFF1E293B);
   static const Color primary = Color(0xFF4FB3BF);
   static const Color primaryLight = Color(0xFF7DD3E0);
   static const Color primaryDark = Color(0xFF2D8A94);
-  
-  // Accent - Warm Coral
   static const Color accent = Color(0xFFE8A598);
   static const Color accentLight = Color(0xFFFFC1A8);
-  
-  // Text Colors - Light on dark for readability
-  static const Color textPrimary = Color(0xFFF1F5F9);     // Bright white
-  static const Color textSecondary = Color(0xFFCBD5E1);   // Light gray
-  static const Color textTertiary = Color(0xFF94A3B8);    // Medium gray
+  static const Color textPrimary = Color(0xFFF1F5F9);
+  static const Color textSecondary = Color(0xFFCBD5E1);
+  static const Color textTertiary = Color(0xFF94A3B8);
   static const Color textOnPrimary = Color(0xFF0F1419);
-  
-  // Utility Colors
-  static const Color divider = Color(0xFF334155);         // Subtle divider
+  static const Color divider = Color(0xFF334155);
   static const Color error = Color(0xFFEF4444);
   static const Color success = Color(0xFF22C55E);
   
-  // Legacy compatibility
+  // Legacy compatibility - RESTORED to fix build errors
+  static const Color calmBlue = Color(0xFF4FB3BF);
   static const Color primaryMedium = Color(0xFF1E293B);
   static const Color highlight = Color(0xFFE94560);
   static const Color warmGold = Color(0xFFF7B731);
-  static const Color calmBlue = Color(0xFF4FB3BF);
   static const Color softPurple = Color(0xFF9B59B6);
 
   // ============================================
@@ -74,160 +143,58 @@ class AppTheme {
   // Theme Data
   // ============================================
   
-  static ThemeData get lightTheme {
+  static ThemeData getThemeData(AppVisualTheme visualTheme) {
+    final isDark = visualTheme == AppVisualTheme.blueNeon;
+    final bgColor = getBackgroundColor(visualTheme);
+    final surfaceColor = getSurfaceColor(visualTheme);
+    final primaryColor = getPrimaryColor(visualTheme);
+    final textColor = isDark ? const Color(0xFFF1F5F9) : const Color(0xFF2D3436);
+    final secondaryTextColor = isDark ? const Color(0xFFCBD5E1) : const Color(0xFF636E72);
+
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.dark,
-      primaryColor: primary,
-      scaffoldBackgroundColor: background,
+      brightness: isDark ? Brightness.dark : Brightness.light,
+      primaryColor: primaryColor,
+      scaffoldBackgroundColor: bgColor,
       
-      colorScheme: const ColorScheme.dark(
-        primary: primary,
-        primaryContainer: primaryDark,
-        secondary: accent,
-        secondaryContainer: accentLight,
-        surface: surface,
-        error: error,
-        onPrimary: textOnPrimary,
-        onSecondary: textOnPrimary,
-        onSurface: textPrimary,
-        onError: Colors.white,
-      ),
+      colorScheme: isDark 
+        ? ColorScheme.dark(
+            primary: primaryColor,
+            surface: surfaceColor,
+            onSurface: textColor,
+          )
+        : ColorScheme.light(
+            primary: primaryColor,
+            surface: surfaceColor,
+            onSurface: textColor,
+          ),
       
-      // AppBar - Transparent, clean
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        scrolledUnderElevation: 0,
         centerTitle: true,
         titleTextStyle: GoogleFonts.outfit(
           fontSize: 20,
           fontWeight: FontWeight.w500,
-          color: textPrimary,
+          color: textColor,
         ),
-        iconTheme: const IconThemeData(color: textPrimary),
+        iconTheme: IconThemeData(color: textColor),
       ),
       
-      // Text Theme
-      textTheme: _buildTextTheme(),
+      textTheme: _buildTextTheme(textColor, secondaryTextColor),
       
-      // Elevated Buttons - Pill shape, sage green
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: primary,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          backgroundColor: primaryColor,
+          foregroundColor: isDark ? Colors.white : Colors.white,
           shape: const StadiumBorder(),
-          textStyle: GoogleFonts.inter(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
+          textStyle: GoogleFonts.inter(fontWeight: FontWeight.w600),
         ),
       ),
       
-      // Outlined Buttons
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: primary,
-          side: const BorderSide(color: primaryLight, width: 1.5),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-          shape: const StadiumBorder(),
-          textStyle: GoogleFonts.inter(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
-      
-      // Text Buttons
-      textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-          foregroundColor: primary,
-          textStyle: GoogleFonts.inter(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
-      
-      // Cards - White with soft shadow
       cardTheme: CardThemeData(
-        color: card,
-        elevation: 0,
-        shadowColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-      
-      // Icons
-      iconTheme: const IconThemeData(
-        color: textSecondary,
-        size: 24,
-      ),
-      
-      // FAB
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: primary,
-        foregroundColor: Colors.white,
-        elevation: 4,
-        shape: CircleBorder(),
-      ),
-      
-      // Bottom Navigation
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        selectedItemColor: primary,
-        unselectedItemColor: textTertiary,
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-      ),
-      
-      // Slider
-      sliderTheme: SliderThemeData(
-        activeTrackColor: primary,
-        inactiveTrackColor: primaryLight.withAlpha(77),
-        thumbColor: primary,
-        overlayColor: primary.withAlpha(30),
-        trackHeight: 4,
-      ),
-      
-      // Divider
-      dividerTheme: const DividerThemeData(
-        color: divider,
-        thickness: 1,
-        space: 1,
-      ),
-      
-      // Dialog
-      dialogTheme: DialogThemeData(
-        backgroundColor: card,
-        elevation: 8,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
-      ),
-      
-      // Bottom Sheet
-      bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: card,
-        elevation: 8,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-      ),
-      
-      // Snackbar
-      snackBarTheme: SnackBarThemeData(
-        backgroundColor: surface,
-        contentTextStyle: GoogleFonts.inter(color: Colors.white),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        behavior: SnackBarBehavior.floating,
+        color: surfaceColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
     );
   }
@@ -236,98 +203,15 @@ class AppTheme {
   // Text Theme - Outfit for headers, Inter for body
   // ============================================
   
-  static TextTheme _buildTextTheme() {
+  static TextTheme _buildTextTheme(Color primaryText, Color secondaryText) {
     return TextTheme(
-      // Display - Large headlines
-      displayLarge: GoogleFonts.outfit(
-        fontSize: 32,
-        fontWeight: FontWeight.bold,
-        color: textPrimary,
-        letterSpacing: -0.5,
-      ),
-      displayMedium: GoogleFonts.outfit(
-        fontSize: 28,
-        fontWeight: FontWeight.w600,
-        color: textPrimary,
-        letterSpacing: -0.3,
-      ),
-      displaySmall: GoogleFonts.outfit(
-        fontSize: 24,
-        fontWeight: FontWeight.w600,
-        color: textPrimary,
-      ),
-      
-      // Headlines
-      headlineLarge: GoogleFonts.outfit(
-        fontSize: 24,
-        fontWeight: FontWeight.w600,
-        color: textPrimary,
-      ),
-      headlineMedium: GoogleFonts.outfit(
-        fontSize: 20,
-        fontWeight: FontWeight.w500,
-        color: textPrimary,
-      ),
-      headlineSmall: GoogleFonts.outfit(
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
-        color: textPrimary,
-      ),
-      
-      // Titles
-      titleLarge: GoogleFonts.inter(
-        fontSize: 18,
-        fontWeight: FontWeight.w600,
-        color: textPrimary,
-      ),
-      titleMedium: GoogleFonts.inter(
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-        color: textPrimary,
-      ),
-      titleSmall: GoogleFonts.inter(
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-        color: textSecondary,
-      ),
-      
-      // Body
-      bodyLarge: GoogleFonts.inter(
-        fontSize: 16,
-        fontWeight: FontWeight.normal,
-        color: textPrimary,
-        height: 1.5,
-      ),
-      bodyMedium: GoogleFonts.inter(
-        fontSize: 14,
-        fontWeight: FontWeight.normal,
-        color: textSecondary,
-        height: 1.5,
-      ),
-      bodySmall: GoogleFonts.inter(
-        fontSize: 12,
-        fontWeight: FontWeight.normal,
-        color: textTertiary,
-        height: 1.4,
-      ),
-      
-      // Labels
-      labelLarge: GoogleFonts.inter(
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
-        color: textPrimary,
-      ),
-      labelMedium: GoogleFonts.inter(
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-        color: textSecondary,
-      ),
-      labelSmall: GoogleFonts.inter(
-        fontSize: 11,
-        fontWeight: FontWeight.w500,
-        color: textTertiary,
-        letterSpacing: 0.5,
-      ),
+      displayLarge: GoogleFonts.outfit(fontSize: 32, fontWeight: FontWeight.bold, color: primaryText),
+      displayMedium: GoogleFonts.outfit(fontSize: 28, fontWeight: FontWeight.w600, color: primaryText),
+      displaySmall: GoogleFonts.outfit(fontSize: 24, fontWeight: FontWeight.w600, color: primaryText),
+      headlineLarge: GoogleFonts.outfit(fontSize: 24, fontWeight: FontWeight.w600, color: primaryText),
+      headlineMedium: GoogleFonts.outfit(fontSize: 20, fontWeight: FontWeight.w500, color: primaryText),
+      bodyLarge: GoogleFonts.inter(fontSize: 16, color: primaryText),
+      bodyMedium: GoogleFonts.inter(fontSize: 14, color: secondaryText),
     );
   }
 

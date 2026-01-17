@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import '../config/theme.dart';
 import '../services/meditation_service.dart';
+import '../models/visual_theme.dart';
+import '../models/meditation.dart';
 
 /// Minimal card widget displaying meditation info with blue outline style
 class MeditationCard extends StatefulWidget {
   final MeditationInfo meditation;
   final VoidCallback onTap;
+  final AppVisualTheme visualTheme;
 
   const MeditationCard({
     super.key,
     required this.meditation,
     required this.onTap,
+    this.visualTheme = AppVisualTheme.blueNeon,
   });
 
   @override
@@ -66,16 +70,19 @@ class _MeditationCardState extends State<MeditationCard>
       child: AnimatedBuilder(
         animation: _scaleAnimation,
         builder: (context, child) {
+          final isDark = widget.visualTheme == AppVisualTheme.blueNeon;
+          final primaryColor = AppTheme.getPrimaryColor(widget.visualTheme);
+          
           return Transform.scale(
             scale: _scaleAnimation.value,
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               decoration: BoxDecoration(
-                color: Colors.transparent,
+                color: isDark ? Colors.transparent : AppTheme.getSurfaceColor(widget.visualTheme).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppTheme.primary.withValues(alpha: 0.4),
+                  color: primaryColor.withValues(alpha: 0.4),
                   width: 1.5,
                 ),
               ),
@@ -84,7 +91,7 @@ class _MeditationCardState extends State<MeditationCard>
                   // Icon - simple blue outline style
                   Icon(
                     _meditationIcon,
-                    color: AppTheme.primary,
+                    color: primaryColor,
                     size: 28,
                   ),
                   const SizedBox(width: 14),
@@ -97,14 +104,14 @@ class _MeditationCardState extends State<MeditationCard>
                           meditation.title,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                            color: isDark ? Colors.white : Colors.black87,
                           ),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           meditation.description,
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white54,
+                            color: isDark ? Colors.white54 : Colors.black54,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -115,7 +122,7 @@ class _MeditationCardState extends State<MeditationCard>
                   // Arrow
                   Icon(
                     Icons.chevron_right,
-                    color: AppTheme.primary.withValues(alpha: 0.6),
+                    color: primaryColor.withValues(alpha: 0.6),
                     size: 24,
                   ),
                 ],

@@ -8,10 +8,16 @@ import '../models/saved_session.dart';
 import '../services/database_service.dart';
 import '../widgets/gallery_grid.dart';
 import '../services/audio_recording_service.dart';
+import '../models/visual_theme.dart';
 
 /// Gallery screen showing saved meditation artwork
 class GalleryScreen extends StatefulWidget {
-  const GalleryScreen({super.key});
+  final AppVisualTheme visualTheme;
+
+  const GalleryScreen({
+    super.key,
+    this.visualTheme = AppVisualTheme.blueNeon,
+  });
 
   @override
   State<GalleryScreen> createState() => _GalleryScreenState();
@@ -55,16 +61,20 @@ class _GalleryScreenState extends State<GalleryScreen> {
     } else {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => SessionDetailScreen(session: session),
+          builder: (context) => SessionDetailScreen(
+            session: session,
+            visualTheme: widget.visualTheme,
+          ),
         ),
       );
     }
   }
 
   void _onSessionLongPress(SavedSession session) {
+    final isDark = widget.visualTheme == AppVisualTheme.blueNeon;
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppTheme.primaryMedium,
+      backgroundColor: AppTheme.getSurfaceColor(widget.visualTheme),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -72,8 +82,8 @@ class _GalleryScreenState extends State<GalleryScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: const Icon(Icons.share),
-            title: const Text('Share'),
+            leading: Icon(Icons.share, color: isDark ? Colors.white : Colors.black87),
+            title: Text('Share', style: TextStyle(color: isDark ? Colors.white : Colors.black87)),
             onTap: () {
               Navigator.pop(context);
               _shareSession(session);
@@ -120,13 +130,15 @@ class _GalleryScreenState extends State<GalleryScreen> {
   }
 
   Future<void> _deleteSession(SavedSession session) async {
+    final isDark = widget.visualTheme == AppVisualTheme.blueNeon;
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.primaryMedium,
+        backgroundColor: AppTheme.getSurfaceColor(widget.visualTheme),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Delete Session?'),
-        content: const Text('This will permanently delete this session and all its artwork.'),
+        title: Text('Delete Session?', style: TextStyle(color: isDark ? Colors.white : Colors.black87)),
+        content: Text('This will permanently delete this session and all its artwork.', 
+          style: TextStyle(color: isDark ? Colors.white70 : Colors.black54)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -148,6 +160,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = widget.visualTheme == AppVisualTheme.blueNeon;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -159,17 +172,18 @@ class _GalleryScreenState extends State<GalleryScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                   Text(
                     'Saved sessions',
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : Colors.black87,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     '${_sessions.length} ${_sessions.length == 1 ? 'session' : 'sessions'}',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.white60,
+                      color: isDark ? Colors.white60 : Colors.black54,
                     ),
                   ),
                 ],
@@ -180,7 +194,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                   child: Text(
                     _isEditMode ? 'Done' : 'Edit',
                     style: TextStyle(
-                      color: _isEditMode ? AppTheme.highlight : AppTheme.calmBlue,
+                      color: _isEditMode ? AppTheme.highlight : (isDark ? AppTheme.calmBlue : AppTheme.getPrimaryColor(widget.visualTheme)),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -209,8 +223,13 @@ class _GalleryScreenState extends State<GalleryScreen> {
 /// Detail screen showing all artwork from a session
 class SessionDetailScreen extends StatelessWidget {
   final SavedSession session;
+  final AppVisualTheme visualTheme;
 
-  const SessionDetailScreen({super.key, required this.session});
+  const SessionDetailScreen({
+    super.key,
+    required this.session,
+    this.visualTheme = AppVisualTheme.blueNeon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -220,7 +239,8 @@ class SessionDetailScreen extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text(session.meditationTitle),
+        iconTheme: IconThemeData(color: visualTheme == AppVisualTheme.blueNeon ? Colors.white : Colors.black87),
+        title: Text(session.meditationTitle, style: TextStyle(color: visualTheme == AppVisualTheme.blueNeon ? Colors.white : Colors.black87)),
         actions: [
           IconButton(
             icon: const Icon(Icons.share),
@@ -229,8 +249,8 @@ class SessionDetailScreen extends StatelessWidget {
         ],
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: AppTheme.backgroundGradient,
+        decoration: BoxDecoration(
+          gradient: AppTheme.getBackgroundGradient(visualTheme),
         ),
         child: SafeArea(
           child: drawings.isEmpty

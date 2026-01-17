@@ -17,10 +17,13 @@ class MindArtApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Load the current visual theme from settings
+    final visualTheme = SettingsService().getTheme();
+    
     return MaterialApp(
       title: 'MindArt',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
+      theme: AppTheme.getThemeData(visualTheme),
       home: const HomeScreen(),
     );
   }

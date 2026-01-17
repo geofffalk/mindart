@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../models/visual_theme.dart';
+import 'dart:math' as math;
 
 /// Generic path animation widget that traces any path progressively.
 /// Used for body outlines, chakra paths, and other CSV-defined paths.
@@ -35,7 +37,10 @@ class PathAnimation extends StatelessWidget {
   /// Points will be used directly without scaling to canvas size.
   final bool useAbsoluteCoords;
   
-  /// Animation style from legacy script (0, 1, 2)
+  /// The visual theme to use for rendering
+  final AppVisualTheme visualTheme;
+
+  /// Animation style (stroke thickness/glow multiplier)
   final int animationStyle;
 
   const PathAnimation({
@@ -51,6 +56,7 @@ class PathAnimation extends StatelessWidget {
     this.size,
     this.useAbsoluteCoords = false,
     this.animationStyle = 1,
+    this.visualTheme = AppVisualTheme.blueNeon,
   });
 
   @override
@@ -68,6 +74,7 @@ class PathAnimation extends StatelessWidget {
         fillColor: fillColor,
         useAbsoluteCoords: useAbsoluteCoords,
         animationStyle: animationStyle,
+        visualTheme: visualTheme,
       ),
     );
   }
@@ -84,6 +91,7 @@ class _PathPainter extends CustomPainter {
   final Color? fillColor;
   final bool useAbsoluteCoords;
   final int animationStyle;
+  final AppVisualTheme visualTheme;
 
   _PathPainter({
     required this.pathPoints,
@@ -96,120 +104,296 @@ class _PathPainter extends CustomPainter {
     this.fillColor,
     this.useAbsoluteCoords = false,
     this.animationStyle = 1,
+    required this.visualTheme,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
     if (pathPoints.isEmpty) return;
 
-    final pointsToDraw = (pathPoints.length * progress).ceil();
-    if (pointsToDraw == 0) return;
-    // Scale points to canvas size
-    // For absolute coordinates, use UNIFORM scaling to preserve aspect ratio
+    // Scaling constants
     const sourceWidth = 580.0;
     const sourceHeight = 756.0;
-    
-    // Calculate uniform scale factor (same as LocatingAnimation)
     final scaleX = size.width / sourceWidth;
     final scaleY = size.height / sourceHeight;
-    final scale = scaleX < scaleY ? scaleX : scaleY; // min without importing math
+    final scale = scaleX < scaleY ? scaleX : scaleY;
     final offsetX = (size.width - sourceWidth * scale) / 2;
     final offsetY = (size.height - sourceHeight * scale) / 2;
-    
-    final scaledPoints = pathPoints.take(pointsToDraw).map((p) {
+
+    // Helper to scale points (STABLE - no jitter here)
+    Offset scalePoint(Offset p) {
       if (useAbsoluteCoords) {
-        // Scale from source coordinate space with uniform scaling + centering
-        return Offset(
-          offsetX + p.dx * scale,
-          offsetY + p.dy * scale,
-        );
+        return Offset(offsetX + p.dx * scale, offsetY + p.dy * scale);
       } else {
-        // Scale normalized 0-1 coordinates to canvas size
         return Offset(p.dx * size.width, p.dy * size.height);
       }
-    }).toList();
-
-    // Create path
-    final path = Path();
-    path.moveTo(scaledPoints.first.dx, scaledPoints.first.dy);
-    for (int i = 1; i < scaledPoints.length; i++) {
-      path.lineTo(scaledPoints[i].dx, scaledPoints[i].dy);
     }
 
-    // Draw fill if animation complete and fill enabled
-    if (showFillOnComplete && fillColor != null) {
-      // Close the path for filling using same scaling as stroke
-      final fullPath = Path();
-      final allScaledPoints = pathPoints.map((p) {
-        if (useAbsoluteCoords) {
-          // Use same uniform scaling as stroke path
-          return Offset(
-            offsetX + p.dx * scale,
-            offsetY + p.dy * scale,
-          );
-        } else {
-          return Offset(p.dx * size.width, p.dy * size.height);
-        }
-      }).toList();
-      fullPath.moveTo(allScaledPoints.first.dx, allScaledPoints.first.dy);
-      for (int i = 1; i < allScaledPoints.length; i++) {
-        fullPath.lineTo(allScaledPoints[i].dx, allScaledPoints[i].dy);
+    // Helper for render-time jitter
+    Offset jitterPoint(Offset p, int index, AppVisualTheme theme) {
+      if (theme == AppVisualTheme.sketchbook || theme == AppVisualTheme.pencil) {
+        final random = math.Random(index + 100);
+        // Subtle jitter for organic feel (0.5 for sketchbook, 0.4 for pencil)
+        final jitterAmount = (theme == AppVisualTheme.sketchbook ? 0.5 : 0.4);
+        return Offset(
+          p.dx + (random.nextDouble() - 0.5) * jitterAmount,
+          p.dy + (random.nextDouble() - 0.5) * jitterAmount,
+        );
+      } else if (theme == AppVisualTheme.childlike) {
+        final random = math.Random(index ~/ 5);
+        return Offset(
+          p.dx + (random.nextDouble() - 0.5) * 3.0,
+          p.dy + (random.nextDouble() - 0.5) * 3.0,
+        );
       }
-      fullPath.close();
-      
-      // Draw glow layer first (larger, blurred)
-      final glowFillPaint = Paint()
-        ..color = fillColor!.withValues(alpha: 0.6)
-        ..style = PaintingStyle.fill
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 15);
-      canvas.drawPath(fullPath, glowFillPaint);
-      
-      // Draw solid fill on top (brighter)
-      final fillPaint = Paint()
-        ..color = fillColor!.withValues(alpha: 0.7)
-        ..style = PaintingStyle.fill;
-      canvas.drawPath(fullPath, fillPaint);
+      return p;
     }
 
-    // Draw glow layer first
-    if (glowColor != null) {
-      final glowPaint = Paint()
-        ..color = glowColor!.withValues(alpha: 0.5)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = strokeWidth + glowRadius
-        ..strokeCap = StrokeCap.round
-        ..strokeJoin = StrokeJoin.round
-        ..maskFilter = MaskFilter.blur(BlurStyle.normal, glowRadius);
-      canvas.drawPath(path, glowPaint);
+    // 1. Prepare points based on theme
+    List<Offset> processedPoints;
+    
+    if (visualTheme == AppVisualTheme.sketchbook) {
+      // PRE-DECIMATE the entire path for consistency using STABLE coordinates (no jitter yet)
+      final List<Offset> decimated = [];
+      decimated.add(scalePoint(pathPoints.first));
+      
+      Offset lastKeptStable = decimated.first;
+      for (int i = 1; i < pathPoints.length - 1; i++) {
+        final current = scalePoint(pathPoints[i]);
+        final prev = scalePoint(pathPoints[i-1]);
+        final next = scalePoint(pathPoints[i+1]);
+        
+        final v1 = current - prev;
+        final v2 = next - current;
+        
+        bool keep = false;
+        if (v1.distance > 0 && v2.distance > 0) {
+          final dot = (v1.dx * v2.dx + v1.dy * v2.dy);
+          final mags = v1.distance * v2.distance;
+          final angle = math.acos((dot / mags).clamp(-1.0, 1.0));
+          
+          // KEEP MORE POINTS in curves to avoid gaps (angle > 0.05)
+          // Also use a tighter distance cap (8px) for stable drawing
+          if (angle > 0.05 || (current - lastKeptStable).distance > 8) {
+            keep = true;
+          } else if (i % 4 == 0) {
+            // Sample straights every 4 points
+            keep = true;
+          }
+        }
+        
+        if (keep) {
+          decimated.add(current);
+          lastKeptStable = current;
+        }
+      }
+      decimated.add(scalePoint(pathPoints.last));
+      processedPoints = decimated;
+    } else {
+      // Standard scaled points
+      processedPoints = [];
+      for (int i = 0; i < pathPoints.length; i++) {
+        processedPoints.add(scalePoint(pathPoints[i]));
+      }
     }
 
-    // Draw main stroke
-    final effectiveStrokeWidth = animationStyle == 0 ? 2.0 : strokeWidth;
-    final strokePaint = Paint()
-      ..color = strokeColor
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = effectiveStrokeWidth
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
-    canvas.drawPath(path, strokePaint);
+    // 2. Determine visible points based on progress
+    final visibleCount = (processedPoints.length * progress).ceil();
+    if (visibleCount == 0) return;
+    final visiblePoints = processedPoints.sublist(0, visibleCount);
 
-    // Draw animated point at end
-    if (scaledPoints.isNotEmpty && progress < 1.0) {
-      final endPoint = scaledPoints.last;
+    // 3. Draw Fill
+    if (showFillOnComplete && fillColor != null) {
+      final fillPath = Path();
+      if (processedPoints.isNotEmpty) {
+        fillPath.moveTo(processedPoints.first.dx, processedPoints.first.dy);
+        for (final p in processedPoints) {
+          fillPath.lineTo(p.dx, p.dy);
+        }
+        fillPath.close();
+        
+        final fillPaint = Paint()
+          ..color = fillColor!.withValues(alpha: visualTheme == AppVisualTheme.pencil ? 0.3 : 0.6)
+          ..style = PaintingStyle.fill;
+          
+        if (visualTheme == AppVisualTheme.sketchbook) {
+          // Layered watercolor fill
+          final baseFillPaint = Paint()
+            ..color = fillColor!.withValues(alpha: 0.3)
+            ..style = PaintingStyle.fill;
+          canvas.drawPath(fillPath, baseFillPaint);
+          final bleedPaint = Paint()
+            ..color = fillColor!.withValues(alpha: 0.15)
+            ..style = PaintingStyle.fill
+            ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3);
+          canvas.save();
+          canvas.translate(1.5, 1.0);
+          canvas.drawPath(fillPath, bleedPaint);
+          canvas.restore();
+        } else if (visualTheme == AppVisualTheme.blueNeon) {
+          final glowFill = Paint()
+            ..color = fillColor!.withValues(alpha: 0.6)
+            ..style = PaintingStyle.fill
+            ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 15);
+          canvas.drawPath(fillPath, glowFill);
+          canvas.drawPath(fillPath, fillPaint);
+        } else {
+          canvas.drawPath(fillPath, fillPaint);
+        }
+      }
+    }
+
+    // 4. Draw Strokes
+    if (visualTheme == AppVisualTheme.sketchbook) {
+      final baseWidth = strokeWidth * 2.2; 
+      const int segmentSize = 25; // Long segments for fluid strokes
+      const int overlap = 8;
       
-      // Pulsing dot at the end
-      final dotPaint = Paint()
-        ..color = strokeColor
-        ..style = PaintingStyle.fill;
-      canvas.drawCircle(endPoint, strokeWidth * 1.5, dotPaint);
+      for (int i = 0; i < visiblePoints.length - 1; i += (segmentSize - overlap)) {
+        final random = math.Random(i + 1234);
+        
+        // Curvature check across the segment to ensure NO gaps on curves
+        bool isCurve = false;
+        final int checkEnd = math.min(i + segmentSize, processedPoints.length);
+        for (int k = i + 1; k < checkEnd - 1; k++) {
+          final v1 = processedPoints[k] - processedPoints[k-1];
+          final v2 = processedPoints[k+1] - processedPoints[k];
+          if (v1.distance > 0 && v2.distance > 0) {
+             final angle = math.acos((v1.dx * v2.dx + v1.dy * v2.dy) / (v1.distance * v2.distance)).clamp(-1.0, 1.0).abs();
+             if (angle > 0.08) {
+               isCurve = true;
+               break;
+             }
+          }
+        }
+
+        // 30% gap chance, but strictly forbidden on curves
+        if (!isCurve && random.nextDouble() < 0.30) continue;
+
+        final int end = math.min(i + segmentSize, visiblePoints.length);
+        if (end <= i + 1) break;
+        
+        final segmentPath = Path();
+        final pStart = jitterPoint(visiblePoints[i], i, visualTheme);
+        segmentPath.moveTo(pStart.dx, pStart.dy);
+        
+        for (int j = i + 1; j < end; j++) {
+          final p = jitterPoint(visiblePoints[j], j, visualTheme);
+          segmentPath.lineTo(p.dx, p.dy);
+        }
+
+        // Taper: sinusoidal multiplier over path progress
+        final double pathRatio = i / math.max(1, processedPoints.length - 1);
+        final double taper = 0.35 + 0.8 * math.sin(pathRatio * math.pi);
+        final pressure = taper * (0.9 + random.nextDouble() * 0.2);
+
+        final bodyPaint = Paint()
+          ..color = strokeColor.withValues(alpha: 0.22)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = baseWidth * pressure
+          ..strokeCap = StrokeCap.round;
+          
+        final corePaint = Paint()
+          ..color = strokeColor.withValues(alpha: 0.45)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = baseWidth * 0.4 * pressure
+          ..strokeCap = StrokeCap.round;
+          
+        canvas.drawPath(segmentPath, bodyPaint);
+        canvas.drawPath(segmentPath, corePaint);
+      }
+    } else {
+      final path = Path();
+      if (visiblePoints.isNotEmpty) {
+        final p0 = jitterPoint(visiblePoints.first, 0, visualTheme);
+        path.moveTo(p0.dx, p0.dy);
+        for (int i = 1; i < visiblePoints.length; i++) {
+          final p = jitterPoint(visiblePoints[i], i, visualTheme);
+          path.lineTo(p.dx, p.dy);
+        }
+      }
       
-      // Glow on dot
-      if (glowColor != null) {
-        final dotGlowPaint = Paint()
-          ..color = glowColor!.withValues(alpha: 0.6)
-          ..style = PaintingStyle.fill
-          ..maskFilter = MaskFilter.blur(BlurStyle.normal, glowRadius * 1.5);
-        canvas.drawCircle(endPoint, strokeWidth * 2, dotGlowPaint);
+      if (visualTheme == AppVisualTheme.blueNeon) {
+        if (glowColor != null) {
+          final glowPaint = Paint()
+            ..color = glowColor!.withValues(alpha: 0.5)
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = strokeWidth + glowRadius
+            ..strokeCap = StrokeCap.round
+            ..strokeJoin = StrokeJoin.round
+            ..maskFilter = MaskFilter.blur(BlurStyle.normal, glowRadius);
+          canvas.drawPath(path, glowPaint);
+        }
+        final strokePaint = Paint()
+          ..color = strokeColor
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = (animationStyle == 0) ? 2.0 : strokeWidth
+          ..strokeCap = StrokeCap.round
+          ..strokeJoin = StrokeJoin.round;
+        canvas.drawPath(path, strokePaint);
+      } else if (visualTheme == AppVisualTheme.pencil) {
+        final strokePaint = Paint()
+          ..color = strokeColor.withValues(alpha: 0.8)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = strokeWidth * 0.5
+          ..strokeCap = StrokeCap.square;
+        canvas.drawPath(path, strokePaint);
+      } else if (visualTheme == AppVisualTheme.childlike) {
+        final strokePaint = Paint()
+          ..color = strokeColor
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = strokeWidth * 1.5
+          ..strokeCap = StrokeCap.round
+          ..strokeJoin = StrokeJoin.round;
+        canvas.drawPath(path, strokePaint);
+      }
+    }
+
+    // 5. Draw Animated Tip
+    if (visiblePoints.isNotEmpty && progress < 1.0) {
+      final tip = visiblePoints.last;
+      
+      if (visualTheme == AppVisualTheme.sketchbook) {
+        final random = math.Random((progress * 2000).toInt()); 
+        
+        // Organic dot tip for Sketchbook
+        final tipPaint = Paint()
+          ..color = strokeColor.withValues(alpha: 0.8)
+          ..style = PaintingStyle.fill;
+          
+        // Draw a small solid dot at the tip
+        canvas.drawCircle(tip, strokeWidth * 1.2, tipPaint);
+        
+        // Add subtle organic "graphite" splatters
+        for (int i = 0; i < 3; i++) {
+          final dx = (random.nextDouble() - 0.5) * 5.0;
+          final dy = (random.nextDouble() - 0.5) * 5.0;
+          final r = random.nextDouble() * 1.5;
+          canvas.drawCircle(Offset(tip.dx + dx, tip.dy + dy), r, tipPaint.copyWith(color: strokeColor.withValues(alpha: 0.3)));
+        }
+      } else {
+        // Styled default tip with ELECTRIC neon glow (for Blue Neon/Childlike)
+        final tipPaint = Paint()..color = Colors.white..style = PaintingStyle.fill;
+        
+        if (glowColor != null) {
+          final outerGlow = Paint()
+            ..color = glowColor!.withValues(alpha: 0.45)
+            ..maskFilter = MaskFilter.blur(BlurStyle.normal, glowRadius * 4.0);
+          final midGlow = Paint()
+            ..color = glowColor!.withValues(alpha: 0.7)
+            ..maskFilter = MaskFilter.blur(BlurStyle.normal, glowRadius * 1.5);
+          final innerGlow = Paint()
+            ..color = strokeColor.withValues(alpha: 0.95)
+            ..maskFilter = MaskFilter.blur(BlurStyle.normal, glowRadius * 0.5);
+            
+          canvas.drawCircle(tip, strokeWidth * 6.0, outerGlow);
+          canvas.drawCircle(tip, strokeWidth * 3.0, midGlow);
+          canvas.drawCircle(tip, strokeWidth * 1.8, innerGlow);
+        }
+        
+        // Bright white core for intense neon "hot point" feel
+        canvas.drawCircle(tip, strokeWidth * 1.3, tipPaint);
+        canvas.drawCircle(tip, strokeWidth * 0.6, Paint()..color = Colors.cyanAccent.withValues(alpha: 0.8));
       }
     }
   }
@@ -254,7 +438,11 @@ class AnimatedPathAnimation extends StatefulWidget {
     this.glowColor,
     this.autoStart = true,
     this.onComplete,
+    this.visualTheme = AppVisualTheme.blueNeon,
   });
+
+  /// The visual theme to use for rendering
+  final AppVisualTheme visualTheme;
 
   @override
   State<AnimatedPathAnimation> createState() => AnimatedPathAnimationState();
@@ -329,6 +517,7 @@ class AnimatedPathAnimationState extends State<AnimatedPathAnimation>
           strokeColor: widget.strokeColor,
           strokeWidth: widget.strokeWidth,
           glowColor: widget.glowColor,
+          visualTheme: widget.visualTheme,
         );
       },
     );
